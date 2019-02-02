@@ -1,0 +1,138 @@
+<div class="page">
+    <div class="row ui-section">
+        <div class="col-lg-8 clearfix">
+            <h2 class="section-header">{{titleName}}</h2>
+        </div>
+        <div class="col-md-12">
+            <div class="panel panel-default">
+                <div class="panel-body padding-xl form-validation" ng-cloak>
+                    <div class="row">
+                        <div class="col-lg-6 col-lg-offset-3">
+                             <div layout="column" ng-cloak class="md-inline-form inputdemoBasicUsage">
+                                <md-content layout-padding>
+                                    <form name="formStandard" class="form-horizontal form-validation" data-ng-submit="submitForm()">
+                                        <fieldset>
+                                            <div layout layout-sm="column">
+                                                <md-input-container flex>
+                                                    <label>Origin</label>
+                                                    <md-select ng-model="object.origin">
+                                                        <md-option ng-repeat="place in places" value="{{place.id}}">
+                                                            {{place.short_name}} - {{place.name}}
+                                                        </md-option>
+                                                    </md-select>
+                                                    <div ng-messages="formStandard.origin.$error" multiple ng-if='formStandard.origin.$dirty'>    
+                                                        <div ng-message="required">This is required.</div>
+                                                    </div>
+                                                </md-input-container>
+                                                
+                                                <md-input-container flex>
+                                                    <label>Destination</label>
+                                                    <md-select ng-model="object.destination">
+                                                        <md-option ng-repeat="place in places" value="{{place.id}}">
+                                                            {{place.short_name}} - {{place.name}}
+                                                        </md-option>
+                                                    </md-select>
+                                                </md-input-container>
+                                            </div>
+                                            <div class="divider divider-dashed divider-lg pull-in"></div>
+                                            
+                                            <div layout layout-sm="column">
+                                                <div class="col-sm-4" style="margin-top: 15px;">Departure date</div>
+                                                <div class="col-sm-8">
+                                                    <md-datepicker md-min-date="minDate" ng-model="object.dte_departure_date" md-placeholder="Enter date"></md-datepicker>
+                                                </div>
+                                            </div>
+                                            
+                                            <div class="divider divider-dashed divider-lg pull-in"></div>
+                                            
+                                            <div layout layout-sm="column">
+                                                <md-switch ng-model="departure_fixed_time" aria-label="Fixed Time">Departure fixed time</md-switch>
+                                            </div>
+                                            
+                                            <div layout layout-sm="column" ng-show="departure_fixed_time">
+                                                <div class="col-sm-4" style="margin-top: 50px;">Departure fixed time</div>
+                                                <div class="col-sm-8">
+                                                    <div ng-model="object.dte_departure_time" ng-change="changed()" style="display:inline-block;">
+                                                        <uib-timepicker class="ui-timepicker" hour-step="1" minute-step="5" show-meridian="false"></uib-timepicker>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            
+                                            <div layout layout-sm="column" ng-hide="departure_fixed_time">
+                                                <div class="col-sm-4" style="margin-top: 50px;">Departure min time</div>
+                                                <div class="col-sm-8">
+                                                    <div ng-model="object.dte_departure_min_time" ng-change="changed()" style="display:inline-block;">
+                                                        <uib-timepicker class="ui-timepicker" hour-step="1" minute-step="5" show-meridian="false"></uib-timepicker>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div layout layout-sm="column" ng-hide="departure_fixed_time">
+                                                <div class="col-sm-4" style="margin-top: 50px;">Departure max time</div>
+                                                <div class="col-sm-8">
+                                                    <div ng-model="object.dte_departure_max_time" ng-change="changed()" style="display:inline-block;">
+                                                        <uib-timepicker class="ui-timepicker" hour-step="1" minute-step="5" show-meridian="false"></uib-timepicker>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="divider divider-dashed divider-lg pull-in"></div>
+                                            
+                                            <div layout layout-sm="column" >
+                                                <md-input-container flex>
+                                                    <label>Plane</label>
+                                                    <md-select name="plane_id" ng-model="object.plane_id" ng-required="true">
+                                                        <md-option ng-repeat="plane in planes" value="{{plane.id}}">
+                                                            {{plane.name}}
+                                                        </md-option>
+                                                    </md-select>
+                                                    <div ng-messages="formStandard.plane_id.$error" multiple ng-if='formStandard.plane_id.$dirty'>    
+                                                        <div ng-message="required">This is required.</div>
+                                                    </div>
+                                                </md-input-container>
+                                            </div>    
+                                            <!--<div layout layout-sm="column" >    
+                                                <md-input-container flex>
+                                                    <label>Status</label>
+                                                    <md-select ng-model="object.status">
+                                                        <md-option ng-repeat="state in status" value="{{state}}">
+                                                            {{state}}
+                                                        </md-option>
+                                                    </md-select>
+                                                </md-input-container>
+                                            </div>-->
+                                            
+                                            <div layout layout-sm="column" >    
+                                                <md-input-container class="md-block">
+                                        <label>Price</label>
+                                        <!--<md-icon class="fa fa-circle"></md-icon>-->
+                                        <input required 
+                                               type="text"
+                                               name="paramvalueamount" 
+                                               ng-model="object.paramvalueamount"
+                                               data-ng-pattern="/^[0-9]{1,4}$/">
+                                        <div ng-messages="formStandard.paramvalueamount.$error" multiple ng-if='formStandard.paramvalueamount.$dirty'>
+                                            <div ng-message="required">This is required.</div>
+                                        </div>
+                                    </md-input-container>
+                                            </div>
+                                            
+                                            
+                                            <div class="divider divider-md"></div>                
+                                            <md-button type="submit"
+                                                       class="md-raised btn-w-md md-primary"
+                                                       ng-disabled="!canSubmit()">Submit</md-button>
+
+                                            <div class="divider"></div>
+                                        </fieldset>
+                                    </form>
+                                 </md-content>
+                            </div>
+                        </div>
+                    </div>
+                </div>                
+            </div>
+        </div>
+    </div>
+</div>
+
+

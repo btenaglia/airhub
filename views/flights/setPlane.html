@@ -1,0 +1,23 @@
+<md-dialog aria-label="List dialog" flex="66">
+    
+    <md-dialog-content>
+        <md-list>
+            <md-subheader class="md-no-sticky">Select Plane</md-subheader>
+            <md-list-item ng-repeat="plane in planes">
+                <p>{{plane.name}}</p>
+                <md-checkbox class="md-secondary" ng-model="plane.checked" ng-change="planeSelected(plane)"></md-checkbox>
+            </md-list-item>
+        </md-list>
+        
+    </md-dialog-content>
+    
+    <md-dialog-actions>
+        <md-button ng-click="setPlane()" class="md-primary">
+            Set plane
+        </md-button>
+        <md-button ng-click="cancel()" class="md-warn">
+            Cancel
+        </md-button>
+    </md-dialog-actions>
+    
+</md-dialog>

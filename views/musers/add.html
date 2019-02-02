@@ -1,0 +1,163 @@
+<div class="page">
+    <div class="row ui-section">
+        <div class="col-lg-8 clearfix">
+            <h2 class="section-header">{{titleName}}</h2>
+        </div>
+        <div class="col-md-12">
+            <div class="panel panel-default">
+                <div class="panel-body padding-xl form-validation" ng-cloak>
+                    <div class="row">
+                        <div class="col-lg-6 col-lg-offset-3">
+                            <form name="formStandard" class="form-horizontal form-validation" data-ng-submit="submitForm()">
+                                <fieldset>
+                                	
+                                	  <md-input-container class="md-block">
+                                        <label>Name</label>
+                                        <md-icon class="fa fa-font"></md-icon>
+                                        <input required 
+                                               type="text"
+                                               name="name" 
+                                               ng-model="object.name" />
+                                        <div ng-messages="formStandard.name.$error" multiple ng-if='formStandard.name.$dirty'>
+                                            <div ng-message="required">This is required.</div>
+                                        </div>
+                                    </md-input-container>
+                                    
+                                    <md-input-container class="md-block">
+                                        <label>Last Name</label>
+                                        <md-icon class="fa fa-font"></md-icon>
+                                        <input required 
+                                               type="text"
+                                               name="last_name" 
+                                               ng-model="object.last_name" />
+                                        <div ng-messages="formStandard.last_name.$error" multiple ng-if='formStandard.last_name.$dirty'>
+                                            <div ng-message="required">This is required.</div>
+                                        </div>
+                                    </md-input-container>
+                                    
+                                    <md-input-container class="md-block">
+                                        <label>Address</label>
+                                        <md-icon class="fa fa-font"></md-icon>
+                                        <input required 
+                                               type="text"
+                                               name="address" 
+                                               ng-model="object.address" />
+                                        <div ng-messages="formStandard.address.$error" multiple ng-if='formStandard.address.$dirty'>
+                                            <div ng-message="required">This is required.</div>
+                                        </div>
+                                    </md-input-container>
+                                    
+                                    <md-input-container class="md-block">
+                                        <label>City</label>
+                                        <md-icon class="fa fa-font"></md-icon>
+                                        <input required 
+                                               type="text"
+                                               name="city" 
+                                               ng-model="object.city" />
+                                        <div ng-messages="formStandard.city.$error" multiple ng-if='formStandard.city.$dirty'>
+                                            <div ng-message="required">This is required.</div>
+                                        </div>
+                                    </md-input-container>
+                                    
+                                    <md-input-container class="md-block">
+                                        <label>State</label>
+                                        <md-icon class="fa fa-font"></md-icon>
+                                        <input required 
+                                               type="text"
+                                               name="state" 
+                                               ng-model="object.state" />
+                                        <div ng-messages="formStandard.state.$error" multiple ng-if='formStandard.state.$dirty'>
+                                            <div ng-message="required">This is required.</div>
+                                        </div>
+                                    </md-input-container>
+                                    
+                                    <md-input-container class="md-block">
+                                        <label>Country</label>
+                                        <md-icon class="fa fa-font"></md-icon>
+                                        <input required 
+                                               type="text"
+                                               name="country" 
+                                               ng-model="object.country" />
+                                        <div ng-messages="formStandard.country.$error" multiple ng-if='formStandard.country.$dirty'>
+                                            <div ng-message="required">This is required.</div>
+                                        </div>
+                                    </md-input-container>
+                                    
+                                    <md-input-container class="md-block">
+                                        <label>Zipcode</label>
+                                        <md-icon class="fa fa-font"></md-icon>
+                                        <input required 
+                                               type="text"
+                                               name="zipcode" 
+                                               ng-model="object.zipcode" />
+                                        <div ng-messages="formStandard.zipcode.$error" multiple ng-if='formStandard.zipcode.$dirty'>
+                                            <div ng-message="required">This is required.</div>
+                                        </div>
+                                    </md-input-container>
+                                    
+                                    <md-input-container class="md-block">
+                                        <label>Cell Phone</label>
+                                        <md-icon class="fa fa-hashtag"></md-icon>
+                                        <input required 
+                                               type="text"
+                                               name="cell_phone" 
+                                               ng-model="object.cell_phone" />
+                                        <div ng-messages="formStandard.cell_phone.$error" multiple ng-if='formStandard.cell_phone.$dirty'>
+                                            <div ng-message="required">This is required.</div>
+                                        </div>
+                                    </md-input-container>
+                                    
+                                    <md-input-container class="md-block">
+                                        <label>Body Weight (Lbs)</label>
+                                        <md-icon class="fa fa-hashtag"></md-icon>
+                                        <input required 
+                                               type="text"
+                                               name="body_weight" 
+                                               ng-model="object.body_weight" />
+                                        <div ng-messages="formStandard.body_weight.$error" multiple ng-if='formStandard.body_weight.$dirty'>
+                                            <div ng-message="required">This is required.</div>
+                                        </div>
+                                    </md-input-container>
+                                    
+                                    <md-input-container class="md-block">
+                                        <label>Email</label>
+                                        <md-icon class="fa fa-at"></md-icon>
+                                        <input required 
+                                               type="text"
+                                               name="email" 
+                                               ng-model="object.email" 
+                                               ng-pattern="/^.+@.+\..+$/"/>
+                                        <div ng-messages="formStandard.email.$error" multiple ng-if='formStandard.email.$dirty'>
+                                            <div ng-message="required">This is required.</div>
+                                            <div ng-message="pattern">It must be an e-mail address.</div>
+                                        </div>
+                                    </md-input-container>
+                                    
+                                    
+                                    <md-input-container class="md-block" ng-show="showPassword">
+                                        <label>Password</label>
+                                        <md-icon class="fa fa-lock"></md-icon>
+                                        <input required 
+                                               type="password"
+                                               name="password" 
+                                               ng-model="object.password"/>
+                                        <div ng-messages="formStandard.password.$error" multiple ng-if='formStandard.password.$dirty'>
+                                            <div ng-message="required">This is required.</div>
+                                        </div>
+                                    </md-input-container>
+                                    
+                                    <md-button type="submit"
+                                               class="md-raised btn-w-md md-primary"
+                                               ng-disabled="!canSubmit()">Submit</md-button>
+
+                                    <div class="divider"></div>
+                                </fieldset>
+                            </form>
+                        </div>
+                    </div>
+                </div>                
+            </div>
+
+        </div>
+    </div>
+</div>

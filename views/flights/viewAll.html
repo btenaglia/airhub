@@ -1,0 +1,178 @@
+<div class="page page-table">
+
+    <div class="row ui-section">
+    <div class="col-lg-8 clearfix">
+        <h2 class="section-header">View all flights</h2>
+    </div>
+    <div class="col-md-12">
+        <section class="panel panel-default table-dynamic">
+        <div class="table-filters">
+            <div class="row">
+            <div class="col-sm-4 col-xs-6">
+                <form>
+                <input type="text"
+                     placeholder="Search..."
+                     class="form-control"
+                     data-ng-model="searchKeywords"
+                     data-ng-keyup="search()">
+                </form>
+            </div>
+            <div class="col-sm-3 col-xs-6 filter-result-info">
+                <span>
+                Showing {{filteredData.length}}/{{storedData.length}} entries
+                </span>                
+            </div>
+            </div>
+        </div>
+
+        <table class="table table-bordered table-striped table-responsive">
+            <thead>
+            <tr>
+                <th><div class="th">
+                Origin
+                <span class="fa fa-angle-up"
+                    data-ng-click=" order('origin_name') "
+                    data-ng-class="{active: row == 'origin_name'}"></span>
+                <span class="fa fa-angle-down"
+                    data-ng-click=" order('-origin_name') "
+                    data-ng-class="{active: row == '-origin_name'}"></span>
+                </div></th>
+                <th><div class="th">
+                Destination
+                <span class="fa fa-angle-up"
+                    data-ng-click=" order('destination_name') "
+                    data-ng-class="{active: row == 'destination_name'}"></span>
+                <span class="fa fa-angle-down"
+                    data-ng-click=" order('-destination_name') "
+                    data-ng-class="{active: row == '-destination_name'}"></span>
+                </div></th>
+                <th><div class="th">
+                Date
+                <span class="fa fa-angle-up"
+                    data-ng-click=" order('departure_date') "
+                    data-ng-class="{active: row == 'departure_date'}"></span>
+                <span class="fa fa-angle-down"
+                    data-ng-click=" order('-departure_date') "
+                    data-ng-class="{active: row == '-departure_date'}"></span>
+                </div></th>
+                <th><div class="th">
+                Departure Time
+                <span class="fa fa-angle-up"
+                    data-ng-click=" order('departure_time') "
+                    data-ng-class="{active: row == 'departure_time'}"></span>
+                <span class="fa fa-angle-down"
+                    data-ng-click=" order('-departure_time') "
+                    data-ng-class="{active: row == '-departure_time'}"></span>
+                </div></th>
+                <th><div class="th">
+                Plane
+                <span class="fa fa-angle-up"
+                    data-ng-click=" order('plane_name') "
+                    data-ng-class="{active: row == 'plane_name'}"></span>
+                <span class="fa fa-angle-down"
+                    data-ng-click=" order('-plane_name') "
+                    data-ng-class="{active: row == '-plane_name'}"></span>
+                </div></th>
+                <th><div class="th">
+                Status
+                <span class="fa fa-angle-up"
+                    data-ng-click=" order('status') "
+                    data-ng-class="{active: row == 'status'}"></span>
+                <span class="fa fa-angle-down"
+                    data-ng-click=" order('-status') "
+                    data-ng-class="{active: row == '-status'}"></span>
+                </div></th>
+                <th><div class="th">
+                Seats booked
+                <span class="fa fa-angle-up"
+                    data-ng-click=" order('booked_seats') "
+                    data-ng-class="{active: row == 'booked_seats'}"></span>
+                <span class="fa fa-angle-down"
+                    data-ng-click=" order('-booked_seats') "
+                    data-ng-class="{active: row == '-booked_seats'}"></span>
+                </div></th>
+                <th><div class="th">
+                Seats availables
+                <span class="fa fa-angle-up"
+                    data-ng-click=" order('availables_seats') "
+                    data-ng-class="{active: row == 'availables_seats'}"></span>
+                <span class="fa fa-angle-down"
+                    data-ng-click=" order('-availables_seats') "
+                    data-ng-class="{active: row == '-availables_seats'}"></span>
+                </div></th>
+                <th><div class="th">
+                Created by
+                <span class="fa fa-angle-up"
+                    data-ng-click=" order('user_name') "
+                    data-ng-class="{active: row == 'user_name'}"></span>
+                <span class="fa fa-angle-down"
+                    data-ng-click=" order('-user_name') "
+                    data-ng-class="{active: row == '-user_name'}"></span>
+                </div></th>
+                <th><div class="th">
+                Actions
+                </div></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr data-ng-repeat="data in currentPageData">
+                <td>{{data.origin_name}}</td>
+                <td>{{data.destination_name}}</td>
+                <td>{{data.departure_date}}</td>
+                <td>{{timeToShow(data)}}</td>
+                <td>{{data.plane_name}}</td>
+                <td>{{data.status}}</td>
+                <td>{{data.booked_seats}}</td>
+                <td>{{data.availables_seats}}</td>
+                <td>{{data.user_name}}</td>
+                <td>
+                    <md-button ng-show="data.plane_id === null" aria-label="setPlane" class="md-fab md-primary md-fab-xs" ng-click="showSetPlane($event,data)">
+                        <span class="fa fa-plane"></span>
+                    </md-button>
+                    <md-button ng-show="data.status==='proposed' && data.plane_id !== null" aria-label="approve" class="md-fab md-primary md-fab-xs" ng-click="approve($event,data)">
+                        <span class="fa fa-check"></span>
+                    </md-button>
+                    <md-button ng-show="data.booked_seats > 0 && data.status==='scheduled'" aria-label="approve" class="md-fab md-fab-xs" ng-click="showBookings(data)">
+                        <span class="fa fa-list-ol"></span>
+                    </md-button>
+                    <md-button ng-hide="data.booked_seats > 0" aria-label="edit" class="md-fab md-fab-xs" ng-click="checkEdit(data)">
+                        <span class="fa fa-pencil"></span>
+                    </md-button>
+                    <md-button ng-hide="data.booked_seats > 0" aria-label="remove" class="md-fab md-warn md-fab-xs" ng-click="checkDelete($event,data)">
+                        <span class="fa fa-trash"></span>
+                    </md-button> 
+                </td>
+            </tr>
+            </tbody>
+        </table>
+
+        <footer class="table-footer">
+            <div class="row">
+            <div class="col-md-6 page-num-info">
+                <span>
+                Show 
+                <select data-ng-model="numPerPage"
+                    data-ng-options="num for num in numPerPageOpt"
+                    data-ng-change="onNumPerPageChange()">
+                </select> 
+                entries per page
+                </span>
+            </div>
+            <div class="col-md-6 text-right pagination-container">
+                <uib-pagination class="pagination-sm"
+                    ng-model="currentPage"
+                    total-items="filteredData.length"
+                    max-size="4"
+                    ng-change="select(currentPage)"
+                    items-per-page="numPerPage"
+                    rotate="false"
+                    previous-text="&lsaquo;" next-text="&rsaquo;"
+                    boundary-links="true"></uib-pagination>
+            </div>
+            </div>
+        </footer>
+        </section>
+    </div>
+    </div>
+    
+</div>

@@ -1,0 +1,65 @@
+<div class="page">
+    <div class="row ui-section">
+        <div class="col-lg-8 clearfix">
+            <h2 class="section-header">{{titleName}}</h2>
+        </div>
+        <div class="col-md-12">
+            <div class="panel panel-default">
+                <div class="panel-body padding-xl form-validation" ng-cloak>
+                    <div class="row">
+                        <div class="col-lg-6 col-lg-offset-3">
+                            <form name="formStandard" class="form-horizontal form-validation" data-ng-submit="submitForm()">
+                                <fieldset>
+                                    <md-input-container class="md-block">
+                                        <label>Email</label>
+                                        <md-icon class="fa fa-at"></md-icon>
+                                        <input required 
+                                               type="text"
+                                               name="email" 
+                                               ng-model="object.email" 
+                                               ng-pattern="/^.+@.+\..+$/"/>
+                                        <div ng-messages="formStandard.email.$error" multiple ng-if='formStandard.email.$dirty'>
+                                            <div ng-message="required">This is required.</div>
+                                            <div ng-message="pattern">It must be an e-mail address.</div>
+                                        </div>
+                                    </md-input-container>
+                                    
+                                    <md-input-container class="md-block">
+                                        <label>Complete Name</label>
+                                        <md-icon class="fa fa-hashtag"></md-icon>
+                                        <input required 
+                                               type="text"
+                                               name="complete_name" 
+                                               ng-model="object.complete_name" />
+                                        <div ng-messages="formStandard.complete_name.$error" multiple ng-if='formStandard.complete_name.$dirty'>
+                                            <div ng-message="required">This is required.</div>
+                                        </div>
+                                    </md-input-container>
+                                    
+                                    <md-input-container class="md-block" ng-show="showPassword">
+                                        <label>Password</label>
+                                        <md-icon class="fa fa-lock"></md-icon>
+                                        <input required 
+                                               type="password"
+                                               name="password" 
+                                               ng-model="object.password"/>
+                                        <div ng-messages="formStandard.password.$error" multiple ng-if='formStandard.password.$dirty'>
+                                            <div ng-message="required">This is required.</div>
+                                        </div>
+                                    </md-input-container>
+                                    
+                                    <md-button type="submit"
+                                               class="md-raised btn-w-md md-primary"
+                                               ng-disabled="!canSubmit()">Submit</md-button>
+
+                                    <div class="divider"></div>
+                                </fieldset>
+                            </form>
+                        </div>
+                    </div>
+                </div>                
+            </div>
+
+        </div>
+    </div>
+</div>

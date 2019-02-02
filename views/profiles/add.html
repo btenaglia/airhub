@@ -1,0 +1,84 @@
+<div class="page">
+    <div class="row ui-section">
+        <div class="col-lg-8 clearfix">
+            <h2 class="section-header">{{titleName}}</h2>
+        </div>
+        <div class="col-md-12">
+            <div class="panel panel-default">
+                <div class="panel-body padding-xl form-validation" ng-cloak>
+                    <div class="row">
+                        <div class="col-lg-6 col-lg-offset-3">
+                            <form name="formStandard" class="form-horizontal form-validation" data-ng-submit="submitForm()">
+                                <fieldset>
+                                    <md-input-container class="md-block">
+                                        <label>Name</label>
+                                        <md-icon class="fa fa-hashtag"></md-icon>
+                                        <input required 
+                                               type="text"
+                                               name="name" 
+                                               ng-model="object.name" />
+                                        <div ng-messages="formStandard.name.$error" multiple ng-if='formStandard.name.$dirty'>
+                                            <div ng-message="required">This is required.</div>
+                                        </div>
+                                    </md-input-container>
+                                    
+                                    <md-input-container class="md-block">
+                                        <label>Amount</label>
+                                        <md-icon class="fa fa-circle"></md-icon>
+                                        <input required 
+                                               type="text"
+                                               name="price"
+                                               ng-model="object.price"
+                                               data-ng-pattern="/^[0-9]{1,4}$/">
+                                        <div ng-messages="formStandard.paramvalueamount.$error" multiple ng-if='formStandard.paramvalueamount.$dirty'>    
+                                            <div ng-message="required">This is required.</div>
+                                        </div>
+                                    </md-input-container>     
+                                    
+                                            
+                                            <div layout layout-sm="column">
+                                                <md-switch ng-model="object.type" aria-label="Type" ng-true-value="1" ng-false-value="0">For "n" first seats / For "n" hours</md-switch>
+                                            </div>
+                                            
+                                            <div layout layout-sm="column" ng-show="object.type">
+                                                <div class="col-sm-4" align="right">Hours</div>
+                                                <div class="col-sm-8">
+                                                    <div ng-model="object.hours" ng-change="changed()" style="display:inline-block;">
+                                                        <input
+                                                          type="text"
+                                                          name="hours" 
+                                                          ng-model="object.hours" />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            
+                                            <div layout layout-sm="column" ng-hide="object.type">
+                                                <div class="col-sm-4" align="right">Seats</div>
+                                                <div class="col-sm-8">
+                                                    <div ng-model="object.seats" ng-change="changed()" style="display:inline-block;">
+                                                        <input 
+                                                          type="text"
+                                                          name="seats" 
+                                                          ng-model="object.seats" />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            
+                                            <div style="height:25px"></div>
+                                            
+                                            
+                                    
+                                    <md-button type="submit"
+                                               class="md-raised btn-w-md md-primary"
+                                               ng-disabled="!canSubmit()">Submit</md-button>
+
+                                    <div class="divider"></div>
+                                </fieldset>
+                            </form>
+                        </div>
+                    </div>
+                </div>                
+            </div>
+        </div>
+    </div>
+</div>

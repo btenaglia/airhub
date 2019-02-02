@@ -1,0 +1,91 @@
+<div class="page">
+    <div class="row ui-section">
+        <div class="col-lg-8 clearfix">
+            <h2 class="section-header">{{titleName}}</h2>
+        </div>
+        <div class="col-md-12">
+            <div class="panel panel-default">
+                <div class="panel-body padding-xl form-validation" ng-cloak>
+                    <div class="row">
+                        <div class="col-lg-6 col-lg-offset-3">
+                            <form name="formStandard" class="form-horizontal form-validation" data-ng-submit="submitForm()">
+                                <fieldset>
+                                    <md-input-container class="md-block">
+                                        <label>Identifier</label>
+                                        <md-icon class="fa fa-info"></md-icon>
+                                        <input required 
+                                               type="text"
+                                               name="identifier" 
+                                               ng-model="object.identifier" />
+                                        <div ng-messages="formStandard.identifier.$error" multiple ng-if='formStandard.identifier.$dirty'>
+                                            <div ng-message="required">This is required.</div>
+                                        </div>
+                                    </md-input-container>
+                                    
+                                    <md-input-container class="md-block">
+                                        <label>Name</label>
+                                        <md-icon class="fa fa-hashtag"></md-icon>
+                                        <input required 
+                                               type="text"
+                                               name="name" 
+                                               ng-model="object.name" />
+                                        <div ng-messages="formStandard.name.$error" multiple ng-if='formStandard.name.$dirty'>
+                                            <div ng-message="required">This is required.</div>
+                                        </div>
+                                    </md-input-container>
+                                    
+                                    <md-input-container class="md-block">
+                                        <label>Type</label>
+                                        <md-icon class="fa fa-fighter-jet"></md-icon>
+                                        <input required 
+                                               type="text"
+                                               name="type" 
+                                               ng-model="object.type" />
+                                        <div ng-messages="formStandard.type.$error" multiple ng-if='formStandard.type.$dirty'>
+                                            <div ng-message="required">This is required.</div>
+                                        </div>
+                                    </md-input-container>
+                                    
+                                    <md-input-container class="md-block">
+                                        <label>Seats Limit</label>
+                                        <md-icon class="fa fa-male"></md-icon>
+                                        <input required 
+                                               type="text"
+                                               name="seats_limit" 
+                                               ng-model="object.seats_limit" 
+                                               data-ng-pattern="/^[0-9]{1,4}$/"/>
+                                        <div ng-messages="formStandard.seats_limit.$error" multiple ng-if='formStandard.seats_limit.$dirty'>
+                                            <div ng-message="required">This is required.</div>
+                                            <div ng-message="pattern">Has to be a valid number.</div>
+                                        </div>
+                                    </md-input-container>
+                                    
+                                    <md-input-container class="md-block">
+                                        <label>Weight Limit</label>
+                                        <md-icon class="fa fa-calculator"></md-icon>
+                                        <input required 
+                                               type="text"
+                                               name="weight_limit" 
+                                               ng-model="object.weight_limit" 
+                                               data-ng-pattern="/^\d+(\.\d{1,2})?$/"/>
+                                        <div ng-messages="formStandard.weight_limit.$error" multiple ng-if='formStandard.weight_limit.$dirty'>
+                                            <div ng-message="required">This is required.</div>
+                                            <div ng-message="pattern">Has to be a valid number.</div>
+                                        </div>
+                                    </md-input-container>
+                                    
+                                    <md-button type="submit"
+                                               class="md-raised btn-w-md md-primary"
+                                               ng-disabled="!canSubmit()">Submit</md-button>
+
+                                    <div class="divider"></div>
+                                </fieldset>
+                            </form>
+                        </div>
+                    </div>
+                </div>                
+            </div>
+
+        </div>
+    </div>
+</div>

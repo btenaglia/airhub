@@ -1,0 +1,34 @@
+<div class="page">
+    <div class="row ui-section">
+        <div class="col-lg-8 clearfix">
+            <h2 class="section-header">{{titleName}}</h2>
+        </div>
+        <div class="col-md-12">
+            <div class="panel panel-default">
+                <div class="panel-body padding-xl form-validation" ng-cloak>
+                    <div class="row">
+                        <div class="col-lg-6 col-lg-offset-3">
+                            <form name="formStandard" class="form-horizontal form-validation" data-ng-submit="submitForm()">
+                                <fieldset>
+                                    <md-input-container class="md-block">
+                                        <label>Text</label>
+                                        <md-icon class="fa fa-circle"></md-icon>
+                                        <textarea name="paramtext1" style="height:350px !important; min-height:350px !important; width:550px !important; overflow:scroll !important;" ng-model="object.paramtext1"></textarea>       
+                                        <div ng-messages="formStandard.paramtext1.$error" multiple ng-if='formStandard.paramtext1.$dirty'>    
+                                            <div ng-message="required">This is required.</div>
+                                        </div>
+                                    </md-input-container>                    
+                                    <md-button type="submit"
+                                               class="md-raised btn-w-md md-primary"
+                                               ng-disabled="!canSubmit()">Submit</md-button>
+
+                                    <div class="divider"></div>
+                                </fieldset>
+                            </form>
+                        </div>
+                    </div>
+                </div>                
+            </div>
+        </div>
+    </div>
+</div>
