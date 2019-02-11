@@ -90,6 +90,7 @@
         $scope.places = places.data.data;
         $scope.planes = planes.data.data;
         $scope.status = status.data.data;
+      
         /*$scope.status = [
           { id: 1, name: 'proposed'' }
         ];*/
@@ -97,6 +98,10 @@
         $scope.object = {
             origin: -1,
             destination: -1,
+            origin_coords: 0,
+            destination_coords:0,
+            origin_id:"",
+            destination_id:"",
             status: 'proposed', //-1,
             plane_id: -1,
             dte_departure_date: new Date(),
@@ -108,7 +113,8 @@
         $scope.minDate = new Date($scope.object.dte_departure_date.getTime() - 86400000);
         
         $scope.submitForm = function(){
-            
+         
+           
             //check all fields
             if($scope.object.origin === -1 || $scope.object.destination === -1 || $scope.object.status === -1 || $scope.object.plane === -1){
                 $scope.showMessage('Please fill all fields before submit!');
@@ -154,7 +160,7 @@
         
         $scope.titleName = "Edit flight";
         
-        console.log(flight.data);
+ 
         $scope.places = places.data.data;
         $scope.planes = planes.data.data;
         $scope.status = status.data.data;
@@ -699,7 +705,7 @@
                 });
             });
         };
-        
+      
         $scope.cancel = function(ev, flight){
             if (flight.status != "scheduled"){
                 $scope.showMessage('Can not cancel the flight');

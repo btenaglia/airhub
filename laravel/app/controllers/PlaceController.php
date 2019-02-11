@@ -21,7 +21,7 @@ class PlaceController extends BaseController implements GenericControllers {
     public function create() {
         $placeService = $this->getService('Place');
         $place = $placeService->create(Input::all());
-        
+     
         if($place !== null) {
             return $this->jsonSuccessResponse();
         } else {

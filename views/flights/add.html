@@ -13,10 +13,11 @@
                                     <form name="formStandard" class="form-horizontal form-validation" data-ng-submit="submitForm()">
                                         <fieldset>
                                             <div layout layout-sm="column">
+                                            
                                                 <md-input-container flex>
-                                                    <label>Origin</label>
-                                                    <md-select ng-model="object.origin">
-                                                        <md-option ng-repeat="place in places" value="{{place.id}}">
+                                                    <label >Origin</label>
+                                                    <md-select ng-model="object.origin" >
+                                                        <md-option ng-repeat="place in places" value="{{place.id}}" ng-click="change_origin(place.latitude.toString()+';'+place.longitude.toString(),place.short_name)">
                                                             {{place.short_name}} - {{place.name}}
                                                         </md-option>
                                                     </md-select>
@@ -28,7 +29,7 @@
                                                 <md-input-container flex>
                                                     <label>Destination</label>
                                                     <md-select ng-model="object.destination">
-                                                        <md-option ng-repeat="place in places" value="{{place.id}}">
+                                                        <md-option ng-repeat="place in places" value="{{place.id}}" ng-click="change_destination(place.latitude.toString()+';'+place.longitude.toString(),place.short_name)">
                                                             {{place.short_name}} - {{place.name}}
                                                         </md-option>
                                                     </md-select>
@@ -116,7 +117,7 @@
                                     </md-input-container>
                                             </div>
                                             
-                                            
+                                           
                                             <div class="divider divider-md"></div>                
                                             <md-button type="submit"
                                                        class="md-raised btn-w-md md-primary"

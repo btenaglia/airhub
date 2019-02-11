@@ -22,6 +22,7 @@
         };
 
         response.create = function(object) {
+          
             return $http.post(baseURL + '/places/create', object);
         };
         

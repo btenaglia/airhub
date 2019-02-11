@@ -10,7 +10,8 @@ class Flight extends BaseModel {
     const STATUS_SCHEDULED = 'scheduled';
     const STATUS_IN_TIME = 'in_time';
     const STATUS_LANDED = 'landed';
-    
+    protected $fillable = ['distance'.'route'];
+
     public function getId() {
         return $this->id;
     }
@@ -201,6 +202,7 @@ class Flight extends BaseModel {
         origin.name as origin_name,
         origin.short_name as origin_short_name,
         flights.destination,
+        flights.distance,
         destination.name as destination_name,
         destination.short_name AS destination_short_name,
         flights.departure_date,
@@ -214,6 +216,7 @@ class Flight extends BaseModel {
         flights.updated_at,
         flights.plane_id,
         planes.name AS plane_name,
+        planes.identifier AS plane_ident,
         planes.seats_limit,
         COUNT(books.id) AS booked_seats,
         IF(flights.plane_id IS NULL, -1, (planes.seats_limit - COUNT(books.id))) AS availables_seats,
@@ -228,8 +231,12 @@ class Flight extends BaseModel {
         origin.name as origin_name,
         origin.short_name as origin_short_name,
         flights.destination,
+        flights.distance,
+        flights.route,
         destination.name as destination_name,
         destination.short_name AS destination_short_name,
+        destination.latitude AS destination_latitude,
+        destination.longitude AS destination_longitude,
         flights.departure_date,
         DATE_FORMAT(flights.departure_time, '%H:%i') AS departure_time,
         DATE_FORMAT(flights.departure_min_time, '%H:%i') AS departure_min_time,
@@ -241,6 +248,7 @@ class Flight extends BaseModel {
         flights.updated_at,
         flights.plane_id,
         planes.name AS plane_name,
+        planes.identifier AS plane_ident,
         planes.seats_limit,
         COUNT(books.id) AS booked_seats,
         IF(flights.plane_id IS NULL, -1, (planes.seats_limit - COUNT(books.id))) AS availables_seats

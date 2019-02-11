@@ -101,9 +101,12 @@ class FlightController extends BaseController implements GenericControllers {
         $flightService = $this->getService('Flight');
         
         $flight = $flightService->findWithRelationsAttrs($id);
+        $flightInfo =  $flightService->findFlightInfo($flight);
+        $array = json_decode(json_encode($flight), true);
+        $array = array_merge($array,$flightInfo);
         
-        if($flight !== null) {
-            return $this->jsonResponse('', self::HTTP_CODE_OK, $flight);
+        if($array !== null) {
+            return $this->jsonResponse('', self::HTTP_CODE_OK, $array);
         } else {
             return $this->jsonResponse('Not flight found.', self::HTTP_CODE_SERVER_ERROR, []);
         }
