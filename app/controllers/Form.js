@@ -13,17 +13,7 @@
         $scope.getDateString = function(date){
             return date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + date.getDate();
         }
-    
-        $scope.change_origin = (coords,ident)=> {
-     
-            $scope.object.origin_coords = coords
-            $scope.object.origin_id = ident
-        }
-        $scope.change_destination = (coords,ident) => {
-      
-            $scope.object.destination_coords = coords
-            $scope.object.destination_id = ident
-        }
+   
         $scope.getTimeString = function(time){
             var hours = time.getHours() < 10 ? '0' + time.getHours() : time.getHours();
             var minutes = time.getMinutes() < 10 ? '0' + time.getMinutes() : time.getMinutes();

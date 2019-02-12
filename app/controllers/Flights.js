@@ -98,10 +98,6 @@
         $scope.object = {
             origin: -1,
             destination: -1,
-            origin_coords: 0,
-            destination_coords:0,
-            origin_id:"",
-            destination_id:"",
             status: 'proposed', //-1,
             plane_id: -1,
             dte_departure_date: new Date(),

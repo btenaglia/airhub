@@ -17,7 +17,7 @@
                                                 <md-input-container flex>
                                                     <label >Origin</label>
                                                     <md-select ng-model="object.origin" >
-                                                        <md-option ng-repeat="place in places" value="{{place.id}}" ng-click="change_origin(place.latitude.toString()+';'+place.longitude.toString(),place.short_name)">
+                                                        <md-option ng-repeat="place in places" value="{{place.id}}" >
                                                             {{place.short_name}} - {{place.name}}
                                                         </md-option>
                                                     </md-select>
@@ -29,7 +29,7 @@
                                                 <md-input-container flex>
                                                     <label>Destination</label>
                                                     <md-select ng-model="object.destination">
-                                                        <md-option ng-repeat="place in places" value="{{place.id}}" ng-click="change_destination(place.latitude.toString()+';'+place.longitude.toString(),place.short_name)">
+                                                        <md-option ng-repeat="place in places" value="{{place.id}}" >
                                                             {{place.short_name}} - {{place.name}}
                                                         </md-option>
                                                     </md-select>

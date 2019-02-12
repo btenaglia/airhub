@@ -11,19 +11,17 @@
 
 namespace Sly\NotificationPusher\Console\Command;
 
+use Doctrine\Common\Inflector\Inflector;
+use Sly\NotificationPusher\Exception\AdapterException;
+use Sly\NotificationPusher\Model\Device;
+use Sly\NotificationPusher\Model\Message;
+use Sly\NotificationPusher\Model\Push;
+use Sly\NotificationPusher\PushManager;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
-
-use Sly\NotificationPusher\PushManager;
-use Sly\NotificationPusher\Model\Device;
-use Sly\NotificationPusher\Model\Message;
-use Sly\NotificationPusher\Model\Push;
-use Sly\NotificationPusher\Exception\AdapterException;
-
-use Doctrine\Common\Inflector\Inflector;
 
 /**
  * PushCommand.
@@ -108,7 +106,7 @@ class PushCommand extends Command
     private function getAdapterClassFromArgument($argument)
     {
         if (!class_exists($adapterClass = $argument) &&
-            !class_exists($adapterClass = '\\Sly\\NotificationPusher\\Adapter\\'.ucfirst($argument))) {
+            !class_exists($adapterClass = '\\Sly\\NotificationPusher\\Adapter\\' . ucfirst($argument))) {
             throw new AdapterException(
                 sprintf(
                     'Adapter class %s does not exist',
@@ -132,7 +130,7 @@ class PushCommand extends Command
         try {
             $adapter = new $adapterClass();
         } catch (\Exception $e) {
-            $adapterData = array();
+            $adapterData = [];
             preg_match_all('/"(.*)"/i', $e->getMessage(), $matches);
 
             foreach ($matches[1] as $match) {
