@@ -3,6 +3,7 @@ namespace App\Models;
 
 class Place extends BaseModel {
     protected $table = 'places';
+    protected $fillable = ['latitude','longitude'];
     
     public function getId() {
         return $this->id;
