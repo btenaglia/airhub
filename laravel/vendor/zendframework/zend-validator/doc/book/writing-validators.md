@@ -8,7 +8,7 @@ implementations of `Zend\Validator\ValidatorInterface`.
 `getMessages()`. An object that implements the interface may be added to a
 validator chain using `Zend\Validator\ValidatorChain::addValidator()`. Such
 objects may also be used with
-[zend-inputfilter](https://zendframework.github.io/zend-inputfilter).
+[zend-inputfilter](https://docs.zendframework.com/zend-inputfilter).
 
 Validators will return a boolean value from `isValid()`, and report information
 regarding **why** a value failed validation via `getMessages()`. The
@@ -76,7 +76,7 @@ message template.
 The following example demonstrates a more complex set of validation rules:
 
 - The input must be numeric.
-- The input must fall within a range of bouncary values.
+- The input must fall within a range of boundary values.
 
 An input value would fail validation for exactly one of the following reasons:
 

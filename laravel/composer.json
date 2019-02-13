@@ -10,7 +10,8 @@
 		"paypal/rest-api-sdk-php": "*",
 		"davibennun/laravel-push-notification": "dev-master",
 		"sngrl/php-firebase-cloud-messaging": "dev-master",
-		"berkayk/onesignal-laravel": "*"
+		"berkayk/onesignal-laravel": "*",
+		"guzzlehttp/guzzle": "^6.3"
 	},
 	"autoload": {
 		"classmap": [

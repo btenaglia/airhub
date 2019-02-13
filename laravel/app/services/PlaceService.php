@@ -76,7 +76,19 @@ class PlaceService extends BaseService implements GenericServices
         $place = $this->find($id);
         $place->setName($input['name']);
         $place->setShortName($input['short_name']);
-
+        $client = new Client();
+        $response = $client->request('GET',
+            $this->url . '?airportCode=' . $input['short_name'],
+            [
+                'auth' => [
+                    $this->usr,
+                    $this->password,
+                ],
+            ]);
+        $AirportInfo = $response->getBody();
+        $ai = json_decode($AirportInfo,true);
+        $place->latitude = $ai["AirportInfoResult"]["latitude"];
+        $place->longitude = $ai["AirportInfoResult"]["longitude"];
         $success = $place->update();
 
         if ($success) {

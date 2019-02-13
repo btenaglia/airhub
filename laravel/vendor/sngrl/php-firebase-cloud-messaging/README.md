@@ -32,6 +32,7 @@ $client->setApiKey($server_key);
 $client->injectGuzzleHttpClient(new \GuzzleHttp\Client());
 
 $message = new Message();
+$message->setPriority('high');
 $message->addRecipient(new Device('_YOUR_DEVICE_TOKEN_'));
 $message
     ->setNotification(new Notification('some title', 'some body'))
@@ -40,11 +41,26 @@ $message
 
 $response = $client->send($message);
 var_dump($response->getStatusCode());
+var_dump($response->getBody()->getContents());
 ```
 
+#Send message to multiple Devices
+
+```
+...
+$message = new Message();
+$message->setPriority('high');
+$message->addRecipient(new Device('_YOUR_DEVICE_TOKEN_'));
+$message->addRecipient(new Device('_YOUR_DEVICE_TOKEN_2_'));
+$message->addRecipient(new Device('_YOUR_DEVICE_TOKEN_3_'));
+$message
+    ->setNotification(new Notification('some title', 'some body'))
+    ->setData(['key' => 'value'])
+;
+...
+```
 #Send message to Topic
-Currently sending to topics only supports a single topic as recipient. Mutliple topic as outlined
-in the google docs don't seem to work, yet.
+
 ```
 use sngrl\PhpFirebaseCloudMessaging\Client;
 use sngrl\PhpFirebaseCloudMessaging\Message;
@@ -57,6 +73,7 @@ $client->setApiKey($server_key);
 $client->injectGuzzleHttpClient(new \GuzzleHttp\Client());
 
 $message = new Message();
+$message->setPriority('high');
 $message->addRecipient(new Topic('_YOUR_TOPIC_'));
 $message
     ->setNotification(new Notification('some title', 'some body'))
@@ -65,6 +82,27 @@ $message
 
 $response = $client->send($message);
 var_dump($response->getStatusCode());
+var_dump($response->getBody()->getContents());
+```
+
+#Send message to multiple Topics
+
+See Firebase documentation for sending to [combinations of multiple topics](https://firebase.google.com/docs/cloud-messaging/topic-messaging#sending_topic_messages_from_the_server).
+
+```
+...
+$message = new Message();
+$message->setPriority('high');
+$message->addRecipient(new Topic('_YOUR_TOPIC_'));
+$message->addRecipient(new Topic('_YOUR_TOPIC_2_'));
+$message->addRecipient(new Topic('_YOUR_TOPIC_3_'));
+$message
+    ->setNotification(new Notification('some title', 'some body'))
+    ->setData(['key' => 'value'])
+    // Will send to devices subscribed to topic 1 AND topic 2 or 3
+    ->setCondition('%s && (%s || %s)')
+;
+...
 ```
 
 #Subscribe user to the topic
@@ -78,6 +116,7 @@ $client->injectGuzzleHttpClient(new \GuzzleHttp\Client());
 
 $response = $client->addTopicSubscription('_SOME_TOPIC_ID_', ['_FIRST_TOKEN_', '_SECOND_TOKEN_']);
 var_dump($response->getStatusCode());
+var_dump($response->getBody()->getContents());
 ```
 
 #Remove user subscription to the topic
@@ -91,4 +130,5 @@ $client->injectGuzzleHttpClient(new \GuzzleHttp\Client());
 
 $response = $client->removeTopicSubscription('_SOME_TOPIC_ID_', ['_FIRST_TOKEN_', '_SECOND_TOKEN_']);
 var_dump($response->getStatusCode());
+var_dump($response->getBody()->getContents());
 ```

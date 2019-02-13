@@ -39,38 +39,9 @@ class FlightService extends BaseService implements GenericServices
     {
 
         $flight = new Flight();
-        $coords = ["origin" => explode(";", $input["origin_coords"]),
-            "destination" => explode(";", $input["destination_coords"])];
 
-        $client = new Client();
+   
         $flight = $this->createFlight($flight, $input);
-
-        //distance
-        $response = $client->request('GET',
-            $this->url . '/LatLongsToDistance?lat1=' . $coords["origin"][0] . '&lon1=' . $coords["origin"][1] .
-            '&lat2=' . $coords["destination"][0] . '&lon2=' . $coords["destination"][1],
-            [
-                'auth' => [
-                    $this->usr,
-                    $this->password,
-                ],
-            ]);
-        $distance = json_decode($response->getBody(), true);
-
-        $flight->distance = $distance["LatLongsToDistanceResult"];
-        //route
-        $response = $client->request('GET',
-            $this->url . '/RoutesBetweenAirports?origin=' . $input["origin_id"] . '&destination=' . $input["destination_id"],
-            [
-                'auth' => [
-                    $this->usr,
-                    $this->password,
-                ],
-            ]);
-        $route = json_decode($response->getBody(), true);
-        $r = $route["RoutesBetweenAirportsResult"]["data"];
-
-        $flight->route = count($r) > 0 ? $r[0]["route"] : "";
 
         $success = $flight->save();
 
@@ -305,8 +276,11 @@ class FlightService extends BaseService implements GenericServices
     }
     public function findFlightInfo($flight)
     {
+     
+    
         $plane_id = $flight->plane_ident;
         $client = new Client();
+        //flight info - altitude, speed
         $response = $client->request('GET',
             $this->url . '/InFlightInfo?ident=' . $plane_id,
             [
@@ -316,9 +290,38 @@ class FlightService extends BaseService implements GenericServices
                 ],
             ]);
         $flightInfo = $response->getBody();
+  
         $fi = json_decode($flightInfo, true);
+              
+        //distance
+        $response2 = $client->request('GET',
+            $this->url . '/LatLongsToDistance?lat1=' . $flight->origin_latitude . '&lon1=' . $flight->origin_longitude.
+            '&lat2=' . $flight->destination_latitude . '&lon2=' . $flight->destination_longitude,
+            [
+                'auth' => [
+                    $this->usr,
+                    $this->password,
+                ],
+            ]);
+        $distance = json_decode($response2->getBody(), true);
+          
+        //route
+        $response3 = $client->request('GET',
+            $this->url . '/RoutesBetweenAirports?origin=' . $flight->origin_short_name . '&destination=' . $flight->destination_short_name,
+            [
+                'auth' => [
+                    $this->usr,
+                    $this->password,
+                ],
+            ]);
+        $route = json_decode($response3->getBody(), true);
+        $r = $route["RoutesBetweenAirportsResult"]["data"];
+        $route_validate = count($r) > 0 ? $r[0]["route"] : "";
+    
         $currentFlight = ["altitude" => $fi["InFlightInfoResult"]["altitude"],
-            "speed" => $fi["InFlightInfoResult"]["groundspeed"]];
+        "speed" => $fi["InFlightInfoResult"]["groundspeed"],
+        "distance" => $distance['LatLongsToDistanceResult'],
+        "route" => $route_validate];
 
         return $currentFlight;
     }

@@ -4,7 +4,7 @@ return array(
 
     'appNameIOS'     => array(
         'environment' =>'development',
-        'certificate' =>app_path().'/certificate.pem',
+        'certificate' =>'/path/to/certificate.pem',
         'passPhrase'  =>'password',
         'service'     =>'apns'
     ),
