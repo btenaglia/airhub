@@ -219,6 +219,7 @@ class Flight extends BaseModel {
         flights.plane_id,
         planes.name AS plane_name,
         planes.identifier AS plane_ident,
+        planes.type AS plane_type,
         planes.seats_limit,
         COUNT(books.id) AS booked_seats,
         IF(flights.plane_id IS NULL, -1, (planes.seats_limit - COUNT(books.id))) AS availables_seats,
@@ -251,6 +252,7 @@ class Flight extends BaseModel {
         flights.plane_id,
         planes.name AS plane_name,
         planes.identifier AS plane_ident,
+        planes.type AS plane_type,
         planes.seats_limit,
         COUNT(books.id) AS booked_seats,
         IF(flights.plane_id IS NULL, -1, (planes.seats_limit - COUNT(books.id))) AS availables_seats
