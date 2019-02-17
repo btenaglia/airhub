@@ -71,9 +71,10 @@ class BookController extends BaseController implements GenericControllers {
     }
     
     public function findByUser() {
+
         $bookingService = $this->getService('Book');
         $bookings = $bookingService->findByUser();
-        
+     
         if($bookings !== null) {
             return $this->jsonResponse('', self::HTTP_CODE_OK, $bookings);
         } else {

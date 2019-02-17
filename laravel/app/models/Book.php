@@ -128,7 +128,7 @@ class Book extends BaseModel {
     private static function rawForSelectByUser() {
         return 
             "
-                flights.id,
+                flights.id AS flightID,
                 flights.departure_date,
                 DATE_FORMAT(flights.departure_time, '%H:%i') AS departure_time,
                 DATE_FORMAT(flights.departure_min_time, '%H:%i') AS departure_min_time,
