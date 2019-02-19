@@ -334,14 +334,16 @@ class FlightService extends BaseService implements GenericServices
             $estimateArrivalparse = date("Y-m-d H:i:s", $estimateArrival);
             $estimateActualTimeparse = date("Y-m-d H:i:s", $estimateActualTime);
         } else {
-            $estimateArrival = null;
-            $estimateActualTime = null;
+            $estimateArrivalparse = null;
+            $estimateActualTimeparse = null;
         }
-
-        $departure = strtotime($flight->departure_date . " " . $flight->departure_time . ":00");
-        $now = strtotime("now");
-        $status = ($now > $departure && $now < $estimateArrival) ? "In time" : ($now > $estimateArrival ? "Landed" : "Scheduled");
-
+        if($flight->departure_date !== null && $flight->departure_time !== null){
+            $departure = strtotime($flight->departure_date . " " . $flight->departure_time . ":00");
+            $now = strtotime("now");
+            $status = ($now > $departure && $now < $estimateArrival) ? "In time" : ($now > $estimateArrival ? "Landed" : "Scheduled");
+    
+        }
+        else $status = null;
         $currentFlight = ["altitude" => $fi["InFlightInfoResult"]["altitude"],
             "speed" => $fi["InFlightInfoResult"]["groundspeed"],
             "distance" => $distance['LatLongsToDistanceResult'],
