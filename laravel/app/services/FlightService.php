@@ -336,6 +336,7 @@ class FlightService extends BaseService implements GenericServices
         } else {
             $estimateArrivalparse = null;
             $estimateActualTimeparse = null;
+            $estimateArrival = 0;
         }
         $departure = 0;
         if($flight->departure_date !== null && $flight->departure_time !== null){
@@ -344,7 +345,7 @@ class FlightService extends BaseService implements GenericServices
         }
           
 
-        if($departure > 0)
+        if($departure > 0 && $estimateArrival > 0)
         $status = ($now > $departure && $now < $estimateArrival ) ? "In time" : ($now > $estimateArrival ? "Landed" : "Scheduled");
     
         else $status = null;
