@@ -303,18 +303,18 @@ class FlightService extends BaseService implements GenericServices
             ]);
         $distance = json_decode($response2->getBody(), true);
 
-        //route
-        $response3 = $client->request('GET',
-            $this->url . '/RoutesBetweenAirports?origin=' . $flight->origin_short_name . '&destination=' . $flight->destination_short_name,
-            [
-                'auth' => [
-                    $this->usr,
-                    $this->password,
-                ],
-            ]);
-        $route = json_decode($response3->getBody(), true);
-        $r = $route["RoutesBetweenAirportsResult"]["data"];
-        $route_validate = count($r) > 0 ? $r[0]["route"] : "";
+        // //route
+        // $response3 = $client->request('GET',
+        //     $this->url . '/RoutesBetweenAirports?origin=' . $flight->origin_short_name . '&destination=' . $flight->destination_short_name,
+        //     [
+        //         'auth' => [
+        //             $this->usr,
+        //             $this->password,
+        //         ],
+        //     ]);
+        // $route = json_decode($response3->getBody(), true);
+        // $r = $route["RoutesBetweenAirportsResult"]["data"];
+        // $route_validate = count($r) > 0 ? $r[0]["route"] : "";
 
         //arrival dates
 
@@ -329,33 +329,42 @@ class FlightService extends BaseService implements GenericServices
         $flightInfo = $response4->getBody();
         $arrival = json_decode($flightInfo, true);
         if (isset($arrival["FlightInfoResult"]["flights"])) {
+            $route = $arrival["FlightInfoResult"]["flights"][0]["route"];
             $estimateArrival = $arrival["FlightInfoResult"]["flights"][0]["estimatedarrivaltime"];
             $estimateActualTime = $arrival["FlightInfoResult"]["flights"][0]["actualarrivaltime"];
-            $estimateArrivalparse = date("Y-m-d H:i:s", $estimateArrival);
-            $estimateActualTimeparse = date("Y-m-d H:i:s", $estimateActualTime);
+            $estimateArrivalparse = $estimateArrival > 0 ? date("Y-m-d H:i:s", $estimateArrival) : null;
+            $estimateActualTimeparse = $estimateActualTime > 0 ? date("Y-m-d H:i:s", $estimateActualTime) : null;
         } else {
             $estimateArrivalparse = null;
             $estimateActualTimeparse = null;
             $estimateArrival = 0;
+            $route = "";
         }
         $departure = 0;
-        if($flight->departure_date !== null && $flight->departure_time !== null){
+        if ($flight->departure_date !== null && $flight->departure_time !== null) {
             $departure = strtotime($flight->departure_date . " " . $flight->departure_time . ":00");
             $now = strtotime("now");
         }
-          
 
-        if($departure > 0 && $estimateArrival > 0)
-        $status = ($now > $departure && $now < $estimateArrival ) ? "In time" : ($now > $estimateArrival ? "Landed" : "Scheduled");
-    
-        else $status = null;
+        if ($departure > 0 && $estimateArrival > 0) {
+            $status = ($now > $departure && $now < $estimateArrival) ? "In time" : ($now > $estimateArrival ? "Landed" : "Scheduled");
+        } else {
+            $status = null;
+        }
+
+        if ($estimateArrivalparse) {
+            $estimateArrivalArray = explode(" ", (string) $estimateArrivalparse);
+        } else {
+            $estimateArrivalArray = null;
+        }
 
         $currentFlight = ["altitude" => $fi["InFlightInfoResult"]["altitude"],
             "speed" => $fi["InFlightInfoResult"]["groundspeed"],
             "distance" => $distance['LatLongsToDistanceResult'],
-            "route" => $route_validate,
+            "route" => $route,
             "estimateActualTime" => $estimateActualTimeparse,
-            "estimateArrival" => $estimateArrivalparse,
+            "estimateArrivalDate" => $estimateArrivalArray[0],
+            "estimateArrivalTime" => $estimateArrivalArray[1],
             "FlightStatus" => $status];
 
         return $currentFlight;
