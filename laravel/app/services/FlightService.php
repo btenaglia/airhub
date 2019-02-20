@@ -330,13 +330,17 @@ class FlightService extends BaseService implements GenericServices
         $arrival = json_decode($flightInfo, true);
         if (isset($arrival["FlightInfoResult"]["flights"])) {
             $route = $arrival["FlightInfoResult"]["flights"][0]["route"];
+            $actualDeparture = $arrival["FlightInfoResult"]["flights"][0]["actualdeparturetime"];
             $estimateArrival = $arrival["FlightInfoResult"]["flights"][0]["estimatedarrivaltime"];
             $estimateActualTime = $arrival["FlightInfoResult"]["flights"][0]["actualarrivaltime"];
             $estimateArrivalparse = $estimateArrival > 0 ? date("Y-m-d H:i:s", $estimateArrival) : null;
             $estimateActualTimeparse = $estimateActualTime > 0 ? date("Y-m-d H:i:s", $estimateActualTime) : null;
+            $actualDepartureParse = $actualDeparture > 0 ? date("Y-m-d H:i:s", $actualDeparture) : null;
+
         } else {
             $estimateArrivalparse = null;
             $estimateActualTimeparse = null;
+            $actualDepartureParse = null;
             $estimateArrival = 0;
             $route = "";
         }
@@ -345,24 +349,28 @@ class FlightService extends BaseService implements GenericServices
             $departure = strtotime($flight->departure_date . " " . $flight->departure_time . ":00");
             $now = strtotime("now");
         }
-
+        $estimateActualtimeArrivalArray = null;
+        $estimateArrivalArray = null;
+        $actualDepartureArray = null;
+        $status = null;
         if ($departure > 0 && $estimateArrival > 0) {
             $status = ($now > $departure && $now < $estimateArrival) ? "In time" : ($now > $estimateArrival ? "Landed" : "Scheduled");
-        } else {
-            $status = null;
-        }
-
-        if ($estimateArrivalparse) {
+        }         
+        if($actualDepartureParse)
+            $actualDepartureArray = explode(" ", (string) $actualDepartureParse);
+        
+        if ($estimateArrivalparse) 
             $estimateArrivalArray = explode(" ", (string) $estimateArrivalparse);
-        } else {
-            $estimateArrivalArray = null;
-        }
-
+        
+        if($estimateActualTimeparse)
+            $estimateActualtimeArrivalArray = explode(" ",(string) $estimateActualTimeparse);
+        
         $currentFlight = ["altitude" => $fi["InFlightInfoResult"]["altitude"],
             "speed" => $fi["InFlightInfoResult"]["groundspeed"],
             "distance" => $distance['LatLongsToDistanceResult'],
             "route" => $route,
-            "estimateActualTime" => $estimateActualTimeparse,
+            "estimateActualDepartureTime" => $actualDepartureArray[1],
+            "estimateActualArrivalTime" => $estimateActualtimeArrivalArray[1],
             "estimateArrivalDate" => $estimateArrivalArray[0],
             "estimateArrivalTime" => $estimateArrivalArray[1],
             "FlightStatus" => $status];
