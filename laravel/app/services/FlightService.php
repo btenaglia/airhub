@@ -352,11 +352,11 @@ class FlightService extends BaseService implements GenericServices
         $estimateActualtimeArrivalArray = null;
         $estimateArrivalArray = null;
         $actualDepartureArray = null;
-        
+        $status = null;
         if ($departure > 0) {
             if($estimateArrival <= 0){
                 if($now < $departure)
-                $state = "Scheduled";
+                $status = "Scheduled";
             }
             else{
                 $status = ($now > $departure && $now < $estimateArrival) ? "In time" : ($now > $estimateArrival ? "Landed" : "Scheduled");
