@@ -9,6 +9,7 @@ use Illuminate\Auth\Reminders\RemindableInterface;
 
 class User extends BaseModel implements UserInterface, RemindableInterface {
     protected $table = 'users';
+ 
     use UserTrait,
         RemindableTrait;
 
@@ -18,7 +19,7 @@ class User extends BaseModel implements UserInterface, RemindableInterface {
     public function getId() {
         return $this->id;
     }
-
+  
     public function getCompleteName() {
         return $this->complete_name;
     }
@@ -96,7 +97,9 @@ class User extends BaseModel implements UserInterface, RemindableInterface {
                 ->select(DB::raw(self::rawForSelectByUser()))
                 ->get();
     }
+  
     
+  
     public function getFacebookik() {
         return $this->facebookid;
     }
@@ -144,7 +147,7 @@ class User extends BaseModel implements UserInterface, RemindableInterface {
     public function setCity($city) {
         $this->city = $city;
     }
-    
+   
     public function getState() {
         return $this->state;
     }
@@ -229,7 +232,13 @@ class User extends BaseModel implements UserInterface, RemindableInterface {
             return null;
         }
     }
-    
+    public function getMember()
+    {
+      return $this->belongsTo('members','member_id');
+    }
+    public function setMember($member_id) {
+        $this->getMember()->associate($member_id);
+    }
     public static function findAppUserByCredentials($credentials) {
         
         if (filter_var($credentials["email"], FILTER_VALIDATE_EMAIL))

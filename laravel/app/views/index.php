@@ -143,6 +143,7 @@
         <script src="app/controllers/Header.js"></script>
         <script src="app/controllers/Home.js"></script>
         <script src="app/controllers/Places.js"></script>
+        <script src="app/controllers/Members.js"></script>
         <script src="app/controllers/Profiles.js"></script>
         <script src="app/controllers/Planes.js"></script>
         <script src="app/controllers/Flights.js"></script>

@@ -225,7 +225,8 @@ class AccountService extends BaseService implements GenericServices {
             if(isset($input['state']))$user->setState($input['state']);
             if(isset($input['country']))$user->setCountry($input['country']);
             if(isset($input['zipcode']))$user->setZipcode($input['zipcode']);
-            
+            if(isset($input['member_id']))$user->setZipcode($input['member_id']);
+           
             if(isset($input['facebookid']))$user->setFacebookik($input['facebookid']);
             if(isset($input['facebooktoken']))$user->setFacebooktoken($input['facebooktoken']);
         }
@@ -259,6 +260,7 @@ class AccountService extends BaseService implements GenericServices {
      */
     public function createMobileUser($input) {
         $this->userType = User::USER_TYPE_APP;
+        $this->setMember($input['member_id']);
         return $this->create($input);
     }
 
@@ -381,7 +383,7 @@ class AccountService extends BaseService implements GenericServices {
             if(isset($input['cell_phone']))$user->setCellPhone($input['cell_phone']);
             if(isset($input['body_weight']))$user->setBodyWeight($input['body_weight']);
             if(isset($input['address']))$user->setAddress($input['address']);
-            
+            if(isset($input['member_id']))$user->setZipcode($input['member_id']);
             if(isset($input['city']))$user->setCity($input['city']);
             if(isset($input['state']))$user->setState($input['state']);
             if(isset($input['country']))$user->setCountry($input['country']);

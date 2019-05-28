@@ -10,7 +10,7 @@ class Flight extends BaseModel {
     const STATUS_SCHEDULED = 'scheduled';
     const STATUS_IN_TIME = 'in_time';
     const STATUS_LANDED = 'landed';
-    protected $fillable = ['distance'.'route'];
+    protected $fillable = ['distance','route'];
 
     public function getId() {
         return $this->id;

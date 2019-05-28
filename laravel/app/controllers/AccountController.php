@@ -36,7 +36,9 @@ class AccountController extends BaseController implements GenericControllers {
             $success = $accountService->createMobileUser(Input::all());
             
             if($success) {
-                return $this->jsonSuccessResponse();
+                // return $this->jsonSuccessResponse();
+                return $this->jsonResponse('', self::HTTP_CODE_OK, Input::all());
+                // return $this->jsonResponse('Cannot create user. Try Again', Input::all());
             } else {
                 return $this->jsonResponse('Cannot create user. Try Again', self::HTTP_CODE_SERVER_ERROR);
             }
