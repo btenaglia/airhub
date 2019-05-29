@@ -74,6 +74,15 @@
                     data-ng-class="{active: row == '-user_type'}"></span>
                 </div></th>
                 <th><div class="th">
+                    Member
+                    <span class="fa fa-angle-up"
+                        data-ng-click=" order('user_type') "
+                        data-ng-class="{active: row == 'user_type'}"></span>
+                    <span class="fa fa-angle-down"
+                        data-ng-click=" order('-user_type') "
+                        data-ng-class="{active: row == '-user_type'}"></span>
+                    </div></th>
+                <th><div class="th">
                 Create Mode
                 <span class="fa fa-angle-up"
                     data-ng-click=" order('create_mode') "
@@ -103,6 +112,7 @@
                 <td>{{data.address}}</td>
                 <td>{{data.cell_phone}}</td>
                 <td>{{data.user_type}}</td>
+                <td>{{data.get_member.description}}</td>
                 <td>{{data.create_mode}}</td>
                 <td>{{data.body_weight}}</td>
                 <td>                                

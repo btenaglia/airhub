@@ -145,7 +145,18 @@
                                             <div ng-message="required">This is required.</div>
                                         </div>
                                     </md-input-container>
-                                    
+                                    <md-input-container class="md-block">
+                                        <label >Member benefits</label>
+                                        <md-icon class="fa fa-users"></md-icon>
+                                        <md-select ng-model="object.member_id" >
+                                            <md-option ng-repeat="member in members" value="{{member.id}}" >
+                                                {{member.description}} - {{member.discount}}
+                                            </md-option>
+                                        </md-select>
+                                        <!-- <div ng-messages="formStandard.member.$error" multiple ng-if='formStandard.member.$dirty'>    
+                                            <div ng-message="required">This is required.</div>
+                                        </div> -->
+                                    </md-input-container>
                                     <md-button type="submit"
                                                class="md-raised btn-w-md md-primary"
                                                ng-disabled="!canSubmit()">Submit</md-button>

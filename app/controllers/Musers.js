@@ -40,20 +40,23 @@
 
         return response;
     }])
-    .controller('AddMuserController' , function ($scope, $rootScope, $controller, musersFactory) {
+    .controller('AddMuserController' , function ($scope, $rootScope, $controller, musersFactory,members) {
         
         $controller('AuthController', {$scope: $scope});
         $controller('FormStandardController', {$scope: $scope});
         
         $scope.titleName = "Add new mobile user";
-
+        console.log(members.data.data)
+        $scope.members  = members.data.data
         $scope.object = {
-            user_type: 'app_user'
+            user_type: 'app_user',
+            member_id:''
         };
         
         $scope.showPassword = true; //TODO FIXME
         
         $scope.submitForm = function(){
+            console.log("aver",$scope.object.member_id)
             $scope.doHttp(musersFactory.create, 'New user added successfully').error(function(data,status){
                 if (status === 409){
                     $scope.showUserExistsError();

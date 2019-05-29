@@ -28,18 +28,48 @@
                     }]	
 				}
 		    })
-            
-            .state('places-viewAll', {
-                url: '/places/viewAll',
-                templateUrl: 'views/places/viewAll.html',
-                controller: 'ViewAllPlacesController',
-                resolve: {
-  					places: ['placesFactory', function(factory){
-    					return factory.getAll();
-  					}]		
-				}
-		    })
-		    
+                
+                .state('places-viewAll', {
+                    url: '/places/viewAll',
+                    templateUrl: 'views/places/viewAll.html',
+                    controller: 'ViewAllPlacesController',
+                    resolve: {
+                    places: ['placesFactory', function(factory){
+                      return factory.getAll();
+                    }]		
+            }
+            })
+        .state('members-add', {
+                  url: '/members/add',
+                  templateUrl: 'views/members/add.html',
+                  controller: 'AddMemberController',
+                  resolver:{
+
+                  }
+          })
+              
+        .state('members-edit', {
+                  url: '/members/edit/{id}',
+                  templateUrl: 'views/members/add.html',
+                  controller: 'EditMemberController',
+                  resolve: {
+                  member: ['$stateParams', 'membersFactory', function($stateParams, factory) {
+                              return factory.get($stateParams.id);
+                          }]	
+          }
+          })
+              
+        .state('members-viewAll', {
+                  url: '/members/viewAll',
+                  templateUrl: 'views/members/viewAll.html',
+                  controller: 'ViewAllmembersController',
+                  resolve: {
+                  members: ['membersFactory', function(factory){
+                   
+                    return factory.getAll();
+                  }]		
+          }
+          })
 		    .state('profiles-add', {
                 url: '/profiles/add',
                 templateUrl: 'views/profiles/add.html',
@@ -195,7 +225,8 @@
             .state('users-add-admin', {
                 url: '/users/add-admin',
                 templateUrl: 'views/users/add-admin.html',
-                controller: 'AddUserController'
+                controller: 'AddUserController',
+               
 		    })
             
             .state('users-edit-admin', {
@@ -212,7 +243,11 @@
 		    .state('musers-add', {
                 url: '/musers/add',
                 templateUrl: 'views/musers/add.html',
-                controller: 'AddMuserController'
+                controller: 'AddMuserController',
+                resolve:{
+                  members: ['membersFactory', function(factory){
+                  return factory.getAll();
+                }]}	
 		    })
             
             .state('musers-edit', {
@@ -222,7 +257,12 @@
                 resolve: {
   					user: ['$stateParams', 'usersFactory', function($stateParams, factory) {
                         return factory.get($stateParams.id);
-                    }]	
+                      
+                        
+                    },
+                  
+                 ]
+                
 				}
 		    })
             

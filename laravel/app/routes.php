@@ -170,7 +170,29 @@ Route::group(['prefix' => 'api/v1/private'], function() {
             '/places/{id}',
             ['as' => 'places.find', 'uses' => 'PlaceController@find']
         );
-        
+        /**
+         * members
+         */
+        Route::post(
+            '/members/create',
+            ['as' => 'members.create', 'uses' => 'MemberController@create']
+        );
+        Route::put(
+            '/members/{id}/edit',
+            ['as' => 'members.edit', 'uses' => 'MemberController@edit']
+        );
+        Route::delete(
+            '/members/{id}/destroy',
+            ['as' => 'members.destroy', 'uses' => 'MemberController@destroy']
+        );
+        Route::get(
+            '/members',
+            ['as' => 'members.all', 'uses' => 'MemberController@all']
+        );
+        Route::get(
+            '/members/{id}',
+            ['as' => 'members.find', 'uses' => 'MemberController@find']
+        );
         /**
          * Profiles routes
          */
