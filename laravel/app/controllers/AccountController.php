@@ -33,7 +33,7 @@ class AccountController extends BaseController implements GenericControllers {
         $userExists2 = $accountService->userExists(Input::get('cell_phone'));
         
         if((!$userExists)&&(!$userExists2)) {
-            $success = $accountService->createMobileUser(Input::all());
+            $success = $accountService->createMobileUser2(Input::all());
             
             if($success) {
                 // return $this->jsonSuccessResponse();
@@ -183,10 +183,11 @@ class AccountController extends BaseController implements GenericControllers {
 
     public function all() {
         $accountService = $this->getService('Account');
-        $accounts = $accountService->all();
         
-        if($accounts !== null) {
-            return $this->jsonResponse('', self::HTTP_CODE_OK, $accounts);
+        $users = User::with('getMember')->get();
+        
+        if($users !== null) {
+            return $this->jsonResponse('', self::HTTP_CODE_OK, $users);
         } else {
             return $this->jsonResponse('No users found.', self::HTTP_CODE_OK, []);
         }

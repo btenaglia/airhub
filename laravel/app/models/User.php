@@ -15,11 +15,18 @@ class User extends BaseModel implements UserInterface, RemindableInterface {
 
     const USER_TYPE_ADMIN = 'admin';
     const USER_TYPE_APP = 'app_user';
-    
+  
     public function getId() {
         return $this->id;
     }
-  
+
+    public function getMember() {
+        return $this->belongsTo('App\Models\Member', 'member_id');
+    }
+    
+    public function setMember($member) {
+        $this->member_id = $member;
+    }
     public function getCompleteName() {
         return $this->complete_name;
     }
@@ -232,13 +239,7 @@ class User extends BaseModel implements UserInterface, RemindableInterface {
             return null;
         }
     }
-    public function getMember()
-    {
-      return $this->belongsTo('members','member_id');
-    }
-    public function setMember($member_id) {
-        $this->getMember()->associate($member_id);
-    }
+   
     public static function findAppUserByCredentials($credentials) {
         
         if (filter_var($credentials["email"], FILTER_VALIDATE_EMAIL))
