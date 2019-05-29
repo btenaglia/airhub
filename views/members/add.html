@@ -1,0 +1,48 @@
+<div class="page">
+    <div class="row ui-section">
+        <div class="col-lg-8 clearfix">
+            <h2 class="section-header">{{titleName}}</h2>
+        </div>
+        <div class="col-md-12">
+            <div class="panel panel-default">
+                <div class="panel-body padding-xl form-validation" ng-cloak>
+                    <div class="row">
+                        <div class="col-lg-6 col-lg-offset-3">
+                            <form name="formStandard" class="form-horizontal form-validation" data-ng-submit="submitForm()">
+                                <fieldset>
+                                    <md-input-container class="md-block">
+                                        <label>Description</label>
+                                        <md-icon class="fa fa-hashtag"></md-icon>
+                                        <input required 
+                                               type="text"
+                                               name="description" 
+                                               ng-model="object.description" />
+                                        <div ng-messages="formStandard.description.$error" multiple ng-if='formStandard.description.$dirty'>
+                                            <div ng-message="required">This is required.</div>
+                                        </div>
+                                    </md-input-container>
+
+                                    <div class="divider divider-md"></div>
+                                    <md-input-container class="md-block">
+                                        <label>Discount %</label>
+                                        <md-icon class="fa fa-font"></md-icon>
+                                        <input required type="text" required name="discount" ng-model="object.discount" ng-pattern="/^[0-9]{1,4}(\.[0-9][0-9])?$/i" >
+                                        <div multiple ng-messages="formStandard.discount.$error" ng-if='formStandard.discount.$error'>
+                                            <div ng-message="required">Complete this field with two decimal, example: 0.42</div>
+                                        </div>
+                                       
+                                    </md-input-container>                    
+                                    <md-button type="submit"
+                                               class="md-raised btn-w-md md-primary"
+                                               >Submit</md-button>
+
+                                    <div class="divider"></div>
+                                </fieldset>
+                            </form>
+                        </div>
+                    </div>
+                </div>                
+            </div>
+        </div>
+    </div>
+</div>
