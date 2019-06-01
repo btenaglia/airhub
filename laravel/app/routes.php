@@ -308,7 +308,10 @@ Route::group(['prefix' => 'api/v1/private'], function() {
             '/flights/{id}',
             ['as' => 'flights.find', 'uses' => 'FlightController@find']
         );
-        
+        Route::get(
+            '/flights/{origin}/{destination}',
+            ['as' => 'flights.flightsByPlaces', 'uses' => 'FlightController@flightsByPlaces']
+        );
         Route::post(
             '/flights/{id}/approve',
             ['as' => 'flights.approve', 'uses' => 'FlightController@approve']
