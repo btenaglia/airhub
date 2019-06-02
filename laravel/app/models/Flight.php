@@ -150,7 +150,24 @@ class Flight extends BaseModel {
                 ->select(DB::raw(self::rawForSelect()))
                 ->get();
     }
-    
+    public static function FlightsByPlaces($origin,$destination) {
+        return DB::table('flights')
+                ->join('places as origin', 'origin.id', '=', 'flights.origin')
+                ->join('places as destination', 'destination.id', '=', 'flights.destination')
+                ->leftJoin('planes', 'planes.id', '=', 'flights.plane_id')
+                ->leftJoin('books', 'books.flight_id', '=', 'flights.id')
+                ->join('users', 'users.id', '=', 'flights.created_by')  
+                ->where('flights.active','=', 1)
+                ->where('flights.departure_date','>=', date('Y-m-d'))
+                ->where('flights.origin','=', (int)$origin)
+                ->where('flights.destination','=',(int)$destination)
+                ->groupBy('flights.id')
+                ->orderBy('departure_date', 'asc')
+                ->orderBy('departure_min_time', 'asc')    
+                ->orderBy('departure_time', 'asc')
+                ->select(DB::raw(self::rawForSelect()))
+                ->get();
+    }
     public static function passedFlights() {
         return DB::table('flights')
                 ->join('places as origin', 'origin.id', '=', 'flights.origin')

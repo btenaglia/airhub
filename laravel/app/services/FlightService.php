@@ -29,7 +29,12 @@ class FlightService extends BaseService implements GenericServices
     {
         return Flight::futureFlights();
     }
-
+    public function FlightsByPlaces($origin,$destination)
+    {
+        $places = array("origin" => $origin,"destination" => $destination);
+        
+        return  Flight::FlightsByPlaces($origin,$destination);
+    }
     public function passedFlights()
     {
         return Flight::passedFlights();
