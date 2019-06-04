@@ -13,10 +13,10 @@ class MemberController extends BaseController implements GenericControllers {
 
     public function all() {
         $members = new Member();
-        $places = $members->all();
+        $members = $members->all();
         
-        if($places !== null) {
-            return $this->jsonResponse('', self::HTTP_CODE_OK, $places);
+        if($members !== null) {
+            return $this->jsonResponse('', self::HTTP_CODE_OK, $members);
         } else {
             return $this->jsonResponse('No places found.', self::HTTP_CODE_OK, []);
         }
@@ -69,5 +69,40 @@ class MemberController extends BaseController implements GenericControllers {
         } else {
             return $this->jsonResponse('Not place found.', self::HTTP_CODE_SERVER_ERROR, []);
         }
+    }
+    public function notification() {
+        $notificationData = Input::all();
+        $users = Member::find($notificationData['member_id'])->getUsers;
+        // $accountService = $this->getService('Account');
+        $pushService = $this->getService('Push');
+       
+        
+        if($user !== null) {
+        	  $iddevice = $user->fcm_token_device;
+            if(!empty($iddevice)){
+             
+             try {
+              $result = $pushService->sendtoDeviceFCM('Notify','This is a test message for push service (FCM)!',$iddevice);
+             } catch (\Exception $ex) {
+              return $this->jsonResponse('FCM API error.', self::HTTP_CODE_SERVER_ERROR, $ex);
+             } 
+             
+             return $this->jsonResponse('Success', self::HTTP_CODE_OK, $result);
+            }else{
+             return $this->jsonResponse('No id FCM defined.', self::HTTP_CODE_SERVER_ERROR, []);
+            }	 
+        } else {
+            return $this->jsonResponse('Not user found.', self::HTTP_CODE_SERVER_ERROR, []);
+        }
+        return $this->jsonResponse('', self::HTTP_CODE_OK, $users);
+        // $member = new Member();
+        
+        // $member = $member::find($id);
+        
+        // if($member !== null) {
+        //     return $this->jsonResponse('', self::HTTP_CODE_OK, $member);
+        // } else {
+        //     return $this->jsonResponse('Not place found.', self::HTTP_CODE_SERVER_ERROR, []);
+        // }
     }
 }
