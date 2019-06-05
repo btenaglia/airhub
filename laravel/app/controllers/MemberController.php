@@ -4,14 +4,17 @@
  * Member controller methods.
  *
  */
+
 use App\Models\Member;
 use App\Models\Mconfigusers;
+use App\Models\Message;
  
 class MemberController extends BaseController implements GenericControllers {
     
     
 
     public function all() {
+        
         $members = new Member();
         $members = $members->all();
         
@@ -60,6 +63,7 @@ class MemberController extends BaseController implements GenericControllers {
     }
 
     public function find($id) {
+       
         $member = new Member();
         
         $member = $member::find($id);
@@ -73,36 +77,24 @@ class MemberController extends BaseController implements GenericControllers {
     public function notification() {
         $notificationData = Input::all();
         $users = Member::find($notificationData['member_id'])->getUsers;
-        // $accountService = $this->getService('Account');
-        $pushService = $this->getService('Push');
        
-        
-        if($user !== null) {
-        	  $iddevice = $user->fcm_token_device;
-            if(!empty($iddevice)){
-             
-             try {
-              $result = $pushService->sendtoDeviceFCM('Notify','This is a test message for push service (FCM)!',$iddevice);
-             } catch (\Exception $ex) {
-              return $this->jsonResponse('FCM API error.', self::HTTP_CODE_SERVER_ERROR, $ex);
-             } 
-             
-             return $this->jsonResponse('Success', self::HTTP_CODE_OK, $result);
-            }else{
-             return $this->jsonResponse('No id FCM defined.', self::HTTP_CODE_SERVER_ERROR, []);
-            }	 
-        } else {
-            return $this->jsonResponse('Not user found.', self::HTTP_CODE_SERVER_ERROR, []);
+        $pushService = $this->getService('Push');
+        $asd = new Message();
+       foreach($users as $user){
+        try{
+            if($user->id_onesignal !== null && $user->id_onesignal !== '')
+            $pushService->sendtoDevice($notificationData['message'],$user->id_onesignal);
+
         }
-        return $this->jsonResponse('', self::HTTP_CODE_OK, $users);
-        // $member = new Member();
-        
-        // $member = $member::find($id);
-        
-        // if($member !== null) {
-        //     return $this->jsonResponse('', self::HTTP_CODE_OK, $member);
-        // } else {
-        //     return $this->jsonResponse('Not place found.', self::HTTP_CODE_SERVER_ERROR, []);
-        // }
+        catch(Exception $e){
+            echo $e;
+        }
+       }
+       $msg = new Message();
+       $msg->message = $notificationData['message'];
+       $msg->member_id = $notificationData['member_id'];
+       $msg->save();
+       return $this->jsonResponse('', self::HTTP_CODE_OK, $msg);
+     
     }
 }
