@@ -35,7 +35,9 @@
         response.delete = function(id) {
             return $http.delete(baseURL + '/members/' + id + '/destroy');
         };
-
+        response.notification = function(object) {
+            return  $http.post(baseURL + '/members/notification', object);
+        };
         return response;
     }])
     .controller('AddMemberController', function ($scope, $rootScope, $controller, membersFactory) {
@@ -90,7 +92,23 @@
         $scope.initDynamicTable();
         
         $scope.preShowConfirmDelete = function(ev, name, id) {
-            $scope.showConfirmDelete(ev, 'Would you like to delete this member?', 'You will delete: ' + name, id, membersFactory, 'Place deleted successfully');
+            $scope.showConfirmDelete(ev, 'Would you like to delete this member?', 'You will delete: ' + name, id, membersFactory, 'Member deleted successfully');
         };
+    })
+      .controller('NotificationMembersController' ,function ($scope, $controller, membersFactory, members) {
+        
+        $controller('AuthController', {$scope: $scope});
+        $controller('FormStandardController', {$scope: $scope});
+       
+        $scope.members = members.data.data;
+        $scope.object = {
+            member_id: '',
+            message: ''
+        };
+        $scope.submitForm = function(){
+          
+
+            $scope.doHttp(membersFactory.notification, 'New Message has been sent to users');
+        }
     });
 })();  
