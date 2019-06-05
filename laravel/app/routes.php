@@ -193,6 +193,10 @@ Route::group(['prefix' => 'api/v1/private'], function() {
             '/members/{id}',
             ['as' => 'members.find', 'uses' => 'MemberController@find']
         );
+        Route::post(
+            '/members/notification',
+            ['as' => 'members.notification', 'uses' => 'MemberController@notification']
+        );
         /**
          * Profiles routes
          */
