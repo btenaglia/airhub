@@ -332,7 +332,7 @@ class AccountService extends BaseService implements GenericServices
     {
 
         $user = new User();
-        $this->userType = User::USER_TYPE_APP;
+        $user->user_type= User::USER_TYPE_APP;
         $user->name = $input['name'];
         $user->member_id = $input['member_id'];
         $user->last_name = $input['last_name'];
