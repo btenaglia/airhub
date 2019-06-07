@@ -70,6 +70,17 @@
                   }]		
           }
           })
+        .state('members-notification',{
+          url:'/members/send-notification',
+          templateUrl: 'views/members/send-notification.html',
+          controller: 'NotificationMembersController',
+          resolve: {
+          members: ['membersFactory', function(factory){
+           
+            return factory.getAll();
+          }]
+        }		
+        })
 		    .state('profiles-add', {
                 url: '/profiles/add',
                 templateUrl: 'views/profiles/add.html',

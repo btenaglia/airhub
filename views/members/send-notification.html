@@ -1,0 +1,52 @@
+<div class="page">
+    <div class="row ui-section">
+        <div class="col-lg-8 clearfix">
+            <h2 class="section-header">{{titleName}}</h2>
+        </div>
+        <div class="col-md-12">
+            <div class="panel panel-default">
+                <div class="panel-body padding-xl form-validation" ng-cloak>
+                    <div class="row">
+                        <div class="col-lg-6 col-lg-offset-3">
+                            <form name="formStandard" class="form-horizontal form-validation"
+                                data-ng-submit="submitForm()">
+                                <fieldset>
+
+                                    <md-input-container style="width: 100%;">
+                                            <md-icon class="fa fa-users"></md-icon>
+                                        <label>Select Member</label>
+                                        <md-select ng-model="object.member_id">
+                                            <md-option ng-repeat="member in members" value="{{member.id}}">
+                                                {{member.description}} - {{member.discout}}
+                                            </md-option>
+                                        </md-select>
+                                        <div ng-messages="formStandard.member_id.$error" multiple
+                                            ng-if='formStandard.member_id.$dirty'>
+                                            <div ng-message="required">This is required.</div>
+                                        </div>
+                                    </md-input-container>
+
+                                    <div class="divider divider-md"></div>
+                                    <md-input-container class="md-block">
+                                        <label>Message</label>
+                                        <md-icon class="fa fa-font"></md-icon>
+                                        <textarea required type="text" required name="message" ng-model="object.message"
+                                            rows="5"></textarea>
+                                        <div ng-messages="formStandard.message.$error"
+                                            ng-if='formStandard.message.$error'>
+                                            <div ng-message="required">This is required.</div>
+                                        </div>
+
+                                    </md-input-container>
+                                    <md-button type="submit" class="md-raised btn-w-md md-primary">Submit</md-button>
+
+                                    <div class="divider"></div>
+                                </fieldset>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
