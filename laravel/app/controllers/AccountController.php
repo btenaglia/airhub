@@ -192,7 +192,16 @@ class AccountController extends BaseController implements GenericControllers {
             return $this->jsonResponse('No users found.', self::HTTP_CODE_OK, []);
         }
     }
-
+    public function all_mobile() {
+              
+        $users = User::with('getMember')->where('user_type','app_user')->get();
+        
+        if($users !== null) {
+            return $this->jsonResponse('', self::HTTP_CODE_OK, $users);
+        } else {
+            return $this->jsonResponse('No users found.', self::HTTP_CODE_OK, []);
+        }
+    }
     public function destroy($id) {
         $accountService = $this->getService('Account');
         $success = $accountService->destroy($id);

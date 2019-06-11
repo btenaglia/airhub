@@ -98,6 +98,11 @@ Route::group(['prefix' => 'api/v1/private'], function() {
             '/musers/{id}/edit',
             ['as' => 'musers.edit', 'uses' => 'AccountController@editm']
         );
+        Route::get(
+            '/musers',
+            ['as' => 'users.all_mobile', 'uses' => 'AccountController@all_mobile']
+        );
+        
         
         /*REST API*/
         Route::put(
@@ -118,6 +123,7 @@ Route::group(['prefix' => 'api/v1/private'], function() {
             '/users',
             ['as' => 'users.all', 'uses' => 'AccountController@all']
         );
+        
         Route::get(
             '/users/{id}',
             ['as' => 'users.find', 'uses' => 'AccountController@find']

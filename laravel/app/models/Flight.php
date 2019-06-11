@@ -267,6 +267,7 @@ class Flight extends BaseModel {
         flights.created_at,
         flights.updated_at,
         flights.plane_id,
+        flights.price,
         planes.name AS plane_name,
         planes.identifier AS plane_ident,
         planes.type AS plane_type,
