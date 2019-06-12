@@ -1,0 +1,50 @@
+<div class="col-md-12" style="padding-top: 10px;">
+    Passenger
+    <form name="formModal">
+
+
+        <md-input-container layout layout-sm="column" >
+            <label>Complete name</label>
+            <md-icon class="fa fa-font"></md-icon>
+            <input required type="text" name="name" ng-model="extra_model.complete_name" />
+          
+        </md-input-container>
+        <md-input-container layout layout-sm="column">
+            <label>Address</label>
+            <md-icon class="fa fa-font"></md-icon>
+            <input required type="text" name="address" ng-model="extra_model.address" />
+         
+        </md-input-container>
+        <md-input-container layout layout-sm="column">
+            <label>Email</label>
+            <md-icon class="fa fa-at"></md-icon>
+            <input required type="email" name="email" ng-model="extra_model.email" />
+         
+        </md-input-container>
+        <md-input-container layout layout-sm="column">
+            <label>Body Weight (kgs.)</label>
+            <md-icon class="fa fa-hashtag"></md-icon>
+            <input required type="number" name="body" ng-model="extra_model.body_weight" />
+         
+        </md-input-container>
+        <md-input-container layout layout-sm="column">
+            <label>Luggage Weight (kgs.)</label>
+            <md-icon class="fa fa-hashtag"></md-icon>
+            <input required type="number" name="luggage" ng-model="extra_model.luggage_weight" />
+
+        </md-input-container>
+
+        <div layout layout-sm="column">
+
+            <md-button type="submit" class="md-raised btn-w-md md-primary" ng-click="canSubmitModal()">Submit</md-button>
+            &nbsp;
+            <md-button type="submit" class="md-raised btn-w-md md-primary" ng-click="cancel()">Cancel</md-button>
+        </div>
+    </form>
+
+
+
+
+    <div class="divider"></div>
+</div>
+</div>

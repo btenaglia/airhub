@@ -41,7 +41,14 @@
                 angular.copy(data, response.data);
             });
         };
-        
+        response.getAllByPlaces = function(origin,destination) {
+            return $http
+              .get(`${baseURL}/flights/${origin}/${destination}`)
+              .success(function(data) {
+                
+                angular.copy(data, response.data);
+              });
+          };
         response.getAllpassed = function() {
             return $http.get(baseURL + '/flights/passed').success(function(data){
                 angular.copy(data, response.data);

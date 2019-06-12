@@ -1,0 +1,139 @@
+<div class="page">
+    <div class="row ui-section">
+        <div class="col-lg-8 clearfix">
+            <h2 class="section-header">{{titleName}}</h2>
+        </div>
+        <div class="col-md-12">
+            <div class="panel panel-default">
+                <div class="panel-body padding-xl form-validation" ng-cloak>
+                    <div class="row">
+                        <div class="col-lg-6 col-lg-offset-3">
+                            <div layout="column" ng-cloak class="md-inline-form inputdemoBasicUsage">
+                                <md-content layout-padding>
+                                    <form name="formStandard" class="form-horizontal form-validation"
+                                        data-ng-submit="submitForm()">
+                                        <fieldset>
+                                            <div>
+                                                <md-input-container class="md-block">
+                                                    <label>User</label>
+                                                    <md-select ng-model="object.user_id">
+                                                        <md-option ng-repeat="user in musers" value="{{user.id}}"
+                                                            ng-click="setUserProperties(user)">
+                                                            {{user.complete_name}}
+                                                        </md-option>
+                                                    </md-select>
+                                                </md-input-container>
+                                            </div>
+                                            <div layout layout-sm="column">
+
+                                                <md-input-container flex>
+                                                    <label>Origin</label>
+                                                    <md-select ng-model="object.origin_id" ng-change="getFlights()">
+                                                        <md-option ng-repeat="place in places" value="{{place.id}}">
+                                                            {{place.short_name}} - {{place.name}}
+                                                        </md-option>
+                                                    </md-select>
+                                                    <div ng-messages="formStandard.origin.$error" multiple
+                                                        ng-if='formStandard.origin.$dirty'>
+                                                        <div ng-message="required">This is required.</div>
+                                                    </div>
+                                                </md-input-container>
+
+                                                <md-input-container flex>
+                                                    <label>Destination</label>
+                                                    <md-select ng-model="object.destination_id"
+                                                        ng-change="getFlights()">
+                                                        <md-option ng-repeat="place in places" value="{{place.id}}">
+                                                            {{place.short_name}} - {{place.name}}
+                                                        </md-option>
+                                                    </md-select>
+                                                </md-input-container>
+
+                                            </div>
+                                            <!-- <div class="divider divider-dashed divider-lg pull-in"></div> -->
+
+                                            <div>
+                                                <md-input-container class="md-block">
+                                                    <label>Flights</label>
+                                                    <md-select ng-model="object.flight_id">
+                                                        <md-option ng-repeat="flight in flights" value="{{flight.id}}"
+                                                            ng-click="setCapacity(flight)">
+                                                            # {{flight.id}} | Departure :
+                                                            {{flight.departure_date}} {{flight.departure_time}} | Status
+                                                            : {{flight.status}} | $ {{flight.price}}
+                                                        </md-option>
+                                                    </md-select>
+                                                </md-input-container>
+                                            </div>
+                                            <div layout layout-sm="column">
+                                                <md-input-container flex>
+                                                    <label>Body Weight (kgs.)</label>
+                                                    <md-icon class="fa fa-hashtag"></md-icon>
+                                                    <input required type="number" name="name"
+                                                        ng-model="object.body_weight" />
+                                                    <div ng-messages="formStandard.name.$error" multiple
+                                                        ng-if='formStandard.name.$dirty'>
+                                                        <div ng-message="required">This is required.</div>
+                                                    </div>
+                                                </md-input-container>
+                                                <md-input-container flex>
+                                                    <label>Luggage Weight (kgs.)</label>
+                                                    <md-icon class="fa fa-hashtag"></md-icon>
+                                                    <input required type="number" name="name"
+                                                        ng-model="object.luggage_weight" />
+
+                                                </md-input-container>
+                                                <md-input-container class="md-block">
+                                                    <label>Capactity (seats)</label>
+                                                    <md-select ng-model="object.seats">
+                                                        <md-option ng-repeat="seat in seats" value="{{seat}}"
+                                                            ng-click="setExtras(seat)">
+                                                            {{seat}}
+                                                        </md-option>
+                                                    </md-select>
+                                                </md-input-container>
+
+                                            </div>
+
+
+                                            <div class="row" ng-show="extras.length > 0">
+                                                <div class="col-md-12">
+                                                    <label>Extra passengers</label>
+                                                    <hr />
+                                                    <div ng-repeat="extra in extras track by $index">
+                                                        <span class="col-md-6"><i class="fa fa-user"></i>&nbsp;&nbsp;<label>Extra
+                                                                passenger {{$index + 1 }}</label></span>
+                                                        <span class="col-md-6">
+                                                            <md-icon class="fa fa-check" style="font-size: 19px;color: #8bc34a;" ng-show="object.extras[$index]"></md-icon>
+                                                            <md-button aria-label="edit" class="md-fab md-fab-xs" style="margin-bottom: 10px;"
+                                                                ng-click="showExtraPassenger($index,extra)">
+                                                                <span class="fa fa-pencil"></span>
+                                                            </md-button>
+                                                        </span>
+                                                       <br>     
+                                                    </div>
+                                                    
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                        <div class="divider divider-md"></div>
+                                                        <md-button type="submit" class="md-raised btn-w-md md-primary"
+                                                            ng-disabled="!canSubmit()">Submit</md-button>
+        
+                                                        <div class="divider"></div>
+                                                </div>
+                                        
+                                            </div>
+
+                                        </fieldset>
+                                    </form>
+                                </md-content>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
