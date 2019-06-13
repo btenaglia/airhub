@@ -204,6 +204,13 @@ Route::group(['prefix' => 'api/v1/private'], function() {
             ['as' => 'members.notification', 'uses' => 'MemberController@notification']
         );
         /**
+         * Reservations
+         */
+        Route::post(
+            '/reservation/create',
+            ['as' => 'members.create', 'uses' => 'ReservationController@create']
+        );
+        /**
          * Profiles routes
          */
         Route::post(
