@@ -1,7 +1,7 @@
 <div class="col-md-12" style="padding-top: 10px;">
     Passenger
-    <form name="formModal">
-
+    
+    <form action="" ng-submit="canSubmitModal($event)">
 
         <md-input-container layout layout-sm="column" >
             <label>Complete name</label>
@@ -36,12 +36,11 @@
 
         <div layout layout-sm="column">
 
-            <md-button type="submit" class="md-raised btn-w-md md-primary" ng-click="canSubmitModal()">Submit</md-button>
+            <md-button type="Submit"  class="md-raised btn-w-md md-primary">Submit</md-button>
             &nbsp;
-            <md-button type="submit" class="md-raised btn-w-md md-primary" ng-click="cancel()">Cancel</md-button>
+            <md-button type="button" class="md-raised btn-w-md md-primary" ng-click="cancel()">Cancel</md-button>
         </div>
     </form>
-
 
 
 

@@ -100,30 +100,35 @@
                                                 <div class="col-md-12">
                                                     <label>Extra passengers</label>
                                                     <hr />
-                                                    <div ng-repeat="extra in extras track by $index">
-                                                        <span class="col-md-6"><i class="fa fa-user"></i>&nbsp;&nbsp;<label>Extra
-                                                                passenger {{$index + 1 }}</label></span>
-                                                        <span class="col-md-6">
-                                                            <md-icon class="fa fa-check" style="font-size: 19px;color: #8bc34a;" ng-show="object.extras[$index]"></md-icon>
-                                                            <md-button aria-label="edit" class="md-fab md-fab-xs" style="margin-bottom: 10px;"
+                                                    <div class="extra-passenger" ng-repeat="extra in extras track by $index">
+                                                        <span ><i
+                                                                class="fa fa-user"></i><label>&nbsp;&nbsp;Extra
+                                                                passenger {{$index + 1 }} :
+                                                                {{object.extras[$index] ? object.extras[$index].complete_name : ''}}</label></span>
+                                                        <span>
+                                                            <md-icon class="fa fa-check"
+                                                                style="font-size: 19px;color: #8bc34a;"
+                                                                ng-show="object.extras[$index]"></md-icon>
+                                                            <md-button aria-label="edit" class="md-fab md-fab-xs"
+                                                                style="margin-bottom: 10px;"
                                                                 ng-click="showExtraPassenger($index,extra)">
                                                                 <span class="fa fa-pencil"></span>
                                                             </md-button>
                                                         </span>
-                                                       <br>     
+                                                        
                                                     </div>
-                                                    
+
                                                 </div>
                                             </div>
                                             <div class="row">
                                                 <div class="col-md-12">
-                                                        <div class="divider divider-md"></div>
-                                                        <md-button type="submit" class="md-raised btn-w-md md-primary"
-                                                            ng-disabled="!canSubmit()">Submit</md-button>
-        
-                                                        <div class="divider"></div>
+                                                    <div class="divider divider-md"></div>
+                                                    <md-button type="submit" class="md-raised btn-w-md md-primary"
+                                                        ng-disabled="!canSubmit()">Submit</md-button>
+
+                                                    <div class="divider"></div>
                                                 </div>
-                                        
+
                                             </div>
 
                                         </fieldset>

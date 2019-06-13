@@ -82,7 +82,6 @@
     ) {
       $controller("AuthController", { $scope: $scope });
       $controller("FormStandardController", { $scope: $scope });
-
       console.log("usuarios", musers.data.data);
       $scope.titleName = "Create a new reservation";
       $scope.extras = 0;
@@ -133,7 +132,7 @@
         console.log($scope.object);
       };
       $scope.setExtras = function(extra) {
-        debugger;
+        
         if (extra > 1) {
           $scope.extras = [];
           for (var i = 0; i < extra - 1; i++) {
@@ -158,16 +157,21 @@
             //     $scope.planeIdSelected = -1;
 
             // }
+           
             if ($scope.object.extras.length > 0) {
-              $scope.extra_model = $scope.object.extras[index];
+              $scope.extra_model = Object.assign($scope.extra_model,$scope.object.extras[index]);
             }
-            $scope.canSubmitModal = function() {
+            $scope.canSubmitModal = function(e) {
+              e.preventDefault();
               if ($scope.object.extras[index]) {
                 $scope.object.extras[index] = $scope.extra_model;
+            
+                 
               } else {
                 console.log("entra al modal", $scope.object);
                 $scope.object.extras.push($scope.extra_model);
               }
+           
               $scope.extra_model = {
                 complete_name: "",
                 body_weight: "",
@@ -175,10 +179,18 @@
                 email: "",
                 address: ""
               };
-              $scope.cancel()
+              $mdDialog.hide();
             };
 
             $scope.cancel = function() {
+              
+              $scope.extra_model = {
+                complete_name: "",
+                body_weight: "",
+                luggage_weight: "",
+                email: "",
+                address: ""
+              };
               $mdDialog.hide();
             };
           }
