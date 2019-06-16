@@ -5,6 +5,7 @@
  *
  */
 use App\Models\Book;
+use App\Models\AppPayment;
 use Illuminate\Http\Request;
 class ReservationController extends BaseController implements GenericControllers
 {
@@ -24,14 +25,30 @@ class ReservationController extends BaseController implements GenericControllers
 
     public function all()
     {
+        $paymentService = $this->getService('Payment');
+        $payments = $paymentService->all();
+        
+        if($payments !== null) {
+            return $this->jsonResponse('', self::HTTP_CODE_OK, $payments);
+        } else {
+            return $this->jsonResponse('No payments found.', self::HTTP_CODE_OK, []);
+        }
     }
 
     public function destroy($id)
     {
+        DB::table('books')->where('payment_id', '=', $id)->delete();
+        DB::table('payments')->where('id', '=', $id)->delete();
+        return $this->jsonSuccessResponse();
     }
 
     public function edit($id)
     {
+        $reservation = Input::all();
+        $payment = AppPayment::find($id);
+        $payment->external_state =  $reservation['external_state'];
+        $payment->update();
+        return $this->jsonResponse('', self::HTTP_CODE_OK, $payment);
     }
 
     public function find($id)

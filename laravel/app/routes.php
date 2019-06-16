@@ -214,7 +214,18 @@ Route::group(['prefix' => 'api/v1/private'], function() {
             '/reservation/create',
             ['as' => 'reservation.create', 'uses' => 'ReservationController@create']
         );
-    
+        Route::put(
+            '/reservation/{id}/edit',
+            ['as' => 'reservation.edit', 'uses' => 'ReservationController@edit']
+        );
+        Route::delete(
+            '/reservation/{id}/destroy',
+            ['as' => 'reservation.destroy', 'uses' => 'ReservationController@destroy']
+        );
+        Route::get(
+            '/reservation',
+            ['as' => 'reservation.all', 'uses' => 'ReservationController@all']
+        );
         /**
          * Profiles routes
          */

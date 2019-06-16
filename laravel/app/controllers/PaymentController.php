@@ -18,6 +18,8 @@ class PaymentController extends BaseController {
         }
     }
     
+    
+    
     public function capturePayment($id) {
         $paymentService = $this->getService('Payment');
         $success = $paymentService->capturePayment($id);
