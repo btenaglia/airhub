@@ -1,0 +1,17 @@
+<form style="padding:10px;" ng-submit="canSubmitModal($event)">
+
+    Change state payment 
+    <br><br>
+    <md-input-container flex>
+        <label>State payment</label>
+        <md-icon class="fa fa-hashtag"></md-icon>
+        <input required type="string" name="state" ng-model="changePayment.external_state" />
+
+    </md-input-container>
+    <div class="col-md-12">
+        <div class="divider divider-md"></div>
+        <md-button type="Submit"  class="md-raised btn-w-md md-primary">Change</md-button>
+        <md-button type="button" class="md-raised btn-w-md md-primary" ng-click="cancel()">Cancel</md-button>
+        <div class="divider"></div>
+    </div>
+</form>

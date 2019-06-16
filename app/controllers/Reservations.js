@@ -47,20 +47,15 @@
           return $http.put(baseURL + "/reservation/" + id + "/edit", object);
         };
 
-        response.setPlane = function(object, id) {
-          return $http.put(
-            baseURL + "/reservation/" + id + "/set-plane",
-            object
-          );
-        };
+       
 
-        response.approve = function(id) {
-          return $http.post(baseURL + "/reservation/" + id + "/approve");
-        };
+        // response.approve = function(id) {
+        //   return $http.post(baseURL + "/reservation/" + id + "/approve");
+        // };
 
-        response.cancel = function(id) {
-          return $http.post(baseURL + "/reservation/" + id + "/cancel");
-        };
+        // response.cancel = function(id) {
+        //   return $http.post(baseURL + "/reservation/" + id + "/cancel");
+        // };
 
         response.delete = function(id) {
           return $http.delete(baseURL + "/reservation/" + id + "/destroy");
@@ -82,7 +77,7 @@
     ) {
       $controller("AuthController", { $scope: $scope });
       $controller("FormStandardController", { $scope: $scope });
-      console.log("usuarios", musers.data.data);
+     
       $scope.titleName = "Create a new manual reservation";
       $scope.extras = 0;
       $scope.musers = musers.data.data;
@@ -207,7 +202,7 @@
       $scope.extras = []
       $scope.seats = [];
       clear()
-      $location.path("/members/viewAll");
+      $location.path("/reservations/viewAll");
       };
       function clear() {
         $scope.extra_model = {
@@ -241,14 +236,57 @@
         return approve;
       }
     })
-    .controller("ViewAllreservationController", function(
-      $scope,
-      $rootScope,
-      $controller,
-      $mdDialog,
-      $location,
-      reservationFactory,
-      reservation,
-      planes
-    ) {});
+    .controller('AllReservationController' ,function ($scope, $controller, paymentsFactory, payments,$mdDialog,reservationFactory) {
+
+      $controller('AuthController', {$scope: $scope});
+      $controller('DynamicTableController', {$scope: $scope});
+      console.log("paymets",payments.data.data)
+      $scope.storedData = payments.data.data;
+      $scope.initDynamicTable();
+      
+      $scope.showEdit = function(payment) {
+        $mdDialog.show({
+          clickOutsideToClose: false,
+          scope: $scope,
+          preserveScope: true,
+          templateUrl: "views/reservations/edit-state-payment-modal.html",
+
+          controller: function DialogController($scope, $mdDialog,reservationFactory) {
+            console.log(payment)
+            $scope.changePayment = Object.assign({},payment)
+          
+            $scope.canSubmitModal = function(e){
+              e.preventDefault();
+              
+                reservationFactory.edit($scope.changePayment,$scope.changePayment.payment_id).then(data => {
+                  console.log(data)
+                  $scope.reloadData();
+                  $mdDialog.hide();
+                })
+               
+              
+            }
+            $scope.cancel = function() {
+             
+              $mdDialog.hide();
+            };
+          }
+        });
+      }
+      $scope.reloadData = function(){
+          paymentsFactory.getAll().success(function(data){
+              $scope.storedData = data.data;
+              $scope.initDynamicTable();
+          });
+      }
+      $scope.preShowConfirmDelete = function(ev,id){
+        
+              // $scope.showMessage('Can not delete because the flight has been booked');
+          
+              $scope.showConfirmDelete(ev, 'Would you like to delete this payment?', 'You will delete: #' + id, id, reservationFactory, 'payment deleted successfully');
+          };
+
+  });
+    
+  
 })();

@@ -426,6 +426,19 @@
           controller: "AccountsController"
         })
         // reservation
+        .state("reservations-viewAll", {
+          url: "/reservations/viewAll",
+          templateUrl: "views/reservations/viewAll.html",
+          controller: "AllReservationController",
+          resolve: {
+            payments: [
+              "paymentsFactory",
+              function(factory) {
+                return factory.getAll();
+              }
+            ]
+          }
+        })
         .state("reservation-add", {
           url: "/reservations/add",
           templateUrl: "views/reservations/add-reservation.html",
@@ -448,60 +461,8 @@
           }
         })
 
-        // .state("flights-edit", {
-        //   url: "/flights/edit/{id}",
-        //   templateUrl: "views/flights/edit.html",
-        //   controller: "EditFlightController",
-        //   resolve: {
-        //     flight: [
-        //       "$stateParams",
-        //       "flightsFactory",
-        //       function($stateParams, factory) {
-        //         return factory.get($stateParams.id);
-        //       }
-        //     ],
-        //     places: [
-        //       "placesFactory",
-        //       function(factory) {
-        //         return factory.getAll();
-        //       }
-        //     ],
-        //     planes: [
-        //       "planesFactory",
-        //       function(factory) {
-        //         return factory.getAll();
-        //       }
-        //     ],
-        //     status: [
-        //       "statusFactory",
-        //       function(factory) {
-        //         return factory.getAll();
-        //       }
-        //     ]
-        //   }
-        // })
 
-        .state("reservations-viewAll", {
-          url: "/reservations/viewAll",
-          templateUrl: "views/reservations/viewAll.html",
-          controller: "ViewAllreservationController",
-          resolve: {
-            // flights: [
-            //   "flightsFactory",
-            //   function(factory) {
-            //     return factory.getAll();
-            //   }
-            // ],
-            // planes: [
-            //   "planesFactory",
-            //   function(factory) {
-            //     return factory.getAll();
-            //   }
-            // ]
-          }
-        })
-        // end reservation
-        ;
+       
 
       $urlRouterProvider.otherwise("/home");
     }
