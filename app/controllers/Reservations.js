@@ -75,7 +75,7 @@
       $controller,
       reservationFactory,
       flightsFactory,
-      flights,
+      $location,
       places,
       musers,
       $mdDialog
@@ -83,10 +83,10 @@
       $controller("AuthController", { $scope: $scope });
       $controller("FormStandardController", { $scope: $scope });
       console.log("usuarios", musers.data.data);
-      $scope.titleName = "Create a new reservation";
+      $scope.titleName = "Create a new manual reservation";
       $scope.extras = 0;
       $scope.musers = musers.data.data;
-      $scope.flights = flights.data.data;
+
       $scope.places = places.data.data;
       $scope.extra_model = {
         complete_name: "",
@@ -97,22 +97,35 @@
       };
       $scope.seats = [];
       $scope.object = {
+        user_id: -1,
         origin_id: -1,
         destination_id: -1,
         seats: 1,
-        flight_id: 0,
+        flight_id: -1,
         body_weight: 0,
         complete_name: "",
         luggage_weight: 0,
-        extras: []
+        extras: [],
+        seats_limit:0,
+        weight_limit:0,
+        price:0,
+        user:null
       };
+      function resetFields() {
+        $scope.object.extras = [];
+        $scope.extras = [];
+        $scope.seats = [];
+        $scope.flights = [];
+        $scope.flight_id = 0;
+      }
       $scope.getFlights = function() {
+        resetFields();
         if (
           $scope.object.origin_id !== -1 &&
-          $scope.object.destination_id !== -1
+          $scope.object.destination_id !== -1 &&
+          $scope.object.origin_id !== null &&
+          $scope.object.destination_id !== null
         ) {
-          $scope.flights = [];
-
           flightsFactory
             .getAllByPlaces(
               $scope.object.origin_id,
@@ -125,24 +138,29 @@
       };
       $scope.setCapacity = function(flight) {
         $scope.seats = [];
+        $scope.extras = [];
         $scope.object.flight_id = flight.id;
         for (var i = 1; i <= flight.seats_limit; i++) {
           $scope.seats.push(i);
         }
-        console.log($scope.object);
+        $scope.object.seats_limit = flight.seats_limit
+        $scope.object.weight_limit = flight.weight_limit
+        $scope.object.price = flight.price
       };
       $scope.setExtras = function(extra) {
-        
+        $scope.object.extras = [];
+        $scope.extras = [];
         if (extra > 1) {
-          $scope.extras = [];
           for (var i = 0; i < extra - 1; i++) {
             $scope.extras.push(i);
           }
         }
       };
       $scope.setUserProperties = function(user) {
+        $scope.object.user = user;
         $scope.object.body_weight = user.body_weight;
         $scope.object.complete_name = user.complete_name;
+        
       };
 
       $scope.showExtraPassenger = function(index) {
@@ -153,49 +171,75 @@
           templateUrl: "views/reservations/extra-passenger-modal.html",
 
           controller: function DialogController($scope, $mdDialog) {
-            //   $scope.hideSetPlane = function(){
-            //     $scope.planeIdSelected = -1;
-
-            // }
-           
             if ($scope.object.extras.length > 0) {
-              $scope.extra_model = Object.assign($scope.extra_model,$scope.object.extras[index]);
+              $scope.extra_model = Object.assign(
+                $scope.extra_model,
+                $scope.object.extras[index]
+              );
             }
             $scope.canSubmitModal = function(e) {
               e.preventDefault();
               if ($scope.object.extras[index]) {
                 $scope.object.extras[index] = $scope.extra_model;
-            
-                 
               } else {
                 console.log("entra al modal", $scope.object);
                 $scope.object.extras.push($scope.extra_model);
               }
-           
-              $scope.extra_model = {
-                complete_name: "",
-                body_weight: "",
-                luggage_weight: "",
-                email: "",
-                address: ""
-              };
+
+              clear();
               $mdDialog.hide();
             };
 
             $scope.cancel = function() {
-              
-              $scope.extra_model = {
-                complete_name: "",
-                body_weight: "",
-                luggage_weight: "",
-                email: "",
-                address: ""
-              };
+              clear();
               $mdDialog.hide();
             };
           }
         });
       };
+      $scope.submitForm = function() {
+        if (!validation()) return false;
+
+        $scope.doHttp(
+          reservationFactory.create,
+          "Reservation has been created successfully"
+        );
+      $scope.extras = []
+      $scope.seats = [];
+      clear()
+      $location.path("/members/viewAll");
+      };
+      function clear() {
+        $scope.extra_model = {
+          complete_name: "",
+          body_weight: "",
+          luggage_weight: "",
+          email: "",
+          address: "",
+          cell_phone:""
+        };
+        
+      }
+      function validation() {
+        let approve = true;
+        if ($scope.object.user_id == -1) {
+          $scope.object.user_id = null;
+          approve = false;
+        }
+        if ($scope.object.destination_id == -1) {
+          $scope.object.destination_id = null;
+          approve = false;
+        }
+        if ($scope.object.origin_id == -1) {
+          $scope.object.origin_id = null;
+          approve = false;
+        }
+        if ($scope.object.flight_id == -1) {
+          $scope.object.flight_id = null;
+          approve = false;
+        }
+        return approve;
+      }
     })
     .controller("ViewAllreservationController", function(
       $scope,

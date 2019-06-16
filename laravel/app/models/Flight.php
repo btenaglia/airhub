@@ -238,6 +238,7 @@ class Flight extends BaseModel {
         planes.identifier AS plane_ident,
         planes.type AS plane_type,
         planes.seats_limit,
+        planes.weight_limit,
         COUNT(books.id) AS booked_seats,
         IF(flights.plane_id IS NULL, -1, (planes.seats_limit - COUNT(books.id))) AS availables_seats,
         IF(flights.departure_date >= '".date('Y-m-d')."', 'future', 'passed') as state
@@ -272,6 +273,7 @@ class Flight extends BaseModel {
         planes.identifier AS plane_ident,
         planes.type AS plane_type,
         planes.seats_limit,
+        planes.weight_limit,
         COUNT(books.id) AS booked_seats,
         IF(flights.plane_id IS NULL, -1, (planes.seats_limit - COUNT(books.id))) AS availables_seats
         ";

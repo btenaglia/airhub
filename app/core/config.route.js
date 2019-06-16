@@ -443,12 +443,8 @@
               function(factory) {
                 return factory.getAll(); //factory.getAll();  //getAllcreated
               }
-            ],
-            flights:[
-              "flightsFactory",function(factory){
-                return factory.getAllfuture();
-              }
             ]
+                       
           }
         })
 

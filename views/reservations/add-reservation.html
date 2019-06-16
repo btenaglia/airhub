@@ -16,13 +16,15 @@
                                             <div>
                                                 <md-input-container class="md-block">
                                                     <label>User</label>
-                                                    <md-select ng-model="object.user_id">
+                                                    <md-select ng-model="object.user_id" name="user_id">
                                                         <md-option ng-repeat="user in musers" value="{{user.id}}"
                                                             ng-click="setUserProperties(user)">
                                                             {{user.complete_name}}
                                                         </md-option>
                                                     </md-select>
+                                                    <div class="error" ng-show="!object.user_id">This Field is required</div>
                                                 </md-input-container>
+
                                             </div>
                                             <div layout layout-sm="column">
 
@@ -33,29 +35,27 @@
                                                             {{place.short_name}} - {{place.name}}
                                                         </md-option>
                                                     </md-select>
-                                                    <div ng-messages="formStandard.origin.$error" multiple
-                                                        ng-if='formStandard.origin.$dirty'>
-                                                        <div ng-message="required">This is required.</div>
-                                                    </div>
+                                                    <div class="error" ng-show="!object.origin_id">This Field is required</div>
                                                 </md-input-container>
-
+                                            
                                                 <md-input-container flex>
                                                     <label>Destination</label>
-                                                    <md-select ng-model="object.destination_id"
-                                                        ng-change="getFlights()">
+                                                    <md-select ng-model="object.destination_id" ng-change="getFlights()"
+                                                        name="destination_id">
                                                         <md-option ng-repeat="place in places" value="{{place.id}}">
                                                             {{place.short_name}} - {{place.name}}
                                                         </md-option>
                                                     </md-select>
+                                                    <div class="error" ng-show="!object.destination_id">This Field is required</div>
                                                 </md-input-container>
-
+                                               
                                             </div>
                                             <!-- <div class="divider divider-dashed divider-lg pull-in"></div> -->
 
                                             <div>
                                                 <md-input-container class="md-block">
                                                     <label>Flights</label>
-                                                    <md-select ng-model="object.flight_id">
+                                                    <md-select ng-model="object.flight_id" name="flight_id">
                                                         <md-option ng-repeat="flight in flights" value="{{flight.id}}"
                                                             ng-click="setCapacity(flight)">
                                                             # {{flight.id}} | Departure :
@@ -63,23 +63,26 @@
                                                             : {{flight.status}} | $ {{flight.price}}
                                                         </md-option>
                                                     </md-select>
+                                                    <div class="error" ng-show="!object.flight_id">This Field is required</div>
                                                 </md-input-container>
+                                               
                                             </div>
                                             <div layout layout-sm="column">
                                                 <md-input-container flex>
                                                     <label>Body Weight (kgs.)</label>
                                                     <md-icon class="fa fa-hashtag"></md-icon>
-                                                    <input required type="number" name="name"
-                                                        ng-model="object.body_weight" />
-                                                    <div ng-messages="formStandard.name.$error" multiple
-                                                        ng-if='formStandard.name.$dirty'>
+                                                    <input required type="number" name="body_name"
+                                                        ng-model="object.body_weight"
+                                                        data-ng-pattern="/0*[1-9][0-9]*(\.[0-9]+)?/" />
+                                                    <div ng-messages="formStandard.body_name.$error" multiple
+                                                        ng-if='formStandard.body_name.$dirty'>
                                                         <div ng-message="required">This is required.</div>
                                                     </div>
                                                 </md-input-container>
                                                 <md-input-container flex>
                                                     <label>Luggage Weight (kgs.)</label>
                                                     <md-icon class="fa fa-hashtag"></md-icon>
-                                                    <input required type="number" name="name"
+                                                    <input required type="number" name="luggage"
                                                         ng-model="object.luggage_weight" />
 
                                                 </md-input-container>
@@ -100,9 +103,9 @@
                                                 <div class="col-md-12">
                                                     <label>Extra passengers</label>
                                                     <hr />
-                                                    <div class="extra-passenger" ng-repeat="extra in extras track by $index">
-                                                        <span ><i
-                                                                class="fa fa-user"></i><label>&nbsp;&nbsp;Extra
+                                                    <div class="extra-passenger"
+                                                        ng-repeat="extra in extras track by $index">
+                                                        <span><i class="fa fa-user"></i><label>&nbsp;&nbsp;Extra
                                                                 passenger {{$index + 1 }} :
                                                                 {{object.extras[$index] ? object.extras[$index].complete_name : ''}}</label></span>
                                                         <span>
@@ -115,7 +118,7 @@
                                                                 <span class="fa fa-pencil"></span>
                                                             </md-button>
                                                         </span>
-                                                        
+
                                                     </div>
 
                                                 </div>
@@ -124,7 +127,7 @@
                                                 <div class="col-md-12">
                                                     <div class="divider divider-md"></div>
                                                     <md-button type="submit" class="md-raised btn-w-md md-primary"
-                                                        ng-disabled="!canSubmit()">Submit</md-button>
+                                                        ng-disabled="!canSubmit()">Create</md-button>
 
                                                     <div class="divider"></div>
                                                 </div>

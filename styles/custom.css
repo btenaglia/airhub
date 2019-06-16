@@ -1,15 +1,18 @@
 md-dialog {
-    min-width: 350px !important;
+  min-width: 350px !important;
 }
 
 .md-notify {
-    background-color: #00B06A !important;
+  background-color: #00b06a !important;
 }
 
-.extra-passenger{
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    align-items: center;
-    gap: 10px;
-
+.extra-passenger {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  align-items: center;
+  gap: 10px;
+}
+.error {
+  color: rgb(213, 0, 0);
+  font-size: 12px;
 }

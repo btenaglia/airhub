@@ -26,6 +26,9 @@ Route::group(['prefix' => '/web'], function () {
     Route::get('privacy', 
         ['as' => 'privacy', 'uses' => 'WebController@privacy']
     );
+    Route::get(
+        '/reservation/status','ReservationController@status'
+    );
 });	
  
 Route::group(['prefix' => 'api/v1/public'], function () {
@@ -58,6 +61,7 @@ Route::group(['prefix' => 'api/v1/public'], function () {
     Route::get('/tests/test',
         ['as' => 'tests.test', 'uses' => 'TestController@test']
     );
+   
 });
 
 /**
@@ -208,8 +212,9 @@ Route::group(['prefix' => 'api/v1/private'], function() {
          */
         Route::post(
             '/reservation/create',
-            ['as' => 'members.create', 'uses' => 'ReservationController@create']
+            ['as' => 'reservation.create', 'uses' => 'ReservationController@create']
         );
+    
         /**
          * Profiles routes
          */
