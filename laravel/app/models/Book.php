@@ -5,7 +5,7 @@ use Illuminate\Support\Facades\DB;
 
 class Book extends BaseModel {
     protected $table = 'books';
-    
+    protected $fillable = ['flight_id','user_id','payment_id'];
     public function getId() {
         return $this->id;
     }

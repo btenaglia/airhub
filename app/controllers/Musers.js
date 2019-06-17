@@ -10,7 +10,7 @@
         };
     
         response.getAll = function() {
-            return $http.get(baseURL + '/users').success(function(data){
+            return $http.get(baseURL + '/musers').success(function(data){
                 angular.copy(data, response.data);
             });
         };

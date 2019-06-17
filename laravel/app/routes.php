@@ -26,6 +26,9 @@ Route::group(['prefix' => '/web'], function () {
     Route::get('privacy', 
         ['as' => 'privacy', 'uses' => 'WebController@privacy']
     );
+    Route::get(
+        '/reservation/status','ReservationController@status'
+    );
 });	
  
 Route::group(['prefix' => 'api/v1/public'], function () {
@@ -58,6 +61,7 @@ Route::group(['prefix' => 'api/v1/public'], function () {
     Route::get('/tests/test',
         ['as' => 'tests.test', 'uses' => 'TestController@test']
     );
+   
 });
 
 /**
@@ -98,6 +102,11 @@ Route::group(['prefix' => 'api/v1/private'], function() {
             '/musers/{id}/edit',
             ['as' => 'musers.edit', 'uses' => 'AccountController@editm']
         );
+        Route::get(
+            '/musers',
+            ['as' => 'users.all_mobile', 'uses' => 'AccountController@all_mobile']
+        );
+        
         
         /*REST API*/
         Route::put(
@@ -118,6 +127,7 @@ Route::group(['prefix' => 'api/v1/private'], function() {
             '/users',
             ['as' => 'users.all', 'uses' => 'AccountController@all']
         );
+        
         Route::get(
             '/users/{id}',
             ['as' => 'users.find', 'uses' => 'AccountController@find']
@@ -196,6 +206,25 @@ Route::group(['prefix' => 'api/v1/private'], function() {
         Route::post(
             '/members/notification',
             ['as' => 'members.notification', 'uses' => 'MemberController@notification']
+        );
+        /**
+         * Reservations
+         */
+        Route::post(
+            '/reservation/create',
+            ['as' => 'reservation.create', 'uses' => 'ReservationController@create']
+        );
+        Route::put(
+            '/reservation/{id}/edit',
+            ['as' => 'reservation.edit', 'uses' => 'ReservationController@edit']
+        );
+        Route::delete(
+            '/reservation/{id}/destroy',
+            ['as' => 'reservation.destroy', 'uses' => 'ReservationController@destroy']
+        );
+        Route::get(
+            '/reservation',
+            ['as' => 'reservation.all', 'uses' => 'ReservationController@all']
         );
         /**
          * Profiles routes

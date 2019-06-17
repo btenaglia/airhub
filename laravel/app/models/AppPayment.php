@@ -98,10 +98,19 @@ class AppPayment extends BaseModel {
     }*/
     
     public static function allPayments() {
-        return DB::table('payments')
+        // return DB::table('payments')
+        //         ->join('books', 'books.payment_id', '=', 'payments.id')
+        //         ->select(DB::raw(self::rawForBookingsPayment()))
+        //         ->orderBy('payments.created_at', 'desc')
+        //         ->get();
+                return DB::table('payments')
                 ->join('books', 'books.payment_id', '=', 'payments.id')
+                ->join('flights', 'flights.id', '=', 'books.flight_id')
+                ->join('places as origin', 'origin.id', '=', 'flights.origin')
+                ->join('places as destination', 'destination.id', '=', 'flights.destination')
                 ->select(DB::raw(self::rawForBookingsPayment()))
                 ->orderBy('payments.created_at', 'desc')
+                ->groupBy('books.payment_id')
                 ->get();
     }
     
@@ -137,12 +146,19 @@ class AppPayment extends BaseModel {
     
     private static function rawForBookingsPayment(){
         return "
+            count(*) as total,
             books.id AS books_id,
             books.complete_name,
             books.email,
+            books.flight_id,
+            origin.name as origin,
+            destination.name as destination,
+            flights.departure_time,
+            flights.departure_date,
             @var2:=mid(payment_json,@var1:=locate('payment_method',payment_json)+17,locate(',',payment_json,@var1)-@var1-1) as payment_method,
             IF(@var2 = 'credit_card', concat(mid(payment_json,@var3:=locate('type',payment_json)+7,locate(',',payment_json,@var3)-@var3-1),'-',if((@var4:=locate('number',payment_json)+9)>9,mid(payment_json,@var4,locate(',',payment_json,@var4)-@var4-1),concat('xxxxxxxxxxxx',mid(payment_json,@var6:=locate('last4',payment_json)+8,locate(',',payment_json,@var6)-@var6-1)))), mid(payment_json,@var5:=locate('payer_id',payment_json)+11,locate(',',payment_json,@var5)-@var5-1)) as payment_id,
             payments.external_payment_id,
+            payments.id as payment_id,
             payments.currency,
             payments.amount,
             payments.description,

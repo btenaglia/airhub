@@ -151,6 +151,7 @@
         <script src="app/controllers/Musers.js"></script>
         <script src="app/controllers/Bookings.js"></script>
         <script src="app/controllers/Payments.js"></script>
+        <script src="app/controllers/Reservations.js"></script>
         <script src="app/controllers/Setup.js"></script>
         <script src="app/config/HttpConfig.js"></script>
         <!-- endinject -->

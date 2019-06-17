@@ -109,5 +109,19 @@ class MailService extends BaseService {
         	return 'Ok';
         }	
     }
+
+    public function sendButtonPaypal($reservation) {
+    	$data = [
+            "link" => $reservation['link'],
+            "ticket" => $reservation['ticket'],
+            "price" => $reservation['price']
+        ];
+        Mail::send('mails.payment_button', $data, function ($msj) use ($reservation) {
+            $msj->from('alert@airhub.us');
+            $msj->subject('passages');
+            $msj->to([$reservation['email']]);
+            return true;
+        });
+  }
     
 }
