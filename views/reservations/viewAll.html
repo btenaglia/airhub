@@ -121,18 +121,18 @@
                             <td>{{data.external_state}}</td>
                             <td>{{data.created_at}}</td>
                             <td>
-                                
-                                   
-                                    <md-button aria-label="edit" class="md-fab md-fab-xs" ng-click="showEdit(data)">
-                                        <span class="fa fa-pencil"></span>
-                                    </md-button> 
-                                    <span class="space"></span>
+
+
+                                <md-button aria-label="edit" class="md-fab md-fab-xs" ng-style="{'background': data.external_state == 'approved' ? '#2ed835' : ''}" ng-click="showEdit(data)">
+                                    <span class="fa fa-check"></span>
+                                </md-button>
+                                <!--<span class="space"></span>
                                     <md-button aria-label="remove" class="md-fab md-warn md-fab-xs" ng-click="preShowConfirmDelete($event,data.payment_id)">
                                         <span class="fa fa-trash"></span>
-                                    </md-button> 
-                                
+                                    </md-button>  -->
+
                             </td>
-                        
+
                         </tr>
                     </tbody>
                 </table>

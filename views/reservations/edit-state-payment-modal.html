@@ -1,17 +1,18 @@
-<form style="padding:10px;" ng-submit="canSubmitModal($event)">
+<form style="padding:20px;" ng-submit="canSubmitModal($event)">
 
-    Change state payment 
+    <h3>Are you sure to approve the payment ?</h3>
     <br><br>
-    <md-input-container flex>
+    <!-- <md-input-container flex>
         <label>State payment</label>
         <md-icon class="fa fa-hashtag"></md-icon>
         <input required type="string" name="state" ng-model="changePayment.external_state" />
 
-    </md-input-container>
-    <div class="col-md-12">
-        <div class="divider divider-md"></div>
-        <md-button type="Submit"  class="md-raised btn-w-md md-primary">Change</md-button>
+    </md-input-container> -->
+    <div style="display: flex;justify-content: space-around;">
+        <md-button type="Submit" class="md-raised btn-w-md md-primary">Approve</md-button>
         <md-button type="button" class="md-raised btn-w-md md-primary" ng-click="cancel()">Cancel</md-button>
-        <div class="divider"></div>
     </div>
+  
+    <div class="divider"></div>
+
 </form>

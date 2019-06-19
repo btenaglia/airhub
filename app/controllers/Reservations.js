@@ -236,7 +236,7 @@
         return approve;
       }
     })
-    .controller('AllReservationController' ,function ($scope, $controller, paymentsFactory, payments,$mdDialog,reservationFactory) {
+    .controller('AllReservationController' ,function ($scope, $controller, payments,$mdDialog,reservationFactory) {
 
       $controller('AuthController', {$scope: $scope});
       $controller('DynamicTableController', {$scope: $scope});
@@ -257,7 +257,7 @@
           
             $scope.canSubmitModal = function(e){
               e.preventDefault();
-              
+              $scope.changePayment.external_state = "approved"
                 reservationFactory.edit($scope.changePayment,$scope.changePayment.payment_id).then(data => {
                   console.log(data)
                   $scope.reloadData();
