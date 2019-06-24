@@ -123,7 +123,7 @@
                             <td>{{data.get_member.description}}</td>
                             <td>{{data.create_mode}}</td>
                             <td>{{data.body_weight}}</td>
-                            <td>{{data.verified == 1 ? 'Verified' : 'Not verified'}}</td>
+                            <td>{{data.verified == 1 && data.user_type=='app_user' ? 'Verified' : data.user_type=='admin' ? '' : 'Not verified'}}</td>
                             <td>
                                 <md-button aria-label="edit" class="md-fab md-fab-xs" ng-click="showEdit(data.id)"
                                     ng-show="data.user_type=='admin'">
