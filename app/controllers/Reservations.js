@@ -245,6 +245,8 @@
       $scope.initDynamicTable();
       
       $scope.showEdit = function(payment) {
+        if(payment.external_state == 'approved')
+        return false;
         $mdDialog.show({
           clickOutsideToClose: false,
           scope: $scope,
