@@ -345,6 +345,8 @@ class AccountService extends BaseService implements GenericServices
         $user->setPassword(\Crypt::encrypt($input['password']));
         $user->state = $input['state'];
         $user->zipcode = $input['zipcode'];
+        $user->verified = $input['verified'];
+        $user->complete_name = $input['last_name'].','.$input['name'];
         $user->save();
         return true;
 
@@ -528,6 +530,9 @@ class AccountService extends BaseService implements GenericServices
                     $user->setZipcode($input['zipcode']);
                 }
 
+                if (isset($input['verified'])) {
+                    $user->setVerified($input['verified']);
+                }
             }
 
             $success = $user->update();

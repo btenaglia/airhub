@@ -127,6 +127,9 @@
                     <md-button aria-label="sendpush" class="md-fab md-fab-xs md-notify" ng-click="sendPush(data.id,data.complete_name)" ng-show="data.user_type=='app_user' && data.id_onesignal !== null">
                         <span class="fa fa-bell-o"></span>
                     </md-button>
+                    <md-button aria-label="Verified" class="md-fab md-fab-xs" ng-click="verified(data)" ng-show="data.user_type=='app_user'">
+                        <span class="fa fa-check"></span>
+                    </md-button>
                 </td>
             </tr>
             </tbody>

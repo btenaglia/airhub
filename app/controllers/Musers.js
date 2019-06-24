@@ -50,11 +50,12 @@
         $scope.members  = members.data.data
         $scope.object = {
             user_type: 'app_user',
-            member_id:''
+            member_id:'',
+            verified:0
         };
         
         $scope.showPassword = true; //TODO FIXME
-        
+        // console.log($scope.object)
         $scope.submitForm = function(){
             console.log("aver",$scope.object.member_id)
             $scope.doHttp(musersFactory.create, 'New user added successfully').error(function(data,status){
@@ -83,7 +84,8 @@
             body_weight: user.data.body_weight,
             //complete_name: user.data.complete_name,
             email: user.data.email,
-            password: '----'
+            password: '----',
+            verified: user.data.verified
         };
         
         $scope.objectId = user.data.id;
