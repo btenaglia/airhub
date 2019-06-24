@@ -157,6 +157,10 @@
                                             <div ng-message="required">This is required.</div>
                                         </div> -->
                                     </md-input-container>
+                                   
+                                    <div layout layout-sm="column">
+                                        <md-switch ng-model="object.verified" aria-label="Type" ng-true-value="1" ng-false-value="0">Verified</md-switch>
+                                    </div>
                                     <md-button type="submit"
                                                class="md-raised btn-w-md md-primary"
                                                ng-disabled="!canSubmit()">Submit</md-button>

@@ -256,7 +256,7 @@
             $scope.changePayment = Object.assign({},payment)
           
             $scope.canSubmitModal = function(e){
-              e.preventDefault();
+              // e.preventDefault();
               $scope.changePayment.external_state = "approved"
                 reservationFactory.edit($scope.changePayment,$scope.changePayment.payment_id).then(data => {
                   console.log(data)
@@ -274,7 +274,7 @@
         });
       }
       $scope.reloadData = function(){
-          paymentsFactory.getAll().success(function(data){
+        reservationFactory.getAll().success(function(data){
               $scope.storedData = data.data;
               $scope.initDynamicTable();
           });
