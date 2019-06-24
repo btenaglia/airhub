@@ -26,7 +26,7 @@ class ReservationController extends BaseController implements GenericControllers
     public function all()
     {
         $paymentService = $this->getService('Payment');
-        $payments = $paymentService->all();
+        $payments = $paymentService->allWeb();
         
         if($payments !== null) {
             return $this->jsonResponse('', self::HTTP_CODE_OK, $payments);

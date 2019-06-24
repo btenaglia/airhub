@@ -54,7 +54,9 @@ class PaymentService extends BaseService
     {
         return AppPayment::allPayments();
     }
-
+    public function allWeb(){
+        return AppPayment::allPaymentsWeb();
+    }
     public function getPayPalToken()
     {
         $credentials = $this->apiContext->getCredential();

@@ -432,7 +432,7 @@
           controller: "AllReservationController",
           resolve: {
             payments: [
-              "paymentsFactory",
+              "reservationFactory",
               function(factory) {
                 return factory.getAll();
               }

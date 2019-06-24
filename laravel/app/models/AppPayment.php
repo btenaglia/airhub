@@ -8,122 +8,148 @@ use Illuminate\Support\Facades\DB;
  *
  * @author <a href="mailto:emiliogenesio@gmail.com">Emilio Genesio</a>
  */
-class AppPayment extends BaseModel {
+class AppPayment extends BaseModel
+{
     protected $table = 'payments';
-    
-    public function getId() {
+
+    public function getId()
+    {
         return $this->id;
     }
-    
-    public function getExternalPaymentId() {
+
+    public function getExternalPaymentId()
+    {
         return $this->external_payment_id;
     }
 
-    public function setExternalPaymentId($externalPaymentId) {
+    public function setExternalPaymentId($externalPaymentId)
+    {
         $this->external_payment_id = $externalPaymentId;
     }
-    
-    public function getExternalState() {
+
+    public function getExternalState()
+    {
         return $this->external_state;
     }
 
-    public function setExternalState($externalState) {
+    public function setExternalState($externalState)
+    {
         $this->external_state = $externalState;
     }
-    
-    public function getCaptureState() {
+
+    public function getCaptureState()
+    {
         return $this->capture_state;
     }
 
-    public function setCaptureState($captureState) {
+    public function setCaptureState($captureState)
+    {
         $this->capture_state = $captureState;
     }
-    
-    public function getCurrency() {
+
+    public function getCurrency()
+    {
         return $this->currency;
     }
 
-    public function setCurrency($currency) {
+    public function setCurrency($currency)
+    {
         $this->currency = $currency;
     }
-    
-    public function getAmount() {
+
+    public function getAmount()
+    {
         return $this->amount;
     }
 
-    public function setAmount($amount) {
+    public function setAmount($amount)
+    {
         $this->amount = $amount;
     }
-    
-    public function getIntent() {
+
+    public function getIntent()
+    {
         return $this->intent;
     }
 
-    public function setIntent($intent) {
+    public function setIntent($intent)
+    {
         $this->intent = $intent;
     }
-    
-    public function getPaymentJson() {
+
+    public function getPaymentJson()
+    {
         return $this->payment_json;
     }
 
-    public function setPaymentJson($payment_json) {
+    public function setPaymentJson($payment_json)
+    {
         $this->payment_json = $payment_json;
     }
-    
-    public function getCaptureJson() {
+
+    public function getCaptureJson()
+    {
         return $this->capture_json;
     }
 
-    public function setCaptureJson($capture_json) {
+    public function setCaptureJson($capture_json)
+    {
         $this->capture_json = $capture_json;
     }
 
-    public function getBooks() {
+    public function getBooks()
+    {
         return $this->hasMany('App\Models\Book');
     }
-    
-    public function getDescription() {
+
+    public function getDescription()
+    {
         return $this->description;
     }
-    
-    public function setDescription($description) {
+
+    public function setDescription($description)
+    {
         $this->description = $description;
     }
-    
-    /*public static function allPayments() {
+
+    public static function allPaymentsWeb()
+    {
+
         return DB::table('payments')
-                ->select(DB::raw(self::rawForSelect()))
-                ->get();
-    }*/
-    
-    public static function allPayments() {
-        // return DB::table('payments')
-        //         ->join('books', 'books.payment_id', '=', 'payments.id')
-        //         ->select(DB::raw(self::rawForBookingsPayment()))
-        //         ->orderBy('payments.created_at', 'desc')
-        //         ->get();
-                return DB::table('payments')
-                ->join('books', 'books.payment_id', '=', 'payments.id')
-                ->join('flights', 'flights.id', '=', 'books.flight_id')
-                ->join('places as origin', 'origin.id', '=', 'flights.origin')
-                ->join('places as destination', 'destination.id', '=', 'flights.destination')
-                ->select(DB::raw(self::rawForBookingsPayment()))
-                ->orderBy('payments.created_at', 'desc')
-                ->groupBy('books.payment_id')
-                ->get();
+            ->join('books', 'books.payment_id', '=', 'payments.id')
+            ->join('flights', 'flights.id', '=', 'books.flight_id')
+            ->join('places as origin', 'origin.id', '=', 'flights.origin')
+            ->join('places as destination', 'destination.id', '=', 'flights.destination')
+            ->select(DB::raw(self::rawForBookingsPayment()))
+            ->orderBy('payments.created_at', 'desc')
+            ->where('payments.description', '=', 'Web Ticket')
+            ->groupBy('books.payment_id')
+            ->get();
     }
-    
-    public static function bookingsByPayment($id) {
+
+    public static function allPayments()
+    {
         return DB::table('payments')
-                ->join('books', 'books.payment_id', '=', 'payments.id')
-                ->join('users', 'users.id', '=', 'books.user_id')  
-                ->where('payments.id','=', $id)
-                ->select(DB::raw(self::rawForBookingsByPayment()))
-                ->get();
+            ->join('books', 'books.payment_id', '=', 'payments.id')
+            ->select(DB::raw(self::rawForBookingsPayment()))
+            ->orderBy('payments.created_at', 'desc')
+         
+            ->get();
+
     }
-    
-    private static function rawForSelect(){
+
+    public static function bookingsByPayment($id)
+    {
+        return DB::table('payments')
+            ->join('books', 'books.payment_id', '=', 'payments.id')
+            ->join('users', 'users.id', '=', 'books.user_id')
+            ->where('payments.id', '=', $id)
+            ->select(DB::raw(self::rawForBookingsByPayment()))
+            ->get();
+    }
+
+    private static function rawForSelect()
+    {
         return "
             payments.external_payment_id,
             payments.currency,
@@ -133,8 +159,9 @@ class AppPayment extends BaseModel {
             payments.external_state,
             payments.created_at";
     }
-    
-    private static function rawForBookingsByPayment(){
+
+    private static function rawForBookingsByPayment()
+    {
         return "
             books.id AS books_id,
             books.complete_name AS passangerName,
@@ -143,8 +170,9 @@ class AppPayment extends BaseModel {
             users.email AS userEmail,
             users.id_onesignal AS idOnesignal";
     }
-    
-    private static function rawForBookingsPayment(){
+
+    private static function rawForBookingsPayment()
+    {
         return "
             count(*) as total,
             books.id AS books_id,
@@ -168,5 +196,5 @@ class AppPayment extends BaseModel {
             payments.external_state,
             payments.created_at";
     }
-    
+
 }
