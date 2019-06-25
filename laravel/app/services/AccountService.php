@@ -44,6 +44,7 @@ class AccountService extends BaseService implements GenericServices
     {
         try {
             $user = User::findAppUserByCredentials($credentials);
+            $user2 = User::with('getMember')->where('id',$user->getId())->get();
         } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $ex) {
             //return null if there is no model for the credentials passed by param
             return null;
@@ -68,7 +69,7 @@ class AccountService extends BaseService implements GenericServices
         //remove private data
         $user->setPassword('');
 
-        return ['token' => $this->createToken($user), 'user' => $user];
+        return ['token' => $this->createToken($user), 'user' => $user2];
     }
 
     public function authenticateAppUserByFacebook($credentials)
@@ -511,7 +512,7 @@ class AccountService extends BaseService implements GenericServices
                 }
 
                 if (isset($input['member_id'])) {
-                    $user->setZipcode($input['member_id']);
+                    $user->setMemberId($input['member_id']);
                 }
 
                 if (isset($input['city'])) {

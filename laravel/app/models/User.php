@@ -299,18 +299,16 @@ class User extends BaseModel implements UserInterface, RemindableInterface
 
     public static function findAppUserByCredentials($credentials)
     {
-
+      
         if (filter_var($credentials["email"], FILTER_VALIDATE_EMAIL)) {
             $user = User::findByEmail($credentials["email"]);
         } else {
             $user = User::findByCellphone($credentials["email"]);
         }
-
-        //var_dump($user);
-
         $decyptedPassword = \Crypt::decrypt($user->getPassword());
 
         if ($credentials['password'] === $decyptedPassword && $user->getUserType() === self::USER_TYPE_APP) {
+            
             return $user;
         } else {
             return null;
