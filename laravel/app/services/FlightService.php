@@ -67,8 +67,8 @@ class FlightService extends BaseService implements GenericServices
 
         $flight->setDepartureDate($input['departure_date']);
         $flight->setStatus($input['status']);
-        if ($this->checkIfFieldExists($input, 'paramvalueamount')) {
-            $flight->setAmount($input['paramvalueamount']);
+        if ($this->checkIfFieldExists($input, 'price')) {
+            $flight->setAmount($input['price']);
         }
 
         if ($this->checkIfFieldExists($input, 'departure_time')) {
