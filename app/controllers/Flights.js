@@ -167,12 +167,12 @@
         $scope.places = places.data.data;
         $scope.planes = planes.data.data;
         $scope.status = status.data.data;
-        
+       
         $scope.object = {
             origin: flight.data.origin,
             destination: flight.data.destination,
             status: flight.data.status,
-            paramvalueamount: flight.data.paramvalueamount,
+            price: flight.data.price,
             plane_id: flight.data.plane_id,
             dte_departure_date: $scope.stringToDate(flight.data.departure_date),
             dte_departure_time: flight.data.departure_time ? $scope.stringToDateTime(flight.data.departure_date, flight.data.departure_time) : new Date(),
