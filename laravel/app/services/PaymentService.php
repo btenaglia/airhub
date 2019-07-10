@@ -23,12 +23,12 @@ use URL;
 class PaymentService extends BaseService
 {
     //SANDBOX
-    private static $clientId = "AZo7YRikhHlZX4Oh3ry0b-gCEMVM1Ig1jWkN9XStO5fYewPLScQB64XZtbpVoFUFTrCA3rhWWbqBBLe9";
-    private static $paypalSecret = "EJyGx7VNb2nMqTKlruX5aRRV-U2vyIcGkx17mT6bq-RudqtZmNRXdUsxXrjc_6EWD-mBzPSvtpu4MDPn";
+    //private static $clientId = "AZo7YRikhHlZX4Oh3ry0b-gCEMVM1Ig1jWkN9XStO5fYewPLScQB64XZtbpVoFUFTrCA3rhWWbqBBLe9";
+    //private static $paypalSecret = "EJyGx7VNb2nMqTKlruX5aRRV-U2vyIcGkx17mT6bq-RudqtZmNRXdUsxXrjc_6EWD-mBzPSvtpu4MDPn";
 
     //PRODUCTION
-    // private static $clientId = "AXtd-uLkYjDoO0-w-9i17I9pfGaJl-_KZj8KOFHyvoywPzOZ6H_quJz48kzR12jJcShMS8PVN6xMiIET";
-    // private static $paypalSecret = "EAATN_QUau8ek9jsyCcfhoHzIZVC1va9LhM4GjgsoS1qtP85BUeHBXFzzmOtUfHm04QQPVt_sanRcKpH";
+    private static $clientId = "AViTmsSgc7pfq0rbQxKsBu10Jad9ozAXBZsrz0Fx26QYiiEB9TnGw-gAiYIxyQPfDXUcnn_aOSq3DGqT";
+    private static $paypalSecret = "EDuLdJ_wKjKTZafOows_skhvlUbn0W2iAdBdRkCFt0fqqh-MBBn-kcJ9ojLkEhGaCCufQZdlql7yHYAg";
 
     const FIRST_ITEM = 0;
 
@@ -44,8 +44,8 @@ class PaymentService extends BaseService
             )
         );
         $this->apiContext->setConfig([
-            // "mode" => "live"
-            "mode" => "sandbox",
+            "mode" => "live",
+            //"mode" => "sandbox",
         ]);
 
     }
