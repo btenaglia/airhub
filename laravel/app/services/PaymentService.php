@@ -23,12 +23,12 @@ use URL;
 class PaymentService extends BaseService
 {
     //SANDBOX
-    private static $clientId = "AViTmsSgc7pfq0rbQxKsBu10Jad9ozAXBZsrz0Fx26QYiiEB9TnGw-gAiYIxyQPfDXUcnn_aOSq3DGqT";
-    private static $paypalSecret = "EDuLdJ_wKjKTZafOows_skhvlUbn0W2iAdBdRkCFt0fqqh-MBBn-kcJ9ojLkEhGaCCufQZdlql7yHYAg";
-
-    //PRODUCTION
     // private static $clientId = "AViTmsSgc7pfq0rbQxKsBu10Jad9ozAXBZsrz0Fx26QYiiEB9TnGw-gAiYIxyQPfDXUcnn_aOSq3DGqT";
     // private static $paypalSecret = "EDuLdJ_wKjKTZafOows_skhvlUbn0W2iAdBdRkCFt0fqqh-MBBn-kcJ9ojLkEhGaCCufQZdlql7yHYAg";
+
+    //PRODUCTION
+    private static $clientId = "AaluMuqhBUiC4-MjYFd_5si7VhYyCeaWZIJsVGB9QNCtfK8ggVCM113pGu-ICnOQgfbYC7vLQZXdlRgP";
+    private static $paypalSecret = "EEZvT9K5rF2voaC7RzIjQ6xsLCeqH212yIL52HOz9N8k7dG5nbBCCDdsfbVPPs0V58E3OKroRQwhKL7s";
 
     const FIRST_ITEM = 0;
 
@@ -44,8 +44,8 @@ class PaymentService extends BaseService
             )
         );
         $this->apiContext->setConfig([
-            //"mode" => "live",
-            "mode" => "sandbox",
+            "mode" => "live",
+            //"mode" => "sandbox",
         ]);
 
     }
