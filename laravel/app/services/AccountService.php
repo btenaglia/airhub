@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use \App\Models\Member;
 use \App\Models\User;
 use \JWTAuth;
 
@@ -44,7 +45,7 @@ class AccountService extends BaseService implements GenericServices
     {
         try {
             $user = User::findAppUserByCredentials($credentials);
-            $user2 = User::with('getMember')->where('id',$user->getId())->get();
+            $user2 = User::with('getMember')->where('id', $user->getId())->get();
         } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $ex) {
             //return null if there is no model for the credentials passed by param
             return null;
@@ -273,7 +274,7 @@ class AccountService extends BaseService implements GenericServices
             }
 
             if (isset($input['member_id'])) {
-                $user->setZipcode($input['member_id']);
+                $user->member_id = $input['member_id'];
             }
 
             if (isset($input['facebookid'])) {
@@ -320,7 +321,9 @@ class AccountService extends BaseService implements GenericServices
      */
     public function createMobileUser($input)
     {
+        $member = Member::where("description", '=', 'Daily')->first();
         $this->userType = User::USER_TYPE_APP;
+        $input['member_id'] = $member->id;
         return $this->create($input);
 
     }
@@ -333,7 +336,7 @@ class AccountService extends BaseService implements GenericServices
     {
 
         $user = new User();
-        $user->user_type= User::USER_TYPE_APP;
+        $user->user_type = User::USER_TYPE_APP;
         $user->name = $input['name'];
         $user->member_id = $input['member_id'];
         $user->last_name = $input['last_name'];
@@ -347,7 +350,7 @@ class AccountService extends BaseService implements GenericServices
         $user->state = $input['state'];
         $user->zipcode = $input['zipcode'];
         $user->verified = $input['verified'];
-        $user->complete_name = $input['last_name'].','.$input['name'];
+        $user->complete_name = $input['last_name'] . ',' . $input['name'];
         $user->save();
         return true;
 
@@ -512,7 +515,7 @@ class AccountService extends BaseService implements GenericServices
                 }
 
                 if (isset($input['member_id'])) {
-                    $user->setMemberId($input['member_id']);
+                    $user->member_id = $input['member_id'];
                 }
 
                 if (isset($input['city'])) {

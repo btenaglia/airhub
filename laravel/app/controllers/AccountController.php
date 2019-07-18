@@ -65,15 +65,18 @@ class AccountController extends BaseController implements GenericControllers {
     }
     
     public function createMobileUser() {
+        
         $accountService = $this->getService('Account');
         $userExists = $accountService->userExists(Input::get('email'));
         $userExists2 = $accountService->userExists(Input::get('cell_phone'));
-        
+       
+       
         if((!$userExists)&&(!$userExists2)) {
             $success = $accountService->createMobileUser(Input::all());
             
             if($success) {
-                return $this->jsonSuccessResponse();
+            
+            return $this->jsonSuccessResponse();
             } else {
                 return $this->jsonResponse('Cannot create user. Try Again', self::HTTP_CODE_SERVER_ERROR);
             }
@@ -91,8 +94,8 @@ class AccountController extends BaseController implements GenericControllers {
         $userExists = $accountService->userExists(Input::get('email'));
         
         if($userExists) {
-            $success = $accountService->recoverPassword(Input::get('email'));
-            
+             $success = $accountService->recoverPassword(Input::get('email'));
+            return $this->jsonResponse('', self::HTTP_CODE_OK, $success);
             if($success) {
                 return $this->jsonSuccessResponse();
             } else {
