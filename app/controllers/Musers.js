@@ -47,17 +47,19 @@
         
         $scope.titleName = "Add new mobile user";
         console.log(members.data.data)
+     
         $scope.members  = members.data.data
+        console.log()
         $scope.object = {
             user_type: 'app_user',
-            member_id:'',
+            member_id: $scope.members.find(value => value.description.toLowerCase() == 'daily').id,
             verified:0
         };
         
         $scope.showPassword = true; //TODO FIXME
         // console.log($scope.object)
         $scope.submitForm = function(){
-            console.log("aver",$scope.object.member_id)
+           
             $scope.doHttp(musersFactory.create, 'New user added successfully').error(function(data,status){
                 if (status === 409){
                     $scope.showUserExistsError();
