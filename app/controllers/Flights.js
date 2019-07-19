@@ -754,7 +754,48 @@
         }
         
         $scope.preShowConfirmDelete = function(ev, name, id) {
+            
             $scope.showConfirmDelete(ev, 'Would you like to delete this flight?', 'You will delete: ' + name, id, flightsFactory, 'Flight deleted successfully');
+            // flightsFactory.getAllfuture().success(function(data){
+            //     $scope.storedData = data.data;
+            //     $scope.initDynamicTable();
+            // });
+        };
+        $scope.deleteflight = function(ev, flight){
+            // if (flight.status != "scheduled"){
+            //     $scope.showMessage('Can not cancel the flight');
+            //     return;
+            // }
+            
+            var confirm = $mdDialog
+            .confirm()
+            .title('Would like to delete this flight?')
+            .content('You will delete this flight')
+            .ariaLabel('Lucky day')
+            .targetEvent(ev)
+            .ok('Yes')
+            .cancel('No');
+            
+            $mdDialog.show(confirm).then(function(){
+                
+                $rootScope.$broadcast('preloader:active');
+                flightsFactory.delete(flight.id).success(function(data, status){
+
+                    if(status !== 200){
+                        $scope.showError(status);
+                        return;
+                    }
+
+                    $scope.showSuccess('Flight delete successfully');
+
+                    $scope.reloadData();
+
+                }).error(function(data, status){
+                    console.log(data);
+                    console.log(status);
+                    $scope.showError(status);
+                });
+            });
         };
     });
 })(); 
