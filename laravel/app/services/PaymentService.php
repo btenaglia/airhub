@@ -14,6 +14,8 @@ use PayPal\Api\Transaction;
 use PayPal\Auth\OAuthTokenCredential;
 use PayPal\Rest\ApiContext;
 use URL;
+//use Berkayk\OneSignal\OneSignalServiceProvider as  OneSignal;
+ use Braintree\Gateway;
 
 /**
  * TODO Comment of component here!
@@ -34,7 +36,7 @@ class PaymentService extends BaseService
 
     private $apiContext;
     private $payment;
-
+  
     public function __construct()
     {
         $this->apiContext = new ApiContext(
@@ -49,7 +51,17 @@ class PaymentService extends BaseService
         ]);
 
     }
-
+    public function prueba(){
+        // return base_path() . '/vendor';
+        $gateway = new Gateway([
+            'environment' => 'sandbox',
+            'merchantId' => '3x28yn7jxvp6cm56',
+            'publicKey' => '5cgvp4bd8t2t2vx4',
+            'privateKey' => '8e0cfa9e3a90bf8b19d3858b0b720566'
+        ]);
+        $clientToken = $gateway->clientToken()->generate();
+            return $clientToken;
+    }
     public function all()
     {
         return AppPayment::allPayments();

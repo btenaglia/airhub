@@ -403,6 +403,10 @@ Route::group(['prefix' => 'api/v1/private'], function() {
          * Payments routes
          */
         Route::get(
+            '/payments/test',
+            ['as' => 'payments.test', 'uses' => 'PaymentController@testBrain']
+        ); 
+        Route::get(
             '/payments',
             ['as' => 'payments.all', 'uses' => 'PaymentController@all']
         ); 

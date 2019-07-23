@@ -8,6 +8,7 @@
 class PaymentController extends BaseController
 {
 
+ 
     public function all()
     {
         $paymentService = $this->getService('Payment');
@@ -19,7 +20,14 @@ class PaymentController extends BaseController
             return $this->jsonResponse('No payments found.', self::HTTP_CODE_OK, []);
         }
     }
+    public function testBrain(){
+        $bookingService = $this->getService('Payment');
+        
+        $asd  = $bookingService->prueba();
 
+        return $this->jsonResponse('', self::HTTP_CODE_OK, $asd);
+        // return $this->jsonSuccessResponse();
+    }
     public function capturePayment($id)
     {
         $paymentService = $this->getService('Payment');

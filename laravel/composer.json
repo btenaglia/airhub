@@ -11,7 +11,8 @@
 		"davibennun/laravel-push-notification": "dev-master",
 		"sngrl/php-firebase-cloud-messaging": "dev-master",
 		"berkayk/onesignal-laravel": "*",
-		"guzzlehttp/guzzle": "^6.3"
+		"guzzlehttp/guzzle": "^6.3",
+		"braintree/braintree_php" : "^3.40"
 	},
 	"autoload": {
 		"classmap": [

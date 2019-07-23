@@ -2,6 +2,28 @@
 
 All notable changes to this project will be documented in this file, in reverse chronological order by release.
 
+## 2.10.0 - 2019-02-19
+
+### Added
+
+- [#173](https://github.com/zendframework/zend-http/pull/173) adds support for HTTP/2 requests and responses.
+
+### Changed
+
+- Nothing.
+
+### Deprecated
+
+- Nothing.
+
+### Removed
+
+- Nothing.
+
+### Fixed
+
+- Nothing.
+
 ## 2.9.1 - 2019-01-22
 
 ### Added
