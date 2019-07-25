@@ -195,16 +195,16 @@ class AccountService extends BaseService implements GenericServices
 
     public function getUserData()
     {
-        $user = $this->getCurrentUser();
-
-        if ($user === null) {
+        $user =  $this->getCurrentUser();
+        $user2 = User::with('GetMember')->find($user->id);
+        if ($user2 === null) {
             return null;
         }
 
         //remove private data
         $user->setPassword('');
 
-        return $user;
+        return $user2;
     }
 
     /**
