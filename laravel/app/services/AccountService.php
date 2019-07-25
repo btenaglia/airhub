@@ -75,6 +75,8 @@ class AccountService extends BaseService implements GenericServices
 
     public function authenticateAppUserByFacebook($credentials)
     {
+        // $user = User::with('getMember')->where("facebooktoken","=",$credentials['tokenfb'])->get();
+
         try {
             //$user = User::findAppUserByCredentials($credentials);
             $resfacebook = $this->facebookcheck($credentials["tokenfb"]);
@@ -89,10 +91,12 @@ class AccountService extends BaseService implements GenericServices
         }
 
         $id = $resfacebook['id'];
-
+        
         try {
-            $user = User::findAppUserByIdFB($id);
-
+            $user = User::with('getMember')->where("facebookid","=",$id)->get();
+            // $user = User::findAppUserByIdFB($id);
+          
+            return $user;
             /*Update id Onesignal*/
             if (isset($credentials['id_onesignal'])) {
                 $user->setIdOnesignal($credentials['id_onesignal']);
@@ -107,7 +111,6 @@ class AccountService extends BaseService implements GenericServices
 
             $user->setPassword('');
             return ['token' => $this->createToken($user), 'user' => $user];
-
         } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $ex) {
 
             $idonesignal = '';
@@ -120,7 +123,8 @@ class AccountService extends BaseService implements GenericServices
                 $idonesignal = $credentials["fcm_token_device"];
             }
 
-            $input = array('name' => (isset($resfacebook['first_name']) ? $resfacebook['first_name'] : $resfacebook['name']),
+            $input = array(
+                'name' => (isset($resfacebook['first_name']) ? $resfacebook['first_name'] : $resfacebook['name']),
                 'last_name' => (isset($resfacebook['last_name']) ? $resfacebook['last_name'] : ''),
                 'email' => $id . '@facebook.com',
                 'password' => substr($credentials["tokenfb"], -8),
@@ -140,7 +144,6 @@ class AccountService extends BaseService implements GenericServices
                 return null;
             }
         }
-
     }
 
     public function authenticateAppUserByFacebook2($credentials)
@@ -160,16 +163,17 @@ class AccountService extends BaseService implements GenericServices
 
         $id = $resfacebook['id'];
 
-        var_dump($resfacebook);exit(0);
+        var_dump($resfacebook);
+        exit(0);
 
         try {
             $user = User::findAppUserByIdFB($id);
             $user->setPassword('');
             return ['token' => $this->createToken($user), 'user' => $user];
-
         } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $ex) {
 
-            $input = array('name' => (isset($resfacebook['first_name']) ? $resfacebook['first_name'] : $resfacebook['name']),
+            $input = array(
+                'name' => (isset($resfacebook['first_name']) ? $resfacebook['first_name'] : $resfacebook['name']),
                 'last_name' => (isset($resfacebook['last_name']) ? $resfacebook['last_name'] : ''),
                 'email' => $id . '@facebook.com',
                 'password' => substr($credentials["tokenfb"], -8),
@@ -187,7 +191,6 @@ class AccountService extends BaseService implements GenericServices
                 return null;
             }
         }
-
     }
 
     public function getUserData()
@@ -284,7 +287,6 @@ class AccountService extends BaseService implements GenericServices
             if (isset($input['facebooktoken'])) {
                 $user->setFacebooktoken($input['facebooktoken']);
             }
-
         }
 
         if (strlen($this->phoneBE) > 1) {
@@ -325,7 +327,6 @@ class AccountService extends BaseService implements GenericServices
         $this->userType = User::USER_TYPE_APP;
         $input['member_id'] = $member->id;
         return $this->create($input);
-
     }
     /**
      * Create new account in the app for the mobile app users
@@ -353,7 +354,6 @@ class AccountService extends BaseService implements GenericServices
         $user->complete_name = $input['last_name'] . ',' . $input['name'];
         $user->save();
         return true;
-
     }
     /**
      * @param type $email is the unique identifier that the user knows
@@ -447,7 +447,6 @@ class AccountService extends BaseService implements GenericServices
                 } else {
                     $modify_m = true;
                 }
-
             } else {
                 $modify_m = true;
             }
@@ -460,7 +459,6 @@ class AccountService extends BaseService implements GenericServices
                 } else {
                     $modify_c = true;
                 }
-
             } else {
                 $modify_c = true;
             }
@@ -546,7 +544,6 @@ class AccountService extends BaseService implements GenericServices
             } else {
                 return null;
             }
-
         } else {
             return null;
         }
@@ -608,5 +605,4 @@ class AccountService extends BaseService implements GenericServices
 
         return $resultjson;
     }
-
 }
