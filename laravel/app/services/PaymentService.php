@@ -16,7 +16,6 @@ use PayPal\Auth\OAuthTokenCredential;
 use PayPal\Rest\ApiContext;
 //use Berkayk\OneSignal\OneSignalServiceProvider as  OneSignal;
 use URL;
-
 /**
  * TODO Comment of component here!
  *
@@ -36,7 +35,6 @@ class PaymentService extends BaseService
 
     private $apiContext;
     private $payment;
-
     public function __construct()
     {
         $this->apiContext = new ApiContext(

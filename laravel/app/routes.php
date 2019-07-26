@@ -413,6 +413,10 @@ Route::group(['prefix' => 'api/v1/private'], function() {
         ); 
         
         Route::get(
+            '/payments/token',
+            ['as' => 'payments.token', 'uses' => 'PaymentController@GetToken']
+        ); 
+        Route::get(
             '/payments',
             ['as' => 'payments.all', 'uses' => 'PaymentController@all']
         ); 

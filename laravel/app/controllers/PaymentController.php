@@ -55,6 +55,12 @@ class PaymentController extends BaseController
         return View::make('paypalResponse', array('content' => $data));
 
     }
+    public function getToken(){
+        
+        $bookingService = $this->getService('Payment');
+        $token = Array("token" => $bookingService->getTokenBrainTree());
+        return $this->jsonResponse('', self::HTTP_CODE_OK, $token);
+    }
     public function capturePayment($id)
     {
         $paymentService = $this->getService('Payment');
