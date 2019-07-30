@@ -36,6 +36,7 @@ class BookService extends BaseService implements GenericServices
 
             $bookings = AppPayment::bookingsByPayment($localPayment->getId());
             $mailService = $this->getService('Mail');
+            
             foreach ($bookings as $booking) {
                 //$mailService->sendConfirmationOfAuthorizePayment($booking);
             }
@@ -120,6 +121,7 @@ class BookService extends BaseService implements GenericServices
                          "price"=>$reservation['price'],
                          "link"=>$payment['url']];
                 $mailSrv->sendButtonPaypal($data);
+                $mailSrv->sendAdminEmailToConfirmation(["email" => $data['email']]);
                 return $data;
             } else {
                 return "weight";

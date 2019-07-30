@@ -109,7 +109,20 @@ class MailService extends BaseService {
         	return 'Ok';
         }	
     }
-
+    public function sendAdminEmailToConfirmation($datos){
+        $data = [
+            "client" => $datos['email'],
+        ];
+        $user = $this->getCurrentUser();
+        $user->email;
+       
+        Mail::send('mails.notification', $data, function ($msj) use ($user) {
+            $msj->from('alert@airhub.us');
+            $msj->subject('Notification Reservation seat');
+            $msj->to($user->email);
+            return true;
+        });
+    }
     public function sendButtonPaypal($reservation) {
     	$data = [
             "link" => $reservation['link'],
