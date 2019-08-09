@@ -2,6 +2,7 @@
 namespace App\Services;
 
 use App\Models\AppPayment;
+use Braintree\Gateway;
 use PayPal\Api\Amount;
 use PayPal\Api\Authorization;
 use PayPal\Api\Capture;
@@ -13,9 +14,8 @@ use PayPal\Api\RedirectUrls;
 use PayPal\Api\Transaction;
 use PayPal\Auth\OAuthTokenCredential;
 use PayPal\Rest\ApiContext;
-use URL;
 //use Berkayk\OneSignal\OneSignalServiceProvider as  OneSignal;
- use Braintree\Gateway;
+use URL;
 
 /**
  * TODO Comment of component here!
@@ -36,7 +36,7 @@ class PaymentService extends BaseService
 
     private $apiContext;
     private $payment;
-  
+
     public function __construct()
     {
         $this->apiContext = new ApiContext(
@@ -51,22 +51,62 @@ class PaymentService extends BaseService
         ]);
 
     }
-    public function prueba(){
+    public function prueba()
+    {
         // return base_path() . '/vendor';
         $gateway = new Gateway([
             'environment' => 'sandbox',
             'merchantId' => '3x28yn7jxvp6cm56',
             'publicKey' => '5cgvp4bd8t2t2vx4',
-            'privateKey' => '8e0cfa9e3a90bf8b19d3858b0b720566'
+            'privateKey' => '8e0cfa9e3a90bf8b19d3858b0b720566',
         ]);
         $clientToken = $gateway->clientToken()->generate();
-            return $clientToken;
+        return $clientToken;
+    }
+
+    public function paymentPayaForm($info)
+    {
+        $user_hash_key = '11e9baac440aa3c09f871199'; // secret hash key used for hashing the variables
+        $user_id = '11e9b2f3153f37a6b9c52525'; //  variables for generating the required hash
+        $timestamp = time(); // variables for generating the required hash
+        $salt = $user_id . $timestamp; //$user_id and $timestamp need to be in this order
+        $developer_id = "u41Si9JY";
+        $terminal_id = "11e9b3dea73c5fbc9739af9b";
+        $location_id = "11e9b2f3143c63babaf3548c";
+        $transaction_api_id = "11e9b2f3145792caaff2097f";
+        $domain = "https://api.sandbox.payaconnect.com";
+        $endpoint = "payform";
+        $transaction = '{
+            "transaction":{
+            "payment_method": "cc",
+            "transaction_amount": "' . $info['price'] . '",
+            "action": "sale",
+            "location_id": "' . $location_id . '",
+            "terminal_id": "' . $terminal_id . '",
+            "transaction_api_id":"' . $transaction_api_id . '"
+            }
+        }';
+
+        
+        $data = implode(unpack("H*", $transaction));
+        $hash_key = hash_hmac('sha256', $salt, $user_hash_key);
+       
+        return $url = sprintf("%s/v2/%s?developer-id=%s&hash-key=%s&user-id=%s&timestamp=%s&data=%s",
+            $domain,
+            $endpoint,
+            $developer_id,
+            $hash_key,
+            $user_id,
+            $timestamp,
+            $data
+        );
     }
     public function all()
     {
         return AppPayment::allPayments();
     }
-    public function allWeb(){
+    public function allWeb()
+    {
         return AppPayment::allPaymentsWeb();
     }
     public function getPayPalToken()

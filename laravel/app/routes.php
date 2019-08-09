@@ -402,9 +402,9 @@ Route::group(['prefix' => 'api/v1/private'], function() {
         /**
          * Payments routes
          */
-        Route::get(
-            '/payments/test',
-            ['as' => 'payments.test', 'uses' => 'PaymentController@testBrain']
+        Route::post(
+            '/payments/getUrlPayment',
+            ['as' => 'payments.getUrl', 'uses' => 'PaymentController@paymentPaya']
         ); 
         Route::get(
             '/payments',
