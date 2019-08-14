@@ -71,26 +71,46 @@ class PaymentService extends BaseService
         $timestamp = time(); // variables for generating the required hash
         $salt = $user_id . $timestamp; //$user_id and $timestamp need to be in this order
         $developer_id = "u41Si9JY";
-        $terminal_id = "11e9b3dea73c5fbc9739af9b";
+        // $terminal_id = "11e9b3dea73c5fbc9739af9b";
         $location_id = "11e9b2f3143c63babaf3548c";
-        $transaction_api_id = "11e9b2f3145792caaff2097f";
+        $transaction_api_id = "11e9b2f3145792caaff2097f"; // generarlo dinamicamente CREO
         $domain = "https://api.sandbox.payaconnect.com";
-        $endpoint = "payform";
-        $transaction = '{
-            "transaction":{
+        $endpoint = "accountform";
+        // $transaction = '{
+        //     "transaction":{
+        //     "payment_method": "cc",
+        //     "transaction_amount": "' . $info['price'] . '",
+        //     "action": "sale",
+        //     "location_id": "' . $location_id . '",
+        //     "terminal_id": "' . $terminal_id . '",
+        //     "transaction_api_id":"' . $transaction_api_id . '"
+        //     }
+        // }';
+        // Required fields
+
+        $accountvault = '{
+            "accountvault":{
             "payment_method": "cc",
-            "transaction_amount": "' . $info['price'] . '",
-            "action": "sale",
-            "location_id": "' . $location_id . '",
-            "terminal_id": "' . $terminal_id . '",
-            "transaction_api_id":"' . $transaction_api_id . '"
+            "location_id": "11e9b2f3143c63babaf3548c",
+            "account_vault_api_id": "123",
+            "title": "Account_vault",
+            "account_holder_name": "john smith",
+            "show_account_holder_name": true,
+            "show_street": true,
+            "show_zip": true,
+            "stylesheet_url": "{full URL - i.e. https://third.party.domain/css/styles.css}",
+            "display_close_button": true,
+            "parent_close": true,
+            "parent_close_delay": 3,
+            "parent_origin": null,
+            "redirect_url_on_approval": "https://www.google.com",
+            "redirect_url_delay": 10
             }
         }';
 
-        
-        $data = implode(unpack("H*", $transaction));
+        $data = implode(unpack("H*", $accountvault));
         $hash_key = hash_hmac('sha256', $salt, $user_hash_key);
-       
+
         return $url = sprintf("%s/v2/%s?developer-id=%s&hash-key=%s&user-id=%s&timestamp=%s&data=%s",
             $domain,
             $endpoint,

@@ -23,9 +23,45 @@ class PaymentController extends BaseController
     {
         $paymentsrv = $this->getService('Payment');
         $url = $paymentsrv->paymentPayaForm(Input::all());
+        
+            // $curl = curl_init();
+            // $url = 'https://api.sandbox.payaconnect.com/v2/transactions';
+            // curl_setopt_array($curl, array(
+            //     CURLOPT_URL => $url,
+            //     CURLOPT_RETURNTRANSFER => true,
+            //     CURLOPT_ENCODING => "",
+            //     CURLOPT_MAXREDIRS => 10,
+            //     CURLOPT_TIMEOUT => 30,
+            //     CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+            //     CURLOPT_CUSTOMREQUEST => "POST",
+            //     CURLOPT_POSTFIELDS => "{\n
+            //     \"transaction\": {\n
+            //             \"transaction_amount\": \"10\",\n
+            //             \"location_id\": \"11e9b2f3143c63babaf3548c\",\n
+            //             \"action\": \"sale\"\n
+            //     }\n}",
+            //     CURLOPT_HTTPHEADER => array(
+            //         "content-type: application/json",
+            //         "developer-id: u41Si9JY",
+            //         "user-api-key: 11e9baac440aa3c09f871199",
+            //         "user-id: 11e9b2f3153f37a6b9c52525"
+            //     ),
+            // ));
+
+            // $response = curl_exec($curl);
+            // $err = curl_error($curl);
+
+            // curl_close($curl);
+
+            // if ($err) {
+            //     echo "cURL Error #:" . $err;
+            // } else {
+            //     echo $response;
+            // }  
         return $this->jsonResponse('', self::HTTP_CODE_OK, $url);
         
     }
+    
     public function capturePayment($id)
     {
         $paymentService = $this->getService('Payment');
