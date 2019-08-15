@@ -1,5 +1,5 @@
 <?php
-
+use Illuminate\Support\Facades\Storage;
 /**
  * TODO Comment of component here!
  *
@@ -61,7 +61,17 @@ class PaymentController extends BaseController
         return $this->jsonResponse('', self::HTTP_CODE_OK, $url);
         
     }
-    
+    public function responseVauls(){
+
+        $data = implode(Input::all());
+        // $dataa = $request;
+        File::put('mytextdocument.txt',$data);
+        // File::put('mytextdocument.txt',$dataa);
+        return View::make('paypalResponse', array('content' => $data));
+            // Storage::put('response.txt', "hola");
+
+            // Storage::put('file.jpg', $resource);
+    }
     public function capturePayment($id)
     {
         $paymentService = $this->getService('Payment');
