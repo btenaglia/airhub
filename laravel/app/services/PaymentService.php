@@ -64,8 +64,10 @@ class PaymentService extends BaseService
         return $clientToken;
     }
 
-    public function paymentPayaForm($info)
+    public function paymentWithPaya($info)
     {
+
+        $path = $_SERVER['HTTP_HOST'];
         $user_hash_key = '11e9baac440aa3c09f871199'; // secret hash key used for hashing the variables
         $user_id = '11e9b2f3153f37a6b9c52525'; //  variables for generating the required hash
         $timestamp = time(); // variables for generating the required hash
@@ -73,7 +75,14 @@ class PaymentService extends BaseService
         $developer_id = "u41Si9JY";
         $terminal_id = "11e9b3dea73c5fbc9739af9b";
         $location_id = "11e9b2f3143c63babaf3548c";
-        $transaction_api_id = "11e9b2f314579222caa4d2ff2097ff"; // generarlo dinamicamente CREO
+        $transaction_api_id = sprintf('%04x%04x-%04x-%04x-%04x-%04x%04x%04x',
+            mt_rand(0, 0xffff), mt_rand(0, 0xffff),
+            mt_rand(0, 0xffff),
+            mt_rand(0, 0x0fff) | 0x4000,
+            mt_rand(0, 0x3fff) | 0x8000,
+            mt_rand(0, 0xffff), mt_rand(0, 0xffff), mt_rand(0, 0xffff)
+        ); // dynamic generated
+
         $domain = "https://api.sandbox.payaconnect.com";
         $endpoint = "payform";
         $transaction = '{
@@ -84,38 +93,16 @@ class PaymentService extends BaseService
             "location_id": "' . $location_id . '",
             "terminal_id": "' . $terminal_id . '",
             "transaction_api_id":"' . $transaction_api_id . '",
-            "redirect_url_on_approval": "http://airhub.info:8000/web/payments/response",
-            "parent_send_message": true
+            "redirect_url_on_approval":  "' . $path . '/web/payments/response",
+            "parent_send_message": true,
+            "redirect_url_delay": 5
             }
         }';
-        // "redirect_url_on_approval": "http://airhub.info:8000/api/v1/public/payments/response",
-        // "parent_send_message": true
-        // Required fields
 
-        // $accountvault = '{
-        //     "accountvault":{
-        //     "payment_method": "cc",
-        //     "location_id": "11e9b2f3143c63babaf3548c",
-        //     "account_vault_api_id": "162243424",
-        //     "title": "Account_vault",
-        //     "account_holder_name": "john smith",
-        //     "show_account_holder_name": true,
-        //     "show_street": true,
-        //     "show_zip": true,
-        //     "stylesheet_url": "{full URL - i.e. https://third.party.domain/css/styles.css}",
-        //     "display_close_button": true,
-        //     "parent_close": true,
-        //     "parent_close_delay": 3,
-        //     "parent_origin": null
-          
-        //     }
-        // }';
-        
-        // "redirect_url_delay": 10
         $data = implode(unpack("H*", $transaction));
         $hash_key = hash_hmac('sha256', $salt, $user_hash_key);
 
-        return $url = sprintf("%s/v2/%s?developer-id=%s&hash-key=%s&user-id=%s&timestamp=%s&data=%s",
+        $url = sprintf("%s/v2/%s?developer-id=%s&hash-key=%s&user-id=%s&timestamp=%s&data=%s",
             $domain,
             $endpoint,
             $developer_id,
@@ -124,6 +111,7 @@ class PaymentService extends BaseService
             $timestamp,
             $data
         );
+        return ["url" => $url, "id" => $transaction_api_id];
     }
     public function all()
     {

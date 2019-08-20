@@ -14,5 +14,5 @@ PAYMENT TICKETS
 Detail <br>
 
 <?=$ticket?> tickets | Total : USD <?=$price?> <br>
-<a href="<?=$link?>"><img width="200" src="http://www.stickpng.com/assets/images/5895cea4cba9841eabab606f.png"></a>
+<a href="<?=$link?>"><img width="200" src="https://paya.com/wp-content/uploads/2018/10/paya-logo-frombluetext-full-color-r-rgb-small.png"></a>
 </div>

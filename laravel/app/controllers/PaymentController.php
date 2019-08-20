@@ -22,7 +22,7 @@ class PaymentController extends BaseController
     public function paymentPaya()
     {
         $paymentsrv = $this->getService('Payment');
-        $url = $paymentsrv->paymentPayaForm(Input::all());
+        $url = $paymentsrv->paymentWithPaya(Input::all());
         
             // $curl = curl_init();
             // $url = 'https://api.sandbox.payaconnect.com/v2/transactions';
@@ -58,7 +58,7 @@ class PaymentController extends BaseController
             // } else {
             //     echo $response;
             // }  
-        return $this->jsonResponse('', self::HTTP_CODE_OK, $url);
+        return $this->jsonResponse('', self::HTTP_CODE_OK, $url["url"]);
         
     }
     public function responseVauls(){

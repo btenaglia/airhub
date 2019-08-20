@@ -79,20 +79,16 @@ class BookService extends BaseService implements GenericServices
             if ($weight_added >= $weightReservation) {
 
                 $paymentService = $this->getService('Payment');
-                // $paymentService->payWithpaypal()
-                //  $token = $paymentService->getPayPalToken();
-                //  $localPayment = new AppPayment();
-                //  $localPayment->save();
-                //  $paymentService->getPayPalToken();
-                $payment = $paymentService->payWithpaypal($reservation);
+                
+                $payment = $paymentService->payWithpaya($reservation['price']);
                 $Newpayment = new AppPayment();
                 $Newpayment->setExternalPaymentId($payment['id']);
                 $Newpayment->setCurrency('USD');
-                $Newpayment->setAmount($payment['transactions'][0]['amount']['total']);
+                $Newpayment->setAmount($reservation['price']);
                 $Newpayment->setDescription('Web Ticket');
-                $Newpayment->setIntent($payment['intent']);
+                $Newpayment->setIntent('');
                 $Newpayment->setExternalState('pending');
-                $Newpayment->setPaymentJson(json_encode($payment));
+                $Newpayment->setPaymentJson('');
                 $Newpayment->save();
                 foreach ($reservation['extras'] as $extra) {
                     $book = new Book();
@@ -124,7 +120,7 @@ class BookService extends BaseService implements GenericServices
                 $data = ["email" => $reservation['user']['email'],
                          "ticket"=>$reservation['seats'],
                          "price"=>$reservation['price'],
-                         "link"=>$payment['links'][1]['href']];
+                         "link"=>$payment['url']];
                 $mailSrv->sendButtonPaypal($data);
                 return $data;
             } else {
