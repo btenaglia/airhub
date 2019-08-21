@@ -64,7 +64,7 @@ class PaymentService extends BaseService
         return $clientToken;
     }
 
-    public function paymentWithPaya($info)
+    public function payWithpaya($info)
     {
 
         $path = $_SERVER['HTTP_HOST'];
