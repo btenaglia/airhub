@@ -3,7 +3,7 @@ namespace App\Services;
 
 use App\Models\AppPayment;
 use App\Models\Book;
-
+use App\Models\User;
 /**
  * The book service logic here
  *
@@ -56,7 +56,6 @@ class BookService extends BaseService implements GenericServices
     {
         $books = Book::findByFlight($reservation['flight_id']);
         $freeSeats = $reservation['seats_limit'] - Count($books);
-        // $reservation['seats_limit'];
         $reservatedSeats = count($reservation['extras']) + 1;
 
         if ($reservatedSeats <= $freeSeats) {
@@ -79,12 +78,11 @@ class BookService extends BaseService implements GenericServices
             if ($weight_added >= $weightReservation) {
 
                 $paymentService = $this->getService('Payment');
-                
-                $payment = $paymentService->payWithpaya($reservation['price']);
+                $payment = $paymentService->payWithpaya($reservation['price'] * $reservation['seats']);
                 $Newpayment = new AppPayment();
                 $Newpayment->setExternalPaymentId($payment['id']);
                 $Newpayment->setCurrency('USD');
-                $Newpayment->setAmount($reservation['price']);
+                $Newpayment->setAmount($reservation['price'] * $reservation['seats']);
                 $Newpayment->setDescription('Web Ticket');
                 $Newpayment->setIntent('');
                 $Newpayment->setExternalState('pending');
@@ -123,6 +121,84 @@ class BookService extends BaseService implements GenericServices
                          "link"=>$payment['url']];
                 $mailSrv->sendButtonPaypal($data);
                 return $data;
+            } else {
+                return "weight";
+            }
+
+        } else {
+            return "capacity";
+        }
+
+    }
+    
+    public function ReservationMobile($reservation)
+    {
+         
+        $books = Book::findByFlight($reservation['flight_id']);
+        $freeSeats = $reservation['seats_limit'] - Count($books);
+        // $reservation['seats_limit'];
+        $reservatedSeats = count($reservation['extras']) + 1;
+
+        if ($reservatedSeats <= $freeSeats) {
+
+            $weightSavedBooks = 0;
+            foreach ($books as $book) {
+                $weightSavedBooks += $book->body_weight;
+                $weightSavedBooks += $book->luggage_weight;
+            }
+            $weight_added = $reservation['weight_limit'] - $weightSavedBooks;
+            $weightReservation = 0;
+
+            foreach ($reservation['extras'] as $extra) {
+
+                $weightReservation = $extra['body_weight'];
+                $weightReservation = $extra['luggage_weight'];
+            }
+            $weightReservation += $reservation['body_weight'];
+            $weightReservation += $reservation['luggage_weight'];
+            if ($weight_added >= $weightReservation) {
+
+                $paymentService = $this->getService('Payment');
+                $payment = $paymentService->payWithpaya($reservation['price'] * $reservation['seats']);
+                $Newpayment = new AppPayment();
+                $Newpayment->setExternalPaymentId($payment['id']);
+                $Newpayment->setCurrency('USD');
+                $Newpayment->setAmount($reservation['price'] * $reservation['seats']);
+                $Newpayment->setDescription('Web Ticket');
+                $Newpayment->setIntent('');
+                $Newpayment->setExternalState('pending');
+                $Newpayment->setPaymentJson('');
+                $Newpayment->save();
+                foreach ($reservation['extras'] as $extra) {
+                    $book = new Book();
+
+                    $book->setCompleteName($extra['complete_name']);
+                    $book->setBodyWeight($extra['body_weight']);
+                    $book->setLuggageWeight($extra['luggage_weight']);
+                    $book->setAddress($extra['address']);
+                    $book->setCellPhone($extra['cell_phone']);
+                    $book->setEmail($extra['email']);
+
+                    $book->flight_id = $reservation['flight_id'];
+                    $book->user_id = $reservation['user_id'];
+                    $book->payment_id = $Newpayment->getId();
+                    $book->save();
+                }
+                $bookUser = new Book();
+                $user = User::find($reservation['user_id']);
+                $bookUser->setCompleteName($reservation['complete_name']);
+                $bookUser->setBodyWeight($reservation['body_weight']);
+                $bookUser->setLuggageWeight($reservation['luggage_weight']);
+                $bookUser->setAddress($user->address);
+                $bookUser->setCellPhone($user->cell_phone);
+                $bookUser->setEmail($user->email);
+                $bookUser->flight_id = $reservation['flight_id'];
+                $bookUser->user_id = $reservation['user_id'];
+                $bookUser->payment_id = $Newpayment->getId();
+                $bookUser->save();
+
+                return $payment['url'];
+                
             } else {
                 return "weight";
             }

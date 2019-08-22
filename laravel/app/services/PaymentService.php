@@ -88,7 +88,7 @@ class PaymentService extends BaseService
         $transaction = '{
             "transaction":{
             "payment_method": "cc",
-            "transaction_amount": "' . $info['price'] . '",
+            "transaction_amount": "' . $info . '",
             "action": "sale",
             "location_id": "' . $location_id . '",
             "terminal_id": "' . $terminal_id . '",

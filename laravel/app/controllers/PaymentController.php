@@ -1,5 +1,5 @@
 <?php
-use Illuminate\Support\Facades\Storage;
+
 /**
  * TODO Comment of component here!
  *
@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\Storage;
  */
 class PaymentController extends BaseController
 {
-
+    const HTTP_CODE_CONFLICT = 409;
     public function all()
     {
         $paymentService = $this->getService('Payment');
@@ -23,54 +23,37 @@ class PaymentController extends BaseController
     {
         $paymentsrv = $this->getService('Payment');
         $url = $paymentsrv->paymentWithPaya(Input::all());
-        
-            // $curl = curl_init();
-            // $url = 'https://api.sandbox.payaconnect.com/v2/transactions';
-            // curl_setopt_array($curl, array(
-            //     CURLOPT_URL => $url,
-            //     CURLOPT_RETURNTRANSFER => true,
-            //     CURLOPT_ENCODING => "",
-            //     CURLOPT_MAXREDIRS => 10,
-            //     CURLOPT_TIMEOUT => 30,
-            //     CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-            //     CURLOPT_CUSTOMREQUEST => "POST",
-            //     CURLOPT_POSTFIELDS => "{\n
-            //     \"transaction\": {\n
-            //             \"transaction_amount\": \"10\",\n
-            //             \"location_id\": \"11e9b2f3143c63babaf3548c\",\n
-            //             \"action\": \"sale\"\n
-            //     }\n}",
-            //     CURLOPT_HTTPHEADER => array(
-            //         "content-type: application/json",
-            //         "developer-id: u41Si9JY",
-            //         "user-api-key: 11e9baac440aa3c09f871199",
-            //         "user-id: 11e9b2f3153f37a6b9c52525"
-            //     ),
-            // ));
 
-            // $response = curl_exec($curl);
-            // $err = curl_error($curl);
-
-            // curl_close($curl);
-
-            // if ($err) {
-            //     echo "cURL Error #:" . $err;
-            // } else {
-            //     echo $response;
-            // }  
         return $this->jsonResponse('', self::HTTP_CODE_OK, $url["url"]);
+
+    }
+    public function reservationMobileCreate()
+    {
+        $paymentsrv = $this->getService('Book');
+        $url = $paymentsrv->ReservationMobile(Input::all());
+        
+        // if ($url == 'capacity') {
+        //     return $this->jsonResponse('Capacity Exceed', self::HTTP_CODE_CONFLICT, []);
+        // } else if ($url == 'weight') {
+        //     return $this->jsonResponse('Weight Exceed', self::HTTP_CODE_CONFLICT, []);
+        // } else {
+            return $this->jsonResponse('', self::HTTP_CODE_OK, $url);
+        // }
         
     }
-    public function responseVauls(){
-
+    public function showIframePaya()
+    {
+        $data = Input::all();
+        $paymentsrv = $this->getService('Payment');
+        $url = $paymentsrv->payments($data);
+        return View::make('iframePaya', array('content' => $data));
+    }
+    public function responseVauls()
+    {
         $data = implode(Input::all());
-        // $dataa = $request;
-        File::put('mytextdocument.txt',$data);
-        // File::put('mytextdocument.txt',$dataa);
+        File::put('mytextdocument.txt', $data);
         return View::make('paypalResponse', array('content' => $data));
-            // Storage::put('response.txt', "hola");
 
-            // Storage::put('file.jpg', $resource);
     }
     public function capturePayment($id)
     {

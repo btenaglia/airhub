@@ -33,6 +33,7 @@ Route::group(['prefix' => '/web'], function () {
         'payments/response',
         ['as' => 'payments.response', 'uses' => 'PaymentController@responseVauls']
     ); 
+ 
 });	
  
 Route::group(['prefix' => 'api/v1/public'], function () {
@@ -427,6 +428,10 @@ Route::group(['prefix' => 'api/v1/private'], function() {
             '/payments/{id}/capture',
             ['as' => 'payments.find', 'uses' => 'PaymentController@capturePayment']
         );
+        Route::post(
+            'payments/reservationMobileCreate',
+            ['as' => 'payments.response', 'uses' => 'PaymentController@reservationMobileCreate']
+        ); 
         Route::get('/tests/testauth',
         ['as' => 'tests.testauth', 'uses' => 'TestController@testauth']
         );
