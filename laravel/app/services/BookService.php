@@ -4,6 +4,7 @@ namespace App\Services;
 use App\Models\AppPayment;
 use App\Models\Book;
 use App\Models\User;
+
 /**
  * The book service logic here
  *
@@ -36,7 +37,7 @@ class BookService extends BaseService implements GenericServices
 
             $bookings = AppPayment::bookingsByPayment($localPayment->getId());
             $mailService = $this->getService('Mail');
-            
+
             foreach ($bookings as $booking) {
                 //$mailService->sendConfirmationOfAuthorizePayment($booking);
             }
@@ -78,12 +79,14 @@ class BookService extends BaseService implements GenericServices
             $weightReservation += $reservation['luggage_weight'];
             if ($weight_added >= $weightReservation) {
 
+                $price_total = $reservation['price'] * $reservation['seats'];
+                $price_discount = $price_total - ($price_total * $reservation['get_member']['discount']);
                 $paymentService = $this->getService('Payment');
-                $payment = $paymentService->payWithpaya($reservation['price'] * $reservation['seats']);
+                $payment = $paymentService->payWithpaya($price_discount);
                 $Newpayment = new AppPayment();
                 $Newpayment->setExternalPaymentId($payment['id']);
                 $Newpayment->setCurrency('USD');
-                $Newpayment->setAmount($reservation['price'] * $reservation['seats']);
+                $Newpayment->setAmount($price_discount);
                 $Newpayment->setDescription('Web Ticket');
                 $Newpayment->setIntent('');
                 $Newpayment->setExternalState('pending');
@@ -117,9 +120,9 @@ class BookService extends BaseService implements GenericServices
                 $bookUser->save();
                 $mailSrv = $this->getService('Mail');
                 $data = ["email" => $reservation['user']['email'],
-                         "ticket"=>$reservation['seats'],
-                         "price"=>$reservation['price'],
-                         "link"=>$payment['url']];
+                    "ticket" => $reservation['seats'],
+                    "price" => $price_discount,
+                    "link" => $payment['url']];
                 $mailSrv->sendButtonPaypal($data);
                 $mailSrv->sendAdminEmailToConfirmation(["email" => $data['email']]);
                 return $data;
@@ -132,10 +135,10 @@ class BookService extends BaseService implements GenericServices
         }
 
     }
-    
+
     public function ReservationMobile($reservation)
     {
-         
+
         $books = Book::findByFlight($reservation['flight_id']);
         $freeSeats = $reservation['seats_limit'] - Count($books);
         // $reservation['seats_limit'];
@@ -160,12 +163,15 @@ class BookService extends BaseService implements GenericServices
             $weightReservation += $reservation['luggage_weight'];
             if ($weight_added >= $weightReservation) {
 
+                $user = User::with('GetMember')->find($reservation['user_id']);
+                $price_total = $reservation['price'] * $reservation['seats'];
+                $price_discount = $price_total - ($price_total * $user->get_member->discount);
                 $paymentService = $this->getService('Payment');
-                $payment = $paymentService->payWithpaya($reservation['price'] * $reservation['seats']);
+                $payment = $paymentService->payWithpaya($price_discount);
                 $Newpayment = new AppPayment();
                 $Newpayment->setExternalPaymentId($payment['id']);
                 $Newpayment->setCurrency('USD');
-                $Newpayment->setAmount($reservation['price'] * $reservation['seats']);
+                $Newpayment->setAmount($price_discount);
                 $Newpayment->setDescription('Web Ticket');
                 $Newpayment->setIntent('');
                 $Newpayment->setExternalState('pending');
@@ -180,7 +186,6 @@ class BookService extends BaseService implements GenericServices
                     $book->setAddress($extra['address']);
                     $book->setCellPhone($extra['cell_phone']);
                     $book->setEmail($extra['email']);
-
                     $book->flight_id = $reservation['flight_id'];
                     $book->user_id = $reservation['user_id'];
                     $book->payment_id = $Newpayment->getId();
@@ -200,7 +205,7 @@ class BookService extends BaseService implements GenericServices
                 $bookUser->save();
 
                 return $payment['url'];
-                
+
             } else {
                 return "weight";
             }
