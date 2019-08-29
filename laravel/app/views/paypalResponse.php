@@ -38,7 +38,7 @@
             <div class="info">
                 <img src="/images/Airplane.png" alt="">
                 <div class="text">
-                Thank you by your payment!
+                Thank you !
                 Contact us to report the payment.
                 </div>
             </div>

@@ -172,7 +172,7 @@ class BookService extends BaseService implements GenericServices
                 $Newpayment->setExternalPaymentId($payment['id']);
                 $Newpayment->setCurrency('USD');
                 $Newpayment->setAmount($price_discount);
-                $Newpayment->setDescription('Web Ticket');
+                $Newpayment->setDescription('Android Ticket');
                 $Newpayment->setIntent('');
                 $Newpayment->setExternalState('pending');
                 $Newpayment->setPaymentJson('');

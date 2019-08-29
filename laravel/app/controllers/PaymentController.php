@@ -7,7 +7,7 @@
  */
 class PaymentController extends BaseController
 {
-    const HTTP_CODE_CONFLICT = 409;
+    
     public function all()
     {
         $paymentService = $this->getService('Payment');
@@ -22,24 +22,36 @@ class PaymentController extends BaseController
     public function paymentPaya()
     {
         $paymentsrv = $this->getService('Payment');
-        $url = $paymentsrv->paymentWithPaya(Input::all());
+        $price = Input::all();
+        $url = $paymentsrv->payWithpaya($price['price']);
+        $path = "http://" . $_SERVER['HTTP_HOST'] . "/web/payments/getIframe?url=" . strval($url["url"]);
+        return $this->jsonResponse('', self::HTTP_CODE_OK, $path);
 
-        return $this->jsonResponse('', self::HTTP_CODE_OK, $url["url"]);
+    }
+    public function getIframe()
+    {
+
+        $url = Input::all();
+        $reconstruct = $url["url"] . "&hash-key=" . $url["hash-key"] . "&user-id=" . $url["user-id"] . "&timestamp=" . $url["timestamp"] . "&data=" . $url["data"];
+        return View::make('iframePaya', ["content" => $reconstruct]);
 
     }
     public function reservationMobileCreate()
     {
         $paymentsrv = $this->getService('Book');
         $url = $paymentsrv->ReservationMobile(Input::all());
-        
+
         if ($url == 'capacity') {
             return $this->jsonResponse('Capacity Exceed', self::HTTP_CODE_CONFLICT, []);
         } else if ($url == 'weight') {
             return $this->jsonResponse('Weight Exceed', self::HTTP_CODE_CONFLICT, []);
         } else {
+            //aca tengo q hacer lo del iframe
+
+            //
             return $this->jsonResponse('', self::HTTP_CODE_OK, $url);
         }
-        
+
     }
     public function showIframePaya()
     {
@@ -48,17 +60,38 @@ class PaymentController extends BaseController
         $url = $paymentsrv->payments($data);
         return View::make('iframePaya', array('content' => $data));
     }
-    public function responseVauls()
+    public function responseTransaccion()
     {
         $data = implode(Input::all());
         File::put('mytextdocument.txt', $data);
         return View::make('paypalResponse', array('content' => $data));
 
     }
-    public function getToken(){
+    public function responseTransaccionDeclined()
+    {
+        $data = implode(Input::all());
+        File::put('mytextdocument.txt', $data);
+        return View::make('paypalResponse', array('content' => $data));
+
+    }
+    public function updateStatusPayment(){
+        //data
+        //reason_code_id - // transaction_api_id
+        $input = Input::all();
+        $payment = $this->getService('Payment');
+        $status = $payment->updatePay($input);
         
+        if($status == 'ok')
+        return $this->jsonResponse('', self::HTTP_CODE_OK, $status);
+        else
+        return $this->jsonResponse('error', self::HTTP_CODE_SERVER_ERROR);
+
+    }
+    public function getToken()
+    {
+
         $bookingService = $this->getService('Payment');
-        $token = Array("token" => $bookingService->getTokenBrainTree());
+        $token = array("token" => $bookingService->getTokenBrainTree());
         return $this->jsonResponse('', self::HTTP_CODE_OK, $token);
     }
     public function capturePayment($id)

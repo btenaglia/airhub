@@ -16,6 +16,7 @@ use PayPal\Auth\OAuthTokenCredential;
 use PayPal\Rest\ApiContext;
 //use Berkayk\OneSignal\OneSignalServiceProvider as  OneSignal;
 use URL;
+
 /**
  * TODO Comment of component here!
  *
@@ -91,12 +92,14 @@ class PaymentService extends BaseService
             "location_id": "' . $location_id . '",
             "terminal_id": "' . $terminal_id . '",
             "transaction_api_id":"' . $transaction_api_id . '",
-            "redirect_url_on_approval":  "' . $path . '/web/payments/response",
-            "parent_send_message": true,
-            "redirect_url_delay": 5
+            "redirect_url_on_decline":"http://' . $path . '/web/payments/responseDeclined",
+            "redirect_url_on_approval":"http://' . $path . '/web/payments/response",
+            "parent_send_message":1
             }
         }';
-
+        //"redirect_url_on_decline":"' . $path . '/web/payments/response",
+        // "redirect_url_on_approval":  "' . $path . '/web/payments/response",
+        // "redirect_url_delay": 5
         $data = implode(unpack("H*", $transaction));
         $hash_key = hash_hmac('sha256', $salt, $user_hash_key);
 
@@ -110,6 +113,22 @@ class PaymentService extends BaseService
             $data
         );
         return ["url" => $url, "id" => $transaction_api_id];
+    }
+    public function updatePay($data)
+    {
+        
+        $pago = AppPayment::where("external_payment_id", "=", $data['id'])->update(['external_state' => $this->validate($data['status'])]);
+        return $pago == 1 ? "ok" : "error";
+    }
+    public function validate($status)
+    {
+
+        if ($status == 1000) {
+            return "approved";
+        } else {
+            return "declined";
+        }
+
     }
     public function all()
     {

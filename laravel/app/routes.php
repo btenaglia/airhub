@@ -31,9 +31,16 @@ Route::group(['prefix' => '/web'], function () {
     );
     Route::get(
         'payments/response',
-        ['as' => 'payments.response', 'uses' => 'PaymentController@responseVauls']
+        ['as' => 'payments.response', 'uses' => 'PaymentController@responseTransaccion']
     ); 
- 
+    Route::get(
+        'payments/responseDeclined',
+        ['as' => 'payments.response', 'uses' => 'PaymentController@responseTransaccionDeclined']
+    ); 
+    Route::get(
+        'payments/getIframe',
+        ['as' => 'payments.response', 'uses' => 'PaymentController@getIframe']
+    ); 
 });	
  
 Route::group(['prefix' => 'api/v1/public'], function () {
@@ -66,6 +73,9 @@ Route::group(['prefix' => 'api/v1/public'], function () {
     Route::get('/tests/test',
         ['as' => 'tests.test', 'uses' => 'TestController@test']
     );
+    Route::post('/payments/status',
+    ['as' => 'payment.status', 'uses' => 'PaymentController@updateStatusPayment']
+);
  
 });
 
