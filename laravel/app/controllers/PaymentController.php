@@ -49,7 +49,8 @@ class PaymentController extends BaseController
             //aca tengo q hacer lo del iframe
 
             //
-            return $this->jsonResponse('', self::HTTP_CODE_OK, $url);
+            $path = "http://" . $_SERVER['HTTP_HOST'] . "/web/payments/getIframe?url=" . strval($url["url"]);
+            return $this->jsonResponse('', self::HTTP_CODE_OK, $path);
         }
 
     }
