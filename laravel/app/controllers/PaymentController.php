@@ -7,7 +7,7 @@
  */
 class PaymentController extends BaseController
 {
-    
+
     public function all()
     {
         $paymentService = $this->getService('Payment');
@@ -46,8 +46,8 @@ class PaymentController extends BaseController
         } else if ($url == 'weight') {
             return $this->jsonResponse('Weight Exceed', self::HTTP_CODE_CONFLICT, []);
         } else {
-                       
-            $path = "http://" . $_SERVER['HTTP_HOST'] . "/web/payments/getIframe?url=" . strval($url);
+            $protocol = stripos($_SERVER['SERVER_PROTOCOL'], 'https') === 0 ? 'https://' : 'http://';
+            $path = $protocol . "" . $_SERVER['HTTP_HOST'] . "/web/payments/getIframe?url=" . strval($url);
             return $this->jsonResponse('', self::HTTP_CODE_OK, $path);
         }
 
@@ -73,17 +73,19 @@ class PaymentController extends BaseController
         return View::make('paypalResponse', array('content' => $data));
 
     }
-    public function updateStatusPayment(){
+    public function updateStatusPayment()
+    {
         //data
         //reason_code_id - // transaction_api_id
         $input = Input::all();
         $payment = $this->getService('Payment');
         $status = $payment->updatePay($input);
-        
-        if($status == 'ok')
-        return $this->jsonResponse('', self::HTTP_CODE_OK, $status);
-        else
-        return $this->jsonResponse('error', self::HTTP_CODE_SERVER_ERROR);
+
+        if ($status == 'ok') {
+            return $this->jsonResponse('', self::HTTP_CODE_OK, $status);
+        } else {
+            return $this->jsonResponse('error', self::HTTP_CODE_SERVER_ERROR);
+        }
 
     }
     public function getToken()
