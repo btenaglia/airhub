@@ -46,10 +46,8 @@ class PaymentController extends BaseController
         } else if ($url == 'weight') {
             return $this->jsonResponse('Weight Exceed', self::HTTP_CODE_CONFLICT, []);
         } else {
-            //aca tengo q hacer lo del iframe
-
-            //
-            $path = "http://" . $_SERVER['HTTP_HOST'] . "/web/payments/getIframe?url=" . strval($url["url"]);
+                       
+            $path = "http://" . $_SERVER['HTTP_HOST'] . "/web/payments/getIframe?url=" . strval($url);
             return $this->jsonResponse('', self::HTTP_CODE_OK, $path);
         }
 
