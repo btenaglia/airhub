@@ -46,5 +46,5 @@
                 </div>
             </div>
 
-<footer>Allies Air</footer>
+<footer>Allies Air Co.</footer>
 </div>
