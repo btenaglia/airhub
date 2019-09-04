@@ -6,10 +6,9 @@
         position:relative;
     }
 .container{
-    display: grid;
-    justify-content: center;
-    /* font-size: 2em; */
+
     align-items: center;
+
     height: 100%;
     font-family: sans-serif;
     background-repeat: repeat;
@@ -17,6 +16,10 @@
     background-size: cover;
     background-image: url(/images/flight.png);
     position: absolute;
+    display: flex;
+    flex-direction: column;
+ 
+    justify-content: space-around;
 
 }
 .container .info{
@@ -30,7 +33,7 @@
 
         color: white;
         text-shadow: 1px 1px 10px #000000e0;
-
+        text-align: center;
 }
 .container footer{
     color:white;
@@ -41,6 +44,10 @@
     .container .info{
         display:block;
         text-align: center;
+
+    }
+    .container .info img{
+        width: 350px;
     }
 }
 </style>
