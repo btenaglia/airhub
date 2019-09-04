@@ -13,12 +13,15 @@
     font-family: sans-serif;
     background-repeat:repeat;
     background-color: #b8fdf6;
+    background-size: cover;
     background-image:url(/images/flight.png);
 
 }
 .container .info{
     display:flex;
-    align-items:center;
+    align-items: center;
+    flex-wrap: wrap;
+    justify-content: space-around;
 }
 .container .info .text{
 
@@ -43,5 +46,5 @@
                 </div>
             </div>
 
-<footer>Airhub Co.</footer>
+<footer>Allies Air</footer>
 </div>
