@@ -5,14 +5,14 @@
 <style>
 #msg{
   color: #4b4c4c;
-
     margin: 20px;
     background: #e2dddd;
     padding: 20;
     border-radius: 5px;
     font-size: 1rem;
     font-family: sans-serif;
-    visibility:hidden
+    visibility: hidden;
+    position: absolute;
 }
 }
 </style>
