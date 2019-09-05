@@ -8,7 +8,6 @@
 .container{
 
     align-items: center;
-
     height: 100%;
     font-family: sans-serif;
     background-repeat: repeat;
@@ -18,16 +17,16 @@
     position: absolute;
     display: flex;
     flex-direction: column;
- 
     justify-content: space-around;
 
 }
 .container .info{
     display:flex;
     align-items: center;
+    font-size: 1.5em;
     flex-wrap: wrap;
     justify-content: space-around;
-
+    flex-direction: column;
 }
 .container .info .text{
 
@@ -47,7 +46,8 @@
 
     }
     .container .info img{
-        width: 350px;
+        /* width: 350px; */
+        display:none
     }
 }
 </style>

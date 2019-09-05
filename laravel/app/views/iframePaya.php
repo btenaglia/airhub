@@ -15,6 +15,9 @@
     position: absolute;
 }
 }
+iframe .payForm{
+  width:100% !important;
+}
 </style>
 <!-- Other HTML Here -->
 
@@ -25,8 +28,11 @@
 
 <script>
 
-window.addEventListener("message", receiveMessage, false);
 
+// .payForm
+window.addEventListener("message", receiveMessage, false);
+// document.getElementsByClassName('payForm')[0].style.width= "100%"
+console.log(`%c document.getElementsByClassName('payForm') 🤞`, 'color:orange; font-size:12px; padding:2px 4px; background: #333; border-radius:4px;',document.getElementsByClassName('payForm'))
 function receiveMessage(event) {
   // Make sure the value for allowed matches the domain of the iFrame you are embedding.
   // var allowed = "https://api.sandbox.domain.com";
