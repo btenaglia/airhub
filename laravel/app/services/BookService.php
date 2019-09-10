@@ -169,15 +169,21 @@ class BookService extends BaseService implements GenericServices
                 else
                 $price_total = $reservation['price'] * $reservation['seats'];
 
-                if(isset($user->get_member->discount))
-                $price_discount = $price_total - ($price_total * $user->get_member->discount);
+                if(isset($user->get_member->discount)){
+                    if($user->get_member->discount == 1)
+                    $price_discount = 0;
+                    else
+                    $price_discount = $price_total - ($price_total * $user->get_member->discount);
+                }
                 else
                 $price_discount = $price_total;
-                
-                $paymentService = $this->getService('Payment');
-                $payment = $paymentService->payWithpaya($price_discount);
                 $Newpayment = new AppPayment();
-                $Newpayment->setExternalPaymentId($payment['id']);
+                $payment = 0;
+                if($price_discount > 0){
+                    $paymentService = $this->getService('Payment');
+                    $payment = $paymentService->payWithpaya($price_discount);
+                    $Newpayment->setExternalPaymentId($payment['id']);
+                }
                 $Newpayment->setCurrency('USD');
                 $Newpayment->setAmount($price_discount);
                 $Newpayment->setDescription('Android Ticket');
@@ -198,9 +204,13 @@ class BookService extends BaseService implements GenericServices
                     $book->payment_id = $Newpayment->getId();
                     $book->save();
                 }
-                if(isset($reservation['notravel']) && $reservation['notravel'])
-                return $payment['url'];
-
+                if(isset($reservation['notravel']) && $reservation['notravel']){
+                    if($payment > 0)
+                    return $payment['url'];
+                    else
+                    return "free";
+                }
+                
                 $bookUser = new Book();
                 $user = User::find($reservation['user_id']);
                 $bookUser->setCompleteName($reservation['complete_name']);
@@ -213,7 +223,10 @@ class BookService extends BaseService implements GenericServices
                 $bookUser->user_id = $reservation['user_id'];
                 $bookUser->payment_id = $Newpayment->getId();
                 $bookUser->save();
+                if($payment > 0)
                 return $payment['url'];
+                else
+                return "free";
 
             } else {
                 return "weight";

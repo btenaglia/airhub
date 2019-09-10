@@ -45,7 +45,11 @@ class PaymentController extends BaseController
             return $this->jsonResponse('Capacity Exceed', self::HTTP_CODE_CONFLICT, []);
         } else if ($url == 'weight') {
             return $this->jsonResponse('Weight Exceed', self::HTTP_CODE_CONFLICT, []);
-        } else {
+        } 
+        else if($url == 'free'){
+            return $this->jsonResponse('', self::HTTP_CODE_OK, "The Reservation has been successfully completed!");
+        }
+        else {
             $protocol = stripos($_SERVER['SERVER_PROTOCOL'], 'https') === 0 ? 'https://' : 'http://';
             $path = $protocol . "" . $_SERVER['HTTP_HOST'] . "/web/payments/getIframe?url=" . strval($url);
             return $this->jsonResponse('', self::HTTP_CODE_OK, $path);
