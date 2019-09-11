@@ -74,8 +74,10 @@ Route::group(['prefix' => 'api/v1/public'], function () {
         ['as' => 'tests.test', 'uses' => 'TestController@test']
     );
     Route::post('/payments/status',
-    ['as' => 'payment.status', 'uses' => 'PaymentController@updateStatusPayment']
-);
+    ['as' => 'payment.status', 'uses' => 'PaymentController@updateStatusPayment']);
+    Route::get('/places',
+    ['as' => 'places.all', 'uses' => 'PlaceController@all']);
+
  
 });
 

@@ -14,12 +14,17 @@
 App::before(function($request)
 {
 	//
+
 });
 
 
 App::after(function($request, $response)
 {
 	//
+	$response->headers->set('Access-Control-Allow-Origin', '*');
+    $response->headers->set('Access-Control-Allow-Headers','GET, POST, OPTIONS, PUT, DELETE, X-Requested-With, Content-Type, Authorization');
+    $response->headers->set('Access-Control-Allow-Methods','GET, POST, OPTIONS, PUT, DELETE');
+    return $response;
 });
 
 /*
