@@ -297,5 +297,10 @@ class AccountController extends BaseController implements GenericControllers {
     	$mailService = $this->getService('Mail');
       return $mailService->sendTest();
     }
+
+    public function ContactEmail(){
+        $input = Input::all();
+        return $this->jsonResponse('', self::HTTP_CODE_OK, $input);
+    }
   	
 }

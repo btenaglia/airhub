@@ -41,6 +41,7 @@ Route::group(['prefix' => '/web'], function () {
         'payments/getIframe',
         ['as' => 'payments.response', 'uses' => 'PaymentController@getIframe']
     ); 
+   
 });	
  
 Route::group(['prefix' => 'api/v1/public'], function () {
@@ -77,7 +78,10 @@ Route::group(['prefix' => 'api/v1/public'], function () {
     ['as' => 'payment.status', 'uses' => 'PaymentController@updateStatusPayment']);
     Route::get('/places',
     ['as' => 'places.all', 'uses' => 'PlaceController@all']);
-
+    Route::post(
+        'contacts/',
+        ['as' => 'payments.response', 'uses' => 'AccountController@ContactEmail']
+    ); 
  
 });
 
