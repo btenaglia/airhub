@@ -148,6 +148,7 @@ class MailService extends BaseService {
         $msj->from('alert@airhub.us');
         $msj->subject('passages');
         $msj->to(["m.koss@alliesair.com"]);
+        
         return true;
     });
 }

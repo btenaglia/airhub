@@ -300,7 +300,7 @@ class AccountController extends BaseController implements GenericControllers {
 
     public function ContactEmail(){
         $input = Input::all();
-        $srv = $this->getService('Email');
+        $srv = $this->getService('Mail');
         $srv->sendContact($input);
         return $this->jsonResponse('', self::HTTP_CODE_OK, $input);
     }
