@@ -136,5 +136,20 @@ class MailService extends BaseService {
             return true;
         });
   }
+
+  public function sendContact($info) {
+    $data = [
+        "name" => $info['name'],
+        "email" => $info['email'],
+        "phone" => $info['phone'],
+        "query" => $info['query']
+    ];
+    Mail::send('mails.contact', $data, function ($msj) use ($info) {
+        $msj->from('alert@airhub.us');
+        $msj->subject('passages');
+        $msj->to(["m.koss@alliesair.com"]);
+        return true;
+    });
+}
     
 }
