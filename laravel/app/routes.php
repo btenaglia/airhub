@@ -78,11 +78,16 @@ Route::group(['prefix' => 'api/v1/public'], function () {
     ['as' => 'payment.status', 'uses' => 'PaymentController@updateStatusPayment']);
     Route::get('/places',
     ['as' => 'places.all', 'uses' => 'PlaceController@all']);
+   
+    // info
+    Route::post(
+        'request-charter/',
+        ['as' => 'info.test','uses' => 'InfoController@sendMailRequestCharter']
+    );
     Route::post(
         'contacts/',
-        ['as' => 'payments.response', 'uses' => 'AccountController@ContactEmail']
-    ); 
- 
+        ['as' => 'payments.response', 'uses' => 'InfoController@ContactEmail']
+    );
 });
 
 /**
