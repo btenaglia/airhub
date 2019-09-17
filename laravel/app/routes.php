@@ -49,6 +49,8 @@ Route::group(['prefix' => 'api/v1/public'], function () {
     Route::post('accounts/login', 
         ['as' => 'account.login', 'uses' => 'AccountController@login']
     );
+    Route::get('/validateToken/{token}',
+    ['as' => 'account.token', 'uses' => 'AccountController@validateToken']);
     
     Route::post('accounts/login-mobile', 
         ['as' => 'account.login-mobile', 'uses' => 'AccountController@loginMobile']

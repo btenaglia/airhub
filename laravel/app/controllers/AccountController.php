@@ -121,7 +121,11 @@ class AccountController extends BaseController implements GenericControllers {
             return $this->jsonResponse('', self::HTTP_CODE_OK, $userData);
         }
     }
-    
+    public function validateToken($token){
+        $accountService = $this->getService('Account');
+        $user = $accountService->validateAccessToken($token);
+        return $this->jsonResponse('', self::HTTP_CODE_OK, $user);
+    }
     public function loginMobile() {
         $credentials = Input::only('email', 'password','id_onesignal','fcm_token_device');
         $accountService = $this->getService('Account');

@@ -605,4 +605,8 @@ class AccountService extends BaseService implements GenericServices
 
         return $resultjson;
     }
+    public function validateAccessToken($token){
+        $user = JWTAuth::toUser($token);
+        return $user;
+    }
 }
