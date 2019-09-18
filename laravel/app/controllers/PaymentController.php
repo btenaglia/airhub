@@ -84,12 +84,12 @@ class PaymentController extends BaseController
         $input = Input::all();
         $payment = $this->getService('Payment');
         $status = $payment->updatePay($input);
-
-        if ($status == 'ok') {
-            return $this->jsonResponse('', self::HTTP_CODE_OK, $status);
-        } else {
-            return $this->jsonResponse('error', self::HTTP_CODE_SERVER_ERROR);
-        }
+        return $this->jsonResponse('', self::HTTP_CODE_OK, $input);
+        // if ($status == 'ok') {
+        //     return $this->jsonResponse('', self::HTTP_CODE_OK, $status);
+        // } else {
+        //     return $this->jsonResponse('error', self::HTTP_CODE_SERVER_ERROR);
+        // }
 
     }
     public function getToken()

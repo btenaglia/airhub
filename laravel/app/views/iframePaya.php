@@ -49,20 +49,24 @@ function receiveMessage(event) {
   }
   var path = location.protocol +"//"+ window.location.host
 
-  fetch(`${path}/api/v1/public/payments/status`,{
+ const value = fetch(`${path}/api/v1/public/payments/status`,{
     method:'POST',
     body:JSON.stringify(body),
     headers:{
     'Content-Type': 'application/json'
   }
-  }  ).then(data => {
-    document.getElementById('msg').innerHTML = data.data == 'ok' ? "Payment success" : "Payment Declined"
+  }).then(
+    data => data.json()
+  ).then(value => {
+    
+    document.getElementById('msg').innerHTML = value.data.status == 1000 ? "<span style='color:green'>Payment success</span>" : "Payment Declined"
     document.getElementById('msg').style.visibility = "visible"
     console.log(`%c status ${data.data}`, 'color:orange; font-size:12px; padding:2px 4px; background: #333; border-radius:4px;');
   }).catch(e => {console.log(e)
     document.getElementById('msg').innerHTML =  "Payment Declined"
     document.getElementById('msg').style.visibility = "visible"
    })
+   
 }
 
 </script>
