@@ -33,9 +33,10 @@ class FlightController extends BaseController implements GenericControllers
             return $this->jsonResponse('No future flights found.', self::HTTP_CODE_OK, []);
         }
     }
-    public function flightsByPlaces($origin,$destination){
+    public function flightsByPlaces($origin, $destination)
+    {
         $flightService = $this->getService('Flight');
-        $flights = $flightService->FlightsByPlaces($origin,$destination);
+        $flights = $flightService->FlightsByPlaces($origin, $destination);
         if ($flights !== null) {
             return $this->jsonResponse('', self::HTTP_CODE_OK, $flights);
         } else {
@@ -138,6 +139,13 @@ class FlightController extends BaseController implements GenericControllers
         }
     }
 
+    public function findByDate()
+    {
+        $input = Input::all();
+        $flightService = $this->getService('Flight');
+       $data = $flightService->findbydate($input);
+        return $this->jsonResponse('', self::HTTP_CODE_OK, $data);
+    }
     public function approve($id)
     {
         $flightService = $this->getService('Flight');

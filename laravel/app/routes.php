@@ -1,17 +1,17 @@
 <?php
 
 /*
-  |--------------------------------------------------------------------------
-  | Application Routes
-  |--------------------------------------------------------------------------
-  |
-  | Here is where you can register all of the routes for an application.
-  | It's a breeze. Simply tell Laravel the URIs it should respond to
-  | and give it the Closure to execute when that URI is requested.
-  |
+|--------------------------------------------------------------------------
+| Application Routes
+|--------------------------------------------------------------------------
+|
+| Here is where you can register all of the routes for an application.
+| It's a breeze. Simply tell Laravel the URIs it should respond to
+| and give it the Closure to execute when that URI is requested.
+|
  */
 
-Route::get('/', function() {
+Route::get('/', function () {
     return View::make('index');
 });
 
@@ -19,51 +19,51 @@ Route::get('/', function() {
  * All the public api requests here
  */
 
-Route::group(['prefix' => '/web'], function () { 
-	  Route::get('eula', 
+Route::group(['prefix' => '/web'], function () {
+    Route::get('eula',
         ['as' => 'eula', 'uses' => 'WebController@eula']
     );
-    Route::get('privacy', 
+    Route::get('privacy',
         ['as' => 'privacy', 'uses' => 'WebController@privacy']
     );
     Route::get(
-        '/reservation/status','ReservationController@status'
+        '/reservation/status', 'ReservationController@status'
     );
     Route::get(
         'payments/response',
         ['as' => 'payments.response', 'uses' => 'PaymentController@responseTransaccion']
-    ); 
+    );
     Route::get(
         'payments/responseDeclined',
         ['as' => 'payments.response', 'uses' => 'PaymentController@responseTransaccionDeclined']
-    ); 
+    );
     Route::get(
         'payments/getIframe',
         ['as' => 'payments.response', 'uses' => 'PaymentController@getIframe']
-    ); 
-   
-});	
- 
+    );
+
+});
+
 Route::group(['prefix' => 'api/v1/public'], function () {
-    
-    Route::post('accounts/login', 
+
+    Route::post('accounts/login',
         ['as' => 'account.login', 'uses' => 'AccountController@login']
     );
     Route::get('/validateToken/{token}',
-    ['as' => 'account.token', 'uses' => 'AccountController@validateToken']);
-    
-    Route::post('accounts/login-mobile', 
+        ['as' => 'account.token', 'uses' => 'AccountController@validateToken']);
+
+    Route::post('accounts/login-mobile',
         ['as' => 'account.login-mobile', 'uses' => 'AccountController@loginMobile']
     );
-    
-    Route::post('accounts/loginfb', 
+
+    Route::post('accounts/loginfb',
         ['as' => 'account.loginfb', 'uses' => 'AccountController@loginMobileFB']
     );
-    
-    Route::post('accounts/loginfb2', 
+
+    Route::post('accounts/loginfb2',
         ['as' => 'account.loginfb2', 'uses' => 'AccountController@loginMobileFB2']
     );
-    
+
     Route::post('/accounts/create',
         ['as' => 'accounts.create', 'uses' => 'AccountController@createMobileUser']
     );
@@ -77,42 +77,47 @@ Route::group(['prefix' => 'api/v1/public'], function () {
         ['as' => 'tests.test', 'uses' => 'TestController@test']
     );
     Route::post('/payments/status',
-    ['as' => 'payment.status', 'uses' => 'PaymentController@updateStatusPayment']);
+        ['as' => 'payment.status', 'uses' => 'PaymentController@updateStatusPayment']);
     Route::get('/places',
-    ['as' => 'places.all', 'uses' => 'PlaceController@all']);
-   
+        ['as' => 'places.all', 'uses' => 'PlaceController@all']);
+
     // info
     Route::post(
         'request-charter/',
-        ['as' => 'info.test','uses' => 'InfoController@sendMailRequestCharter']
+        ['as' => 'info.test', 'uses' => 'InfoController@sendMailRequestCharter']
     );
     Route::post(
         'contacts/',
         ['as' => 'payments.response', 'uses' => 'InfoController@ContactEmail']
+    );
+    //flights public methods
+    Route::post('/flights/search',
+
+        ['as' => 'flight.search', 'uses' => 'FlightController@findByDate']
     );
 });
 
 /**
  * All the private (token auth) api requests here
  */
-Route::group(['prefix' => 'api/v1/private'], function() {
+Route::group(['prefix' => 'api/v1/private'], function () {
 
-    Route::group(['before' => 'jwt-auth'], function() {
-        
+    Route::group(['before' => 'jwt-auth'], function () {
+
         /* @deprecated
          * Implemented in the client-side
          * Route::get('/logout',
-            ['as' => 'account.logout', 'uses' => 'AccountController@logout']
+        ['as' => 'account.logout', 'uses' => 'AccountController@logout']
         );*/
-        
+
         Route::get(
-            'accounts/current-user', 
+            'accounts/current-user',
             ['as' => 'account.current-user', 'uses' => 'AccountController@getCurrentUser']
         );
-        
+
         /**
          * Users routes (backend users)
-         */       
+         */
         Route::post(
             '/users/create',
             ['as' => 'users.create', 'uses' => 'AccountController@create']
@@ -121,7 +126,7 @@ Route::group(['prefix' => 'api/v1/private'], function() {
             '/users/{id}/edit',
             ['as' => 'users.edit', 'uses' => 'AccountController@edit']
         );
-        
+
         Route::post(
             '/musers/create',
             ['as' => 'musers.create', 'uses' => 'AccountController@createm']
@@ -134,19 +139,18 @@ Route::group(['prefix' => 'api/v1/private'], function() {
             '/musers',
             ['as' => 'users.all_mobile', 'uses' => 'AccountController@all_mobile']
         );
-        
-        
+
         /*REST API*/
         Route::put(
             '/users/modify',
             ['as' => 'users.edit', 'uses' => 'AccountController@modify']
         );
-        
+
         /*Route::put(
-            '/users/password_change',
-            ['as' => 'users.password_change', 'uses' => 'AccountController@passwordChange']
+        '/users/password_change',
+        ['as' => 'users.password_change', 'uses' => 'AccountController@passwordChange']
         );*/
-        
+
         Route::delete(
             '/users/{id}/destroy',
             ['as' => 'users.destroy', 'uses' => 'AccountController@destroy']
@@ -155,7 +159,7 @@ Route::group(['prefix' => 'api/v1/private'], function() {
             '/users',
             ['as' => 'users.all', 'uses' => 'AccountController@all']
         );
-        
+
         Route::get(
             '/users/{id}',
             ['as' => 'users.find', 'uses' => 'AccountController@find']
@@ -164,7 +168,7 @@ Route::group(['prefix' => 'api/v1/private'], function() {
             '/users/sendpush/{id}',
             ['as' => 'users.sendpush', 'uses' => 'AccountController@SendPushtoUser']
         );
-        
+
         /**
          * Account routes - This are the users of the mobile apps
          */
@@ -184,7 +188,7 @@ Route::group(['prefix' => 'api/v1/private'], function() {
             '/accounts/{id}',
             ['as' => 'accounts.find', 'uses' => 'AccountController@find']
         );
-        
+
         /**
          * Places routes
          */
@@ -277,7 +281,7 @@ Route::group(['prefix' => 'api/v1/private'], function() {
             '/profiles/{id}',
             ['as' => 'profiles.find', 'uses' => 'ProfileController@find']
         );
-        
+
         /**
          * Setup routes
          */
@@ -292,8 +296,8 @@ Route::group(['prefix' => 'api/v1/private'], function() {
         Route::get(
             '/setup/{id}',
             ['as' => 'setup.find', 'uses' => 'SetupController@find']
-        ); 
-        
+        );
+
         /**
          * Config routes
          */
@@ -304,8 +308,8 @@ Route::group(['prefix' => 'api/v1/private'], function() {
         Route::post(
             '/config/alerts',
             ['as' => 'config.alertsmod', 'uses' => 'ConfigController@cedit']
-        ); 
-        
+        );
+
         /**
          * Planes routes
          */
@@ -329,10 +333,11 @@ Route::group(['prefix' => 'api/v1/private'], function() {
             '/planes/{id}',
             ['as' => 'planes.find', 'uses' => 'PlaneController@find']
         );
-        
+
         /**
          * Flights routes
          */
+
         Route::post(
             '/flights/create',
             ['as' => 'flights.create', 'uses' => 'FlightController@create']
@@ -377,22 +382,22 @@ Route::group(['prefix' => 'api/v1/private'], function() {
             '/flights/{id}/approve',
             ['as' => 'flights.approve', 'uses' => 'FlightController@approve']
         );
-        
+
         Route::post(
             '/flights/{id}/cancel',
             ['as' => 'flights.cancel', 'uses' => 'FlightController@cancel']
         );
-        
+
         Route::get(
             '/allowed-flight-status',
             ['as' => 'flights.allowed-flight-status', 'uses' => 'FlightController@getAllowedStatus']
         );
-        
+
         Route::get(
             '/created-flight-status',
             ['as' => 'flights.created-flight-status', 'uses' => 'FlightController@getCreatedStatus']
         );
-        
+
         /**
          * Books routes
          */
@@ -412,12 +417,12 @@ Route::group(['prefix' => 'api/v1/private'], function() {
             '/bookings/{id}',
             ['as' => 'bookings.find', 'uses' => 'BookController@find']
         );
-        
+
         Route::get(
             '/bookings-by-flight/{id}',
             ['as' => 'bookings.find-by-flight', 'uses' => 'BookController@findByFlight']
         );
-        
+
         Route::get(
             '/bookings-by-user',
             ['as' => 'bookings.find-by-user', 'uses' => 'BookController@findByUser']
@@ -426,23 +431,23 @@ Route::group(['prefix' => 'api/v1/private'], function() {
             '/bookings/{id}/cancel',
             ['as' => 'bookings.cancel', 'uses' => 'BookController@cancel']
         );
-        
+
         /**
          * Payments routes
          */
         Route::post(
             '/payments/getUrlPayment',
             ['as' => 'payments.getUrl', 'uses' => 'PaymentController@paymentPaya']
-        ); 
-        
+        );
+
         Route::get(
             '/payments/token',
             ['as' => 'payments.token', 'uses' => 'PaymentController@GetToken']
-        ); 
+        );
         Route::get(
             '/payments',
             ['as' => 'payments.all', 'uses' => 'PaymentController@all']
-        ); 
+        );
         Route::get(
             '/payments/ticket-cost',
             ['as' => 'payments.ticket-cost', 'uses' => 'PaymentController@getTicketCost']
@@ -458,9 +463,9 @@ Route::group(['prefix' => 'api/v1/private'], function() {
         Route::post(
             'payments/reservationMobileCreate',
             ['as' => 'payments.response', 'uses' => 'PaymentController@reservationMobileCreate']
-        ); 
+        );
         Route::get('/tests/testauth',
-        ['as' => 'tests.testauth', 'uses' => 'TestController@testauth']
+            ['as' => 'tests.testauth', 'uses' => 'TestController@testauth']
         );
     });
 });

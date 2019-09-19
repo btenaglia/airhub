@@ -129,6 +129,23 @@ class FlightService extends BaseService implements GenericServices
             return null;
         }
     }
+    public function findbydate($info)
+    {
+
+        $flights = Flight::where("departure_date", "=", $info['dateRequest'])->get();
+        return $flights;
+
+        // $flight = $this->find($id);
+        // $flight = $this->createFlight($flight, $input);
+
+        // $success = $flight->update();
+
+        // if ($success) {
+        //     return $flight;
+        // } else {
+        //     return null;
+        // }
+    }
 
     public function setPlane($id, $input)
     {
