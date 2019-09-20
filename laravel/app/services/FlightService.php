@@ -3,7 +3,7 @@ namespace App\Services;
 
 use App\Models\Flight;
 use GuzzleHttp\Client;
-
+use App\Models\Book;
 /**
  * All the flights logic here.
  *
@@ -29,11 +29,11 @@ class FlightService extends BaseService implements GenericServices
     {
         return Flight::futureFlights();
     }
-    public function FlightsByPlaces($origin,$destination)
+    public function FlightsByPlaces($origin, $destination)
     {
-        $places = array("origin" => $origin,"destination" => $destination);
-        
-        return  Flight::FlightsByPlaces($origin,$destination);
+        $places = array("origin" => $origin, "destination" => $destination);
+
+        return Flight::FlightsByPlaces($origin, $destination);
     }
     public function passedFlights()
     {
@@ -132,19 +132,16 @@ class FlightService extends BaseService implements GenericServices
     public function findbydate($info)
     {
 
-        $flights = Flight::where("departure_date", "=", $info['dateRequest'])->get();
+        $flights = Flight::with(['GetOrigin', 'GetDestination','GetPlane'])
+            ->where("departure_date", "=", $info['dateRequest'])->get();
+
+        foreach ($flights as $flight) {
+            $books = Book::findByFlight($flight->id);
+            $freeSeats = $flight->get_plane->seats_limit - Count($books);
+            $flight["freeSeats"] = $freeSeats;
+        }
+
         return $flights;
-
-        // $flight = $this->find($id);
-        // $flight = $this->createFlight($flight, $input);
-
-        // $success = $flight->update();
-
-        // if ($success) {
-        //     return $flight;
-        // } else {
-        //     return null;
-        // }
     }
 
     public function setPlane($id, $input)
@@ -376,24 +373,28 @@ class FlightService extends BaseService implements GenericServices
         $actualDepartureArray = null;
         $status = null;
         if ($departure > 0) {
-            if($estimateArrival <= 0){
-                if($now < $departure)
-                $status = "Scheduled";
-            }
-            else{
+            if ($estimateArrival <= 0) {
+                if ($now < $departure) {
+                    $status = "Scheduled";
+                }
+
+            } else {
                 $status = ($now > $departure && $now < $estimateArrival) ? "In time" : ($now > $estimateArrival ? "Landed" : "Scheduled");
             }
-                       
-        }         
-        if($actualDepartureParse)
+
+        }
+        if ($actualDepartureParse) {
             $actualDepartureArray = explode(" ", (string) $actualDepartureParse);
-        
-        if ($estimateArrivalparse) 
+        }
+
+        if ($estimateArrivalparse) {
             $estimateArrivalArray = explode(" ", (string) $estimateArrivalparse);
-        
-        if($estimateActualTimeparse)
-            $estimateActualtimeArrivalArray = explode(" ",(string) $estimateActualTimeparse);
-        
+        }
+
+        if ($estimateActualTimeparse) {
+            $estimateActualtimeArrivalArray = explode(" ", (string) $estimateActualTimeparse);
+        }
+
         $currentFlight = ["altitude" => $fi["InFlightInfoResult"]["altitude"],
             "speed" => $fi["InFlightInfoResult"]["groundspeed"],
             "distance" => $distance['LatLongsToDistanceResult'],
