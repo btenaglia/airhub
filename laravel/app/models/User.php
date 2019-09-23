@@ -267,7 +267,7 @@ class User extends BaseModel implements UserInterface, RemindableInterface
 
     public static function findByEmail($email)
     {
-        return User::where('email', '=', $email)->firstOrFail();
+        return User::with('getMember')->where('email', '=', $email)->firstOrFail();
     }
 
     public static function findByCellphone($cellphone)

@@ -97,7 +97,9 @@ class PlaceService extends BaseService implements GenericServices
             return null;
         }
     }
-
+    public function findByName($query) {
+        return Place::where('name','=',$query)->first();
+    }
     public function find($id)
     {
         return Place::find($id);

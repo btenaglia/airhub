@@ -54,7 +54,7 @@ return array(
 	|
 	*/
 
-	'from' => array('address' => 'm.koss@alliesair.com', 'name' => null),
+	'from' => array('address' => 'juanrulodev@gmail.com', 'name' => null),
 
 	/*
 	|--------------------------------------------------------------------------
@@ -80,7 +80,7 @@ return array(
 	|
 	*/
 
-	'username' => 'm.koss@alliesair.com',
+	'username' => 'juanrulodev@gmail.com',
 
 	/*
 	|--------------------------------------------------------------------------
@@ -93,7 +93,7 @@ return array(
 	|
 	*/
 
-	'password' => 'FlyAlliesAir2019!',
+	'password' => 'dev654654',
 
 	/*
 	|--------------------------------------------------------------------------

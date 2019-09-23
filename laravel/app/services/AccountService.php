@@ -607,6 +607,7 @@ class AccountService extends BaseService implements GenericServices
     }
     public function validateAccessToken($token){
         $user = JWTAuth::toUser($token);
-        return $user;
+        $usernew = User::with('getMember')->find($user->id);
+        return $usernew;
     }
 }

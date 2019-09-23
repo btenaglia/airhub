@@ -1,9 +1,10 @@
 <?php
 namespace App\Services;
 
+use App\Models\Book;
 use App\Models\Flight;
 use GuzzleHttp\Client;
-use App\Models\Book;
+
 /**
  * All the flights logic here.
  *
@@ -131,17 +132,51 @@ class FlightService extends BaseService implements GenericServices
     }
     public function findbydate($info)
     {
+        $srvPlace = $this->getService('Place');
 
-        $flights = Flight::with(['GetOrigin', 'GetDestination','GetPlane'])
-            ->where("departure_date", "=", $info['dateRequest'])->get();
+        if ($info['origin'] == 0) {
+            $info['origin'] = $info['customOrigin'];
+        } else {
+            $origin = $srvPlace->find($info['origin']);
+            $info['origin'] = $origin->name;
+            $f['origin_short_name'] = $origin->short_name;
+        }
 
+        if ($info['destination'] == 0) {
+            $info['destination'] = $info['customDestination'];
+        } else {
+            $destination = $srvPlace->find($info['destination']);
+            $info['destination'] = $destination->name;
+            $f['destination_short_name'] = $destination->short_name;
+        }
+        $f["passengers"] = $info['passengers'];
+        $f["date"] = $info['dateRequest'];
+        $origin = $srvPlace->findByName($info['origin']);
+        $destination = $srvPlace->findByName($info['destination']);
+        $f["destination"] = $info['destination'];
+        $f["origin"] = $info['origin'];
+        if ($origin == null || $destination == null) {
+            return $f;
+        }
+
+      
+
+        $flights = Flight::with(['GetOrigin', 'GetDestination', 'GetPlane'])
+            ->where("departure_date", "=", $info['dateRequest'])
+            ->where("origin", "=", $origin->id)
+            ->where("destination", "=", $destination->id)
+            ->get();
+        if (count($flights) == 0) {
+            $f["flights"] = [];
+        }
         foreach ($flights as $flight) {
             $books = Book::findByFlight($flight->id);
             $freeSeats = $flight->get_plane->seats_limit - Count($books);
             $flight["freeSeats"] = $freeSeats;
         }
+        $f["flights"] = $flights;
 
-        return $flights;
+        return $f;
     }
 
     public function setPlane($id, $input)
