@@ -127,8 +127,8 @@ return array(
                 'Tymon\JWTAuth\Providers\JWTAuthServiceProvider',
                 'App\Services\IoCServiceProvider',
     //'Davibennun\LaravelPushNotification\LaravelPushNotificationServiceProvider',            
-    'Berkayk\OneSignal\OneSignalServiceProvider'
-
+    // 'Berkayk\OneSignal\OneSignalServiceProvider',
+	'Thujohn\Pdf\PdfServiceProvider'
 	),
 
 	/*
@@ -196,7 +196,8 @@ return array(
 		'Validator'         => 'Illuminate\Support\Facades\Validator',
 		'View'              => 'Illuminate\Support\Facades\View',
                 'JWTAuth'           => 'Tymon\JWTAuth\Facades\JWTAuth',
-                'JWTFactory'        => 'Tymon\JWTAuth\Facades\JWTFactory',
+				'JWTFactory'        => 'Tymon\JWTAuth\Facades\JWTFactory',
+				'PDF' => 'Thujohn\Pdf\PdfFacade',
                 //'PushNotification' => 'Davibennun\LaravelPushNotification\Facades\PushNotification',
                 'OneSignal' => 'Berkayk\OneSignal\OneSignalFacade'
 	),

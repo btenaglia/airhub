@@ -1,7 +1,10 @@
 <?php
 namespace App\Services;
 
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Mail;
+use PDF;
+use View;
 
 /**
  * TODO Comment of component here!
@@ -157,20 +160,56 @@ class MailService extends BaseService
         Mail::send('mails.contact', $data, function ($msj) use ($info) {
             $msj->from('alert@airhub.us');
             $msj->subject('passages');
-            $msj->to(["m.koss@alliesair.com"]);
+            $msj->to(["rulo.samper@gmail.com"]);
 
             return true;
         });
     }
+    public function sendPdf($info)
+    {
+        define('BUDGETS_DIR', public_path('uploads/pdf')); // I define this in a constants.php file
+
+        if (!is_dir(BUDGETS_DIR)) {
+
+            mkdir(BUDGETS_DIR, 0755, true);
+        }
+
+        $pdfPath = BUDGETS_DIR . '/invoice.pdf';
+        // File::put($pdfPath, PDF::load($html, 'A4', 'portrait')->output());
+        $data = [
+            "pepe" => "luis".rand(0,100),
+        ];
+        $content = PDF::load(View::make('pdfs/templateInfo', $data), 'A4', 'portrait')->output();
+      if(file_exists($pdfPath)){
+        @unlink($pdfPath);
+      }
+      
+        chown($pdfPath,465);
+        File::put($pdfPath, $content);
+        $data = [
+            "name" => $info['dateRequest'],
+            "email" => $info['dateRequest'],
+            "phone" => $info['dateRequest'],
+            "query" => $info['dateRequest'],
+        ];
+        Mail::send('mails.pdf', $data, function ($msj) use ($pdfPath) {
+            $msj->from('alert@airhub.us');
+            $msj->subject('passages');
+            $msj->to(["rulo.samper@gmail.com"]);
+            $msj->attach($pdfPath);
+            return true;
+        },true);
+        return $info;
+    }
 
     public function infoCharter($info)
     {
-        
+
         $data = [
             "name" => $info['name'],
             "lastname" => $info['lastname'],
             "email" => $info['email'],
-            "phone" => $info['phone'], 
+            "phone" => $info['phone'],
             "origin" => $info['origin'],
             "destination" => $info['destination'],
             "date" => $info['dateRequest'],

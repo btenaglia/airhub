@@ -30,4 +30,11 @@ class InfoController extends BaseController
         $srv->sendContact($input);
         return $this->jsonResponse('', self::HTTP_CODE_OK, $input);
     }
+    public function sendPdf(){
+        $input = Input::all();
+        $srv = $this->getService('Mail');
+        $srvData = $srv->sendPdf($input);
+        $data2 = ["data" => $srvData];
+        return $this->jsonResponse('', self::HTTP_CODE_OK,  $data2);
+    }
 }

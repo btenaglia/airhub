@@ -277,6 +277,13 @@ class ComposerStaticInit030b65fdcc855b88b4d9cd93950aa198
                 0 => __DIR__ . '/..' . '/kylekatarnls/update-helper/src',
             ),
         ),
+        'T' => 
+        array (
+            'Thujohn\\Pdf' => 
+            array (
+                0 => __DIR__ . '/..' . '/thujohn/pdf/src',
+            ),
+        ),
         'S' => 
         array (
             'System' => 

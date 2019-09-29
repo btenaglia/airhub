@@ -90,6 +90,11 @@ Route::group(['prefix' => 'api/v1/public'], function () {
         'contacts/',
         ['as' => 'payments.response', 'uses' => 'InfoController@ContactEmail']
     );
+
+    Route::post(
+        'contacts/pdf',
+        ['as' => 'payments.response', 'uses' => 'InfoController@sendPdf']
+    );
     //flights public methods
     Route::post('/flights/search',
 
