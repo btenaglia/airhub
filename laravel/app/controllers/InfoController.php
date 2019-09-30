@@ -37,4 +37,36 @@ class InfoController extends BaseController
         $data2 = ["data" => $srvData];
         return $this->jsonResponse('', self::HTTP_CODE_OK,  $data2);
     }
+    public function getPdf(){
+        $info = Input::all();
+        $data = [
+            "user_id"=> "80",
+            "origin_id"=> "2",
+            "destination_id"=> "3",
+            "seats"=> "2",
+            "flight_id"=> 142,
+            "body_weight"=> 215,
+            "complete_name"=> "Campese, Bob",
+            "luggage_weight"=> 16,
+            "extras"=> [
+              
+                "complete_name"=> "Juan test",
+                "body_weight"=> 123,
+                "luggage_weight"=> 44,
+                "email"=> "qqqq@rrrr.com",
+                "address"=>"irene curie, 139",
+                "cell_phone"=> "654654654"
+              
+            ],
+            "seats_limit"=> 7,
+            "weight_limit"=> 1000,
+            "price"=> 617
+        ];
+        return View::make('pdfs/templateInfo', array('data' => $data));
+    }
+
+    public function textoMail(){
+
+        return View::make('mails/pdf');
+    }
 }

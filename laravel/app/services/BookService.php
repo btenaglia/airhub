@@ -163,23 +163,27 @@ class BookService extends BaseService implements GenericServices
             if ($weight_added >= $weightReservation) {
 
                 $user = User::with('GetMember')->find($reservation['user_id']);
-                
-                if(isset($reservation['notravel']) && $reservation['notravel'])
-                $price_total = $reservation['price'] * ($reservation['seats'] - 1);
-                else
-                $price_total = $reservation['price'] * $reservation['seats'];
 
-                if(isset($user->get_member->discount)){
-                    if($user->get_member->discount == 1)
-                    $price_discount = 0;
-                    else
-                    $price_discount = $price_total - ($price_total * $user->get_member->discount);
+                if (isset($reservation['notravel']) && $reservation['notravel']) {
+                    $price_total = $reservation['price'] * ($reservation['seats'] - 1);
+                } else {
+                    $price_total = $reservation['price'] * $reservation['seats'];
                 }
-                else
-                $price_discount = $price_total;
+
+                if (isset($user->get_member->discount)) {
+                    if ($user->get_member->discount == 1) {
+                        $price_discount = 0;
+                    } else {
+                        $price_discount = $price_total - ($price_total * $user->get_member->discount);
+                    }
+
+                } else {
+                    $price_discount = $price_total;
+                }
+
                 $Newpayment = new AppPayment();
                 $payment = 0;
-                if($price_discount > 0){
+                if ($price_discount > 0) {
                     $paymentService = $this->getService('Payment');
                     $payment = $paymentService->payWithpaya($price_discount);
                     $Newpayment->setExternalPaymentId($payment['id']);
@@ -204,13 +208,15 @@ class BookService extends BaseService implements GenericServices
                     $book->payment_id = $Newpayment->getId();
                     $book->save();
                 }
-                if(isset($reservation['notravel']) && $reservation['notravel']){
-                    if($payment > 0)
-                    return $payment['url'];
-                    else
-                    return "free";
+                if (isset($reservation['notravel']) && $reservation['notravel']) {
+                    if ($payment > 0) {
+                        return $payment['url'];
+                    } else {
+                        return "free";
+                    }
+
                 }
-                
+
                 $bookUser = new Book();
                 $user = User::find($reservation['user_id']);
                 $bookUser->setCompleteName($reservation['complete_name']);
@@ -223,10 +229,119 @@ class BookService extends BaseService implements GenericServices
                 $bookUser->user_id = $reservation['user_id'];
                 $bookUser->payment_id = $Newpayment->getId();
                 $bookUser->save();
-                if($payment > 0)
-                return $payment['url'];
-                else
-                return "free";
+                if ($payment > 0) {
+                    return $payment['url'];
+                } else {
+                    return "free";
+                }
+
+            } else {
+                return "weight";
+            }
+
+        } else {
+            return "capacity";
+        }
+
+    }
+    public function ReservationWithMail($reservation)
+    {
+        $books = Book::findByFlight($reservation['flight_id']);
+        $freeSeats = $reservation['seats_limit'] - Count($books);
+        // $reservation['seats_limit'];
+        $reservatedSeats = count($reservation['extras']) + 1;
+
+        if ($reservatedSeats <= $freeSeats) {
+
+            $weightSavedBooks = 0;
+            foreach ($books as $book) {
+                $weightSavedBooks += $book->body_weight;
+                $weightSavedBooks += $book->luggage_weight;
+            }
+            $weight_added = $reservation['weight_limit'] - $weightSavedBooks;
+            $weightReservation = 0;
+
+            foreach ($reservation['extras'] as $extra) {
+
+                $weightReservation = $extra['body_weight'];
+                $weightReservation = $extra['luggage_weight'];
+            }
+            $weightReservation += $reservation['body_weight'];
+            $weightReservation += $reservation['luggage_weight'];
+            if ($weight_added >= $weightReservation) {
+
+                $user = User::with('GetMember')->find($reservation['user_id']);
+
+                if (isset($reservation['notravel']) && $reservation['notravel']) {
+                    $price_total = $reservation['price'] * ($reservation['seats'] - 1);
+                } else {
+                    $price_total = $reservation['price'] * $reservation['seats'];
+                }
+
+                if (isset($user->get_member->discount)) {
+                    if ($user->get_member->discount == 1) {
+                        $price_discount = 0;
+                    } else {
+                        $price_discount = $price_total - ($price_total * $user->get_member->discount);
+                    }
+
+                } else {
+                    $price_discount = $price_total;
+                }
+
+                $Newpayment = new AppPayment();
+                $payment = 0;
+                if ($price_discount > 0) {
+                    $paymentService = $this->getService('Payment');
+                    $payment = $paymentService->payWithpaya($price_discount);
+                    $Newpayment->setExternalPaymentId($payment['id']);
+                }
+                $Newpayment->setCurrency('USD');
+                $Newpayment->setAmount($price_discount);
+                $Newpayment->setDescription('Android Ticket');
+                $Newpayment->setIntent('');
+                $Newpayment->setExternalState('pending');
+                $Newpayment->setPaymentJson('');
+                $Newpayment->save();
+                foreach ($reservation['extras'] as $extra) {
+                    $book = new Book();
+                    $book->setCompleteName($extra['complete_name']);
+                    $book->setBodyWeight($extra['body_weight']);
+                    $book->setLuggageWeight($extra['luggage_weight']);
+                    $book->setAddress($extra['address']);
+                    $book->setCellPhone($extra['cell_phone']);
+                    $book->setEmail($extra['email']);
+                    $book->flight_id = $reservation['flight_id'];
+                    $book->user_id = $reservation['user_id'];
+                    $book->payment_id = $Newpayment->getId();
+                    $book->save();
+                }
+                if (isset($reservation['notravel']) && $reservation['notravel']) {
+                    if ($payment > 0) {
+                        return $payment['url'];
+                    } else {
+                        return "free";
+                    }
+
+                }
+
+                $bookUser = new Book();
+                $user = User::find($reservation['user_id']);
+                $bookUser->setCompleteName($reservation['complete_name']);
+                $bookUser->setBodyWeight($reservation['body_weight']);
+                $bookUser->setLuggageWeight($reservation['luggage_weight']);
+                $bookUser->setAddress($user->address);
+                $bookUser->setCellPhone($user->cell_phone);
+                $bookUser->setEmail($user->email);
+                $bookUser->flight_id = $reservation['flight_id'];
+                $bookUser->user_id = $reservation['user_id'];
+                $bookUser->payment_id = $Newpayment->getId();
+                $bookUser->save();
+                if ($payment > 0) {
+                    return $payment['url'];
+                } else {
+                    return "free";
+                }
 
             } else {
                 return "weight";

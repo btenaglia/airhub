@@ -41,6 +41,14 @@ Route::group(['prefix' => '/web'], function () {
         'payments/getIframe',
         ['as' => 'payments.response', 'uses' => 'PaymentController@getIframe']
     );
+    Route::get(
+        'test/pdf',
+        ['as' => 'info.pdf', 'uses' => 'InfoController@getPdf']
+    );
+    Route::get(
+        'test/pdftxt',
+        ['as' => 'info.pdf', 'uses' => 'InfoController@textoMail']
+    );
 
 });
 

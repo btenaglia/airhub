@@ -177,28 +177,25 @@ class MailService extends BaseService
         $pdfPath = BUDGETS_DIR . '/invoice.pdf';
         // File::put($pdfPath, PDF::load($html, 'A4', 'portrait')->output());
         $data = [
-            "pepe" => "luis".rand(0,100),
+            "data" => $info,
         ];
         $content = PDF::load(View::make('pdfs/templateInfo', $data), 'A4', 'portrait')->output();
-      if(file_exists($pdfPath)){
-        @unlink($pdfPath);
-      }
-      
-        chown($pdfPath,465);
+        if (file_exists($pdfPath)) {
+            @unlink($pdfPath);
+        }
+
+        chown($pdfPath, 465);
         File::put($pdfPath, $content);
         $data = [
-            "name" => $info['dateRequest'],
-            "email" => $info['dateRequest'],
-            "phone" => $info['dateRequest'],
-            "query" => $info['dateRequest'],
+            "name" => $info['complete_name'],
         ];
         Mail::send('mails.pdf', $data, function ($msj) use ($pdfPath) {
             $msj->from('alert@airhub.us');
             $msj->subject('passages');
-            $msj->to(["rulo.samper@gmail.com"]);
+            $msj->to(["bruno@bufalo.tech","rulo.samper@gmail.com"]);
             $msj->attach($pdfPath);
             return true;
-        },true);
+        }, true);
         return $info;
     }
 
