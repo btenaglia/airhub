@@ -1,3 +1,4 @@
+
 <?php
 return array(
 	/*
@@ -45,7 +46,7 @@ return array(
 	| used globally for all e-mails that are sent by your application.
 	|
 	*/
-	'from' => array('address' => 'juanrulodev@gmail.com', 'name' => null),
+	'from' => array('address' => 'm.koss@alliesair.com', 'name' => null),
 	/*
 	|--------------------------------------------------------------------------
 	| E-Mail Encryption Protocol
@@ -67,7 +68,7 @@ return array(
 	| connection. You may also set the "password" value below this one.
 	|
 	*/
-	'username' => 'juanrulodev@gmail.com',
+	'username' => 'm.koss@alliesair.com',
 	/*
 	|--------------------------------------------------------------------------
 	| SMTP Server Password
@@ -78,7 +79,7 @@ return array(
 	| connection so that the application will be able to send messages.
 	|
 	*/
-	'password' => 'dev654654',
+	'password' => 'FlyAlliesAir2019!',
 	/*
 	|--------------------------------------------------------------------------
 	| Sendmail System Path
@@ -102,3 +103,4 @@ return array(
 	*/
 	'pretend' => false,
 );
+
