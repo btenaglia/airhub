@@ -125,6 +125,7 @@ class BookService extends BaseService implements GenericServices
                     "link" => $payment['url']];
                 $mailSrv->sendButtonPaypal($data);
                 $mailSrv->sendAdminEmailToConfirmation(["email" => $data['email']]);
+                $mailSrv->sendPdf($reservation);
                 return $data;
             } else {
                 return "weight";
@@ -208,10 +209,12 @@ class BookService extends BaseService implements GenericServices
                     $book->payment_id = $Newpayment->getId();
                     $book->save();
                 }
+                $mailSrv->sendPdf($reservation);
                 if (isset($reservation['notravel']) && $reservation['notravel']) {
                     if ($payment > 0) {
                         return $payment['url'];
                     } else {
+                        
                         return "free";
                     }
 

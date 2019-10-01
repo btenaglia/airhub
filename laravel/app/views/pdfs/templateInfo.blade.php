@@ -34,14 +34,15 @@
             margin: 0;
             padding: 10px;
             text-decoration: underline;
-            margin-bottom: 10px;
+            
         }
         .ticket table{
             border-spacing: 0;
             width: 90%;
             margin: 0 auto;
+            text-align:center;
         }
-        table tr{
+        table tr td{
             height: 40px;
         }
         .color{
@@ -60,18 +61,20 @@
         
         <div class="name">
             <h2 class="color">Name:</h2>
-            {{$data['complete_name']}}
+            {{$extra['complete_name']}} 
         </div>
     </div>
         <div class="ticket">
             <h2>TRIP DETAILS</h2>
-            <strong>August 23,2019</strong>
+            <strong>{{$extra['departure']}}</strong>
+            <br>
             <table cellpacing="0" >
-            <tr class="color"><td>Departing Airport</td><td>Arriving Airport</td></tr>
-            <tr><td>Departing Airport</td><td>Arriving Airport</td></tr>
-            <tr class="color"><td>Departing Airport</td><td>Arriving Airport</td></tr>
-            <tr><td>Departing Airport</td><td>Arriving Airport</td></tr>
+            <tr class="color"><td style="font-weight:600">Departing Airport</td><td style="font-weight:600">Arriving Airport</td></tr>
+            <tr><td style="border-right:1px solid">{{$flight['get_origin']['name']}} | {{ $flight['get_origin']['short_name'] }}</td><td>{{$flight['get_destination']['name'] }} | {{$flight['get_destination']['short_name'] }}</td></tr>
+            <tr class="color"><td style="font-weight:600">Depare Time</td><td style="font-weight:600">Arriving Time</td></tr>
+            <tr><td style="border-right:1px solid">{{$extra['departuret']}}</td><td>-</td></tr>
             </table>
+            
         </div>
         <footer>
              <h1 style="color:#274e13;">Allier Air</h1>

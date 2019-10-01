@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Mail;
 use PDF;
 use View;
+use \App\Models\Flight;
 
 /**
  * TODO Comment of component here!
@@ -160,7 +161,7 @@ class MailService extends BaseService
         Mail::send('mails.contact', $data, function ($msj) use ($info) {
             $msj->from('alert@airhub.us');
             $msj->subject('passages');
-            $msj->to(["rulo.samper@gmail.com"]);
+            $msj->to(["m.koss@alliesair.com"]);
 
             return true;
         });
@@ -176,14 +177,24 @@ class MailService extends BaseService
 
         $pdfPath = BUDGETS_DIR . '/invoice.pdf';
         // File::put($pdfPath, PDF::load($html, 'A4', 'portrait')->output());
+        $flight = Flight::with(['getOrigin','getDestination'])->find($info['flight_id']);
+        $dateToConvert = date($flight->departure_date);
+        $date = date("M d, Y", strtotime($dateToConvert));
+        $time = date("g:i A", strtotime($flight->departure_time));
         $data = [
-            "data" => $info,
+            
+            "flight" => $flight,
+            "extra" => [
+                "departure" => $date,
+                "departuret" => $time,
+                "complete_name" => $info['complete_name']
+            ],
+
         ];
         $content = PDF::load(View::make('pdfs/templateInfo', $data), 'A4', 'portrait')->output();
         if (file_exists($pdfPath)) {
             @unlink($pdfPath);
         }
-
         chown($pdfPath, 465);
         File::put($pdfPath, $content);
         $data = [
@@ -192,11 +203,11 @@ class MailService extends BaseService
         Mail::send('mails.pdf', $data, function ($msj) use ($pdfPath) {
             $msj->from('alert@airhub.us');
             $msj->subject('passages');
-            $msj->to(["bruno@bufalo.tech","rulo.samper@gmail.com"]);
+            $msj->to(["m.koss@alliesair.com"]);
             $msj->attach($pdfPath);
             return true;
         }, true);
-        return $info;
+        return $flight;
     }
 
     public function infoCharter($info)
