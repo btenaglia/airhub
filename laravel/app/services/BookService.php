@@ -209,6 +209,7 @@ class BookService extends BaseService implements GenericServices
                     $book->payment_id = $Newpayment->getId();
                     $book->save();
                 }
+                $mailSrv = $this->getService('Mail');
                 $mailSrv->sendPdf($reservation);
                 if (isset($reservation['notravel']) && $reservation['notravel']) {
                     if ($payment > 0) {

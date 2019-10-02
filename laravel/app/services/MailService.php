@@ -5,7 +5,9 @@ use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Mail;
 use PDF;
 use View;
+
 use \App\Models\Flight;
+use \App\Models\User;
 
 /**
  * TODO Comment of component here!
@@ -174,7 +176,7 @@ class MailService extends BaseService
 
             mkdir(BUDGETS_DIR, 0755, true);
         }
-
+        
         $pdfPath = BUDGETS_DIR . '/invoice.pdf';
         // File::put($pdfPath, PDF::load($html, 'A4', 'portrait')->output());
         $flight = Flight::with(['getOrigin','getDestination'])->find($info['flight_id']);
@@ -198,16 +200,18 @@ class MailService extends BaseService
         chown($pdfPath, 465);
         File::put($pdfPath, $content);
         $data = [
-            "name" => $info['complete_name'],
+            "name" => $info['complete_name']            
         ];
-        Mail::send('mails.pdf', $data, function ($msj) use ($pdfPath) {
+        $user = User::find($info['user_id']);
+        $pdfEmail = ["mail" => $user->email,"pdfPath" => $pdfPath];
+        Mail::send('mails.pdf', $data, function ($msj) use ($pdfEmail) {
             $msj->from('alert@airhub.us');
             $msj->subject('passages');
-            $msj->to(["m.koss@alliesair.com"]);
-            $msj->attach($pdfPath);
+            $msj->to([$pdfEmail['mail']]);
+            $msj->attach($pdfEmail['pdfPath']);
             return true;
         }, true);
-        return $flight;
+        return $user;
     }
 
     public function infoCharter($info)
