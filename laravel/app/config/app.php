@@ -127,7 +127,7 @@ return array(
                 'Tymon\JWTAuth\Providers\JWTAuthServiceProvider',
                 'App\Services\IoCServiceProvider',
     //'Davibennun\LaravelPushNotification\LaravelPushNotificationServiceProvider',            
-    // 'Berkayk\OneSignal\OneSignalServiceProvider',
+    'Berkayk\OneSignal\OneSignalServiceProvider',
 	'Thujohn\Pdf\PdfServiceProvider'
 	),
 
